@@ -5,8 +5,6 @@ import sbt.Keys._
 import sbt._
 import scoverage.ScoverageKeys.coverageExcludedPackages
 
-import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
-
 object ReactTestDom extends ScalaJsModule {
 
   override val id: String = "scommons-react-test-dom"
@@ -16,11 +14,7 @@ object ReactTestDom extends ScalaJsModule {
   override def definition: Project = super.definition
     .settings(
       description := "Web DOM Scala.js, React.js testing utilities",
-      coverageExcludedPackages := "scommons.react.test.dom.raw",
-
-      npmDependencies in Compile ++= Seq(
-        "react-addons-test-utils" -> "15.6.0"
-      )
+      coverageExcludedPackages := "scommons.react.test.dom.raw"
     )
 
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Seq(

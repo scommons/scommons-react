@@ -1,6 +1,7 @@
 package definitions
 
 import common.TestLibs
+import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
 import scoverage.ScoverageKeys.coverageExcludedPackages
@@ -19,8 +20,14 @@ object ReactTest extends ScalaJsModule {
       coverageExcludedPackages := "scommons.react.test.raw",
 
       npmDependencies in Compile ++= Seq(
-        "react-test-renderer" -> "15.6.1"
-      )
+        "react-test-renderer" -> "^16.6.3"
+      ),
+
+//      npmResolutions in Test := Map(
+//        "react" -> "^16.6.3",
+//        "react-dom" -> "^16.6.3" //TODO: remove dependency on the react-dom !!!
+//      ),
+      requiresDOM in Test := false
     )
 
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Seq(

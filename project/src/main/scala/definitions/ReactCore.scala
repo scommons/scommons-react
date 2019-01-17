@@ -1,6 +1,7 @@
 package definitions
 
 import common.{Libs, TestLibs}
+import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
 
@@ -12,7 +13,9 @@ object ReactCore extends ScalaJsModule {
 
   override def definition: Project = super.definition
     .settings(
-      description := "Core Scala.js, React.js UI utilities and components"
+      description := "Core Scala.js, React.js UI utilities and components",
+
+      requiresDOM in Test := false
     )
 
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Nil
