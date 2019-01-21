@@ -19,7 +19,9 @@ class ShallowRendererSpec extends TestSpec {
     ))
 
     //when
-    val result = ShallowRenderer.renderAndGetOutput(testElem)
+    val renderer = new ShallowRenderer
+    renderer.render(testElem)
+    val result = renderer.getRenderOutput()
 
     //then
     result.`type` shouldBe "div"

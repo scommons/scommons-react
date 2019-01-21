@@ -3,10 +3,13 @@ package scommons.react.test.util
 import io.github.shogowada.scalajs.reactjs.React
 import io.github.shogowada.scalajs.reactjs.VirtualDOM._
 import io.github.shogowada.scalajs.reactjs.classes.ReactClass
+import io.github.shogowada.statictags.{Attribute, AttributeSpec}
 import org.scalatest.{Failed, OutcomeOf}
-import ShallowRendererUtilsSpec._
 import scommons.react.UiComponent
 import scommons.react.test.TestSpec
+import scommons.react.test.util.ShallowRendererUtilsSpec._
+
+import scala.scalajs.js
 
 class ShallowRendererUtilsSpec extends TestSpec with ShallowRendererUtils
   with OutcomeOf {
@@ -119,6 +122,51 @@ class ShallowRendererUtilsSpec extends TestSpec with ShallowRendererUtils
     })
   }
 
+  it should "fail if array attribute doesn't match when assertNativeComponent" in {
+    //given
+    val compClass = React.createClass[Unit, Unit] { _ =>
+      <.p(^.testArr := js.Array("test"))()
+    }
+    val comp = shallowRender(<(compClass)()())
+
+    //when
+    val Failed(e) = outcomeOf {
+      assertNativeComponent(comp, <.p(^.testArr := js.Array("test2"))())
+    }
+
+    //then
+    e.getMessage should include ("""Attribute value doesn't match for p.testArr""")
+  }
+
+  it should "fail if boolean attribute doesn't match when assertNativeComponent" in {
+    //given
+    val compClass = React.createClass[Unit, Unit] { _ =>
+      <.p(^.disabled := true)()
+    }
+    val comp = shallowRender(<(compClass)()())
+
+    //when
+    val Failed(e) = outcomeOf {
+      assertNativeComponent(comp, <.p(^.disabled := false)())
+    }
+
+    //then
+    e.getMessage should include ("""Attribute value doesn't match for p.disabled""")
+  }
+
+  it should "fail if child doesn't match when assertNativeComponent" in {
+    //given
+    val comp = shallowRender(<(TestComp())(^.wrapped := Comp1Props(1))("test1 child"))
+
+    //when
+    val Failed(e) = outcomeOf {
+      assertNativeComponent(comp, <.p(^.className := "test1")("test2 child"))
+    }
+
+    //then
+    e.getMessage should include ("""Child Element at index 0 doesn't match for p""")
+  }
+
   it should "fail if non-empty when assertNativeComponent" in {
     //given
     val comp = shallowRender(<(TestComp())(^.wrapped := Comp1Props(1))())
@@ -184,5 +232,17 @@ object ShallowRendererUtilsSpec {
       <(TestComp())(^.wrapped := Comp1Props(1))("test2 child1"),
       <(TestComp())(^.wrapped := Comp1Props(2))("test2 child2")
     )
+  }
+
+  import VirtualDOMAttributes.Type._
+
+  case class TestArrayAttributeSpec(name: String) extends AttributeSpec {
+
+    def :=(value: js.Array[String]): Attribute[js.Array[String]] = Attribute(name, value, AS_IS)
+  }
+
+  implicit class TestVirtualDOMAttributes(attributes: VirtualDOMAttributes) {
+
+    lazy val testArr = TestArrayAttributeSpec("testArr")
   }
 }

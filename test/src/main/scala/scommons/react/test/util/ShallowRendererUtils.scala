@@ -4,39 +4,49 @@ import io.github.shogowada.scalajs.reactjs.classes.ReactClass
 import io.github.shogowada.statictags.{AttributeValueType, Element}
 import org.scalatest.{Assertion, Matchers, Succeeded}
 import scommons.react.UiComponent
-import scommons.react.test.raw.ShallowRenderer
-import scommons.react.test.raw.ShallowRenderer._
+import scommons.react.test.raw.{ShallowInstance, ShallowRenderer}
 
 import scala.collection.mutable.ListBuffer
+import scala.scalajs.js
 
 trait ShallowRendererUtils extends Matchers {
 
-  private val expectNoChildren: List[ComponentInstance] => Assertion = { children =>
-    children shouldBe Nil
+  private val expectNoChildren: List[ShallowInstance] => Assertion = { children =>
+    children.map {
+      case i if !scalajs.js.isUndefined(i.`type`) => i.`type`.toString
+      case i => i.toString
+    } shouldBe Nil
   }
 
   def createRenderer(): ShallowRenderer = new ShallowRenderer
 
-  def shallowRender(element: scalajs.js.Object): ComponentInstance = renderAndGetOutput(element)
+  def shallowRender(element: scalajs.js.Object): ShallowInstance = {
+    shallowRender(createRenderer(), element)
+  }
+  
+  def shallowRender(renderer: ShallowRenderer, element: scalajs.js.Object): ShallowInstance = {
+    renderer.render(element)
+    renderer.getRenderOutput()
+  }
 
-  def findComponentProps[T](renderedComp: ComponentInstance, searchComp: UiComponent[T]): T = {
+  def findComponentProps[T](renderedComp: ShallowInstance, searchComp: UiComponent[T]): T = {
     findProps[T](renderedComp, searchComp).headOption match {
       case Some(comp) => comp
       case None => throw new IllegalStateException(s"UiComponent $searchComp not found")
     }
   }
 
-  def findProps[T](renderedComp: ComponentInstance, searchComp: UiComponent[T]): List[T] = {
+  def findProps[T](renderedComp: ShallowInstance, searchComp: UiComponent[T]): List[T] = {
     findComponents(renderedComp, searchComp.apply()).map(getComponentProps[T])
   }
 
-  def getComponentProps[T](component: ComponentInstance): T = component.props.wrapped.asInstanceOf[T]
+  def getComponentProps[T](component: ShallowInstance): T = component.props.wrapped.asInstanceOf[T]
 
-  def findComponents(component: ComponentInstance,
-                     componentClass: ReactClass): List[ComponentInstance] = {
+  def findComponents(component: ShallowInstance,
+                     componentClass: ReactClass): List[ShallowInstance] = {
 
-    def search(components: List[ComponentInstance],
-               result: ListBuffer[ComponentInstance]): Unit = components match {
+    def search(components: List[ShallowInstance],
+               result: ListBuffer[ShallowInstance]): Unit = components match {
 
       case Nil =>
       case head :: tail =>
@@ -48,14 +58,14 @@ trait ShallowRendererUtils extends Matchers {
         search(tail, result)
     }
 
-    val result = new ListBuffer[ComponentInstance]
+    val result = new ListBuffer[ShallowInstance]
     search(List(component), result)
     result.toList
   }
 
-  def assertComponent[T](result: ComponentInstance, expectedComp: UiComponent[T])
+  def assertComponent[T](result: ShallowInstance, expectedComp: UiComponent[T])
                         (assertProps: T => Assertion,
-                         assertChildren: List[ComponentInstance] => Assertion = expectNoChildren): Assertion = {
+                         assertChildren: List[ShallowInstance] => Assertion = expectNoChildren): Assertion = {
 
     result.`type` shouldBe expectedComp.apply()
 
@@ -63,13 +73,21 @@ trait ShallowRendererUtils extends Matchers {
     assertChildren(getComponentChildren(result))
   }
 
-  def assertNativeComponent(result: ComponentInstance,
+  def assertNativeComponent(result: ShallowInstance,
                             expectedElement: Element,
-                            assertChildren: List[ComponentInstance] => Assertion = expectNoChildren): Assertion = {
+                            assertChildren: List[ShallowInstance] => Assertion = expectNoChildren): Assertion = {
+
+    result.`type` shouldBe expectedElement.name
 
     def normalize(classes: String) = classes.split(' ').map(_.trim).filter(_.nonEmpty)
 
-    result.`type` shouldBe expectedElement.name
+    def assertAttribute(attrName: String, resultValue: Any, expectedValue: Any): Unit = {
+      if (resultValue != expectedValue) {
+        fail(s"Attribute value doesn't match for ${expectedElement.name}.$attrName" +
+          s"\n\texpected: $expectedValue" +
+          s"\n\tactual:   $resultValue")
+      }
+    }
 
     for (attr <- expectedElement.flattenedAttributes) {
       val resultValue = result.props.selectDynamic(attr.name).asInstanceOf[Any]
@@ -80,8 +98,12 @@ trait ShallowRendererUtils extends Matchers {
           normalize(resultValue.toString).toSet shouldBe normalize(attr.valueToString).toSet
         case _ if resultValue.isInstanceOf[String] =>
           resultValue shouldBe attr.valueToString
+        case _ if resultValue.isInstanceOf[js.Array[_]] && attr.value.isInstanceOf[js.Array[_]] =>
+          val resultArr = resultValue.asInstanceOf[js.Array[_]].toList
+          val expectedArr = attr.value.asInstanceOf[js.Array[_]].toList
+          assertAttribute(attr.name, resultArr, expectedArr)
         case _ =>
-          resultValue shouldBe attr.value
+          assertAttribute(attr.name, resultValue, attr.value)
       }
     }
 
@@ -95,7 +117,12 @@ trait ShallowRendererUtils extends Matchers {
           val child = children(i)
           expectedChildren(i) match {
             case expected: Element => assertNativeComponent(child, expected)
-            case expected => child shouldBe expected
+            case expected =>
+              if (child != expected) {
+                fail(s"Child Element at index $i doesn't match for ${expectedElement.name}" +
+                  s"\n\texpected: $expected" +
+                  s"\n\tactual:   $child")
+              }
           }
         }
 
@@ -104,16 +131,16 @@ trait ShallowRendererUtils extends Matchers {
     }
   }
 
-  private def getComponentChildren(result: ComponentInstance): List[ComponentInstance] = {
+  private def getComponentChildren(result: ShallowInstance): List[ShallowInstance] = {
     if (scalajs.js.isUndefined(result.props)) Nil
     else {
       val children = result.props.children
 
       if (scalajs.js.isUndefined(children)) Nil
       else if (scalajs.js.Array.isArray(children)) {
-        children.asInstanceOf[scalajs.js.Array[ComponentInstance]].toList
+        children.asInstanceOf[scalajs.js.Array[ShallowInstance]].toList
       }
-      else List(children.asInstanceOf[ComponentInstance])
+      else List(children.asInstanceOf[ShallowInstance])
     }
   }
 }

@@ -26,16 +26,13 @@ class ShallowRenderer extends js.Object {
     *
     * <p>You can then begin to assert facts about the output.
     */
-  def getRenderOutput(): ShallowRenderer.ComponentInstance = js.native
+  def getRenderOutput(): ShallowInstance = js.native
 }
 
-object ShallowRenderer {
+@js.native
+trait ShallowInstance extends js.Object {
 
-  type ComponentInstance = js.Object with js.Dynamic
-
-  def renderAndGetOutput(element: js.Object): ComponentInstance = {
-    val shallowRenderer = new ShallowRenderer
-    shallowRenderer.render(element)
-    shallowRenderer.getRenderOutput()
-  }
+  val `type`: js.Any = js.native
+  val props: js.Dynamic = js.native
+  val key: js.Any = js.native
 }
