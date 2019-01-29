@@ -1,7 +1,7 @@
 package scommons.react.test.util
 
 import io.github.shogowada.scalajs.reactjs.classes.ReactClass
-import io.github.shogowada.statictags.{AttributeValueType, Element}
+import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import org.scalatest.{Assertion, Matchers, Succeeded}
 import scommons.react.UiComponent
 import scommons.react.test.raw.{ShallowInstance, ShallowRenderer}
@@ -20,11 +20,11 @@ trait ShallowRendererUtils extends Matchers {
 
   def createRenderer(): ShallowRenderer = new ShallowRenderer
 
-  def shallowRender(element: scalajs.js.Object): ShallowInstance = {
+  def shallowRender(element: ReactElement): ShallowInstance = {
     shallowRender(createRenderer(), element)
   }
   
-  def shallowRender(renderer: ShallowRenderer, element: scalajs.js.Object): ShallowInstance = {
+  def shallowRender(renderer: ShallowRenderer, element: ReactElement): ShallowInstance = {
     renderer.render(element)
     renderer.getRenderOutput()
   }
@@ -74,52 +74,84 @@ trait ShallowRendererUtils extends Matchers {
   }
 
   def assertNativeComponent(result: ShallowInstance,
-                            expectedElement: Element,
-                            assertChildren: List[ShallowInstance] => Assertion = expectNoChildren): Assertion = {
+                            expectedElement: ReactElement,
+                            assertChildren: List[ShallowInstance] => Assertion = expectNoChildren
+                           ): Assertion = {
 
-    result.`type` shouldBe expectedElement.name
+    val expectedInstance = expectedElement.asInstanceOf[ShallowInstance]
+    
+    result.`type` shouldBe expectedInstance.`type`
 
-    def normalize(classes: String) = classes.split(' ').map(_.trim).filter(_.nonEmpty)
-
-    def assertAttribute(attrName: String, resultValue: Any, expectedValue: Any): Unit = {
+    def assertValue(name: String, resultValue: Any, expectedValue: Any): Unit = {
       if (resultValue != expectedValue) {
-        fail(s"Attribute value doesn't match for ${expectedElement.name}.$attrName" +
+        fail(s"Attribute value doesn't match for $name" +
           s"\n\texpected: $expectedValue" +
           s"\n\tactual:   $resultValue")
       }
     }
 
-    for (attr <- expectedElement.flattenedAttributes) {
-      val resultValue = result.props.selectDynamic(attr.name).asInstanceOf[Any]
-      attr.value match {
-        case attrValue: Map[_, _] =>
-          resultValue.asInstanceOf[scalajs.js.Dictionary[String]].toMap shouldBe attrValue
-        case _ if attr.valueType == AttributeValueType.SPACE_SEPARATED =>
-          normalize(resultValue.toString).toSet shouldBe normalize(attr.valueToString).toSet
-        case _ if resultValue.isInstanceOf[String] =>
-          resultValue shouldBe attr.valueToString
-        case _ if resultValue.isInstanceOf[js.Array[_]] && attr.value.isInstanceOf[js.Array[_]] =>
-          val resultArr = resultValue.asInstanceOf[js.Array[_]].toList
-          val expectedArr = attr.value.asInstanceOf[js.Array[_]].toList
-          assertAttribute(attr.name, resultArr, expectedArr)
+    def assertArray(name: String, resultValue: js.Any, expectedArr: js.Array[_]): Unit = {
+      assertValue(name, js.Array.isArray(resultValue), true)
+
+      if (resultValue != expectedArr) {
+        val resultList = resultValue.asInstanceOf[js.Array[_]].toList
+        val expectedList = expectedArr.toList
+        assertValue(name, resultList, expectedList)
+      }
+    }
+    
+    def assertObject(name: String, resultValue: js.Any, expectedObject: js.Object with js.Dynamic): Unit = {
+      assertValue(name, js.typeOf(resultValue), "object")
+      
+      if (resultValue != expectedObject) {
+        val resultObject = resultValue.asInstanceOf[js.Object with js.Dynamic]
+        val resultKeys = js.Object.keys(resultObject).toSet
+        val expectedKeys = js.Object.keys(expectedObject).toSet
+        assertValue(name, resultKeys, expectedKeys)
+
+        for (key <- expectedKeys) {
+          val resultValue = resultObject.selectDynamic(key)
+          val expectedValue = expectedObject.selectDynamic(key)
+          if (js.typeOf(expectedValue) == "object")
+            assertObject(s"$name.$key", resultValue, expectedValue.asInstanceOf[js.Object with js.Dynamic])
+          else
+            assertValue(s"$name.$key", resultValue, expectedValue)
+        }
+      }
+    }
+    
+    for (attr <- js.Object.keys(expectedInstance.props).filter(_ != "children")) {
+      val resultValue = result.props.selectDynamic(attr)
+      val expectedValue = expectedInstance.props.selectDynamic(attr).asInstanceOf[js.Any]
+      js.typeOf(expectedValue) match {
+        case "object" =>
+          if (js.Array.isArray(expectedValue)) {
+            assertArray(s"${expectedInstance.`type`}.$attr",
+              resultValue, expectedValue.asInstanceOf[js.Array[_]])
+          }
+          else {
+            assertObject(s"${expectedInstance.`type`}.$attr",
+              resultValue, expectedValue.asInstanceOf[js.Object with js.Dynamic])
+          }
         case _ =>
-          assertAttribute(attr.name, resultValue, attr.value)
+          assertValue(s"${expectedInstance.`type`}.$attr", resultValue, expectedValue)
       }
     }
 
     val children = getComponentChildren(result)
 
-    expectedElement.flattenedContents match {
+    getComponentChildren(expectedInstance) match {
       case expectedChildren if expectedChildren.nonEmpty =>
         children.size shouldBe expectedChildren.size
 
         for (i <- expectedChildren.indices) {
           val child = children(i)
           expectedChildren(i) match {
-            case expected: Element => assertNativeComponent(child, expected)
+            case expected if !scalajs.js.isUndefined(expected.asInstanceOf[js.Dynamic].`type`) =>
+              assertNativeComponent(child, expected.asInstanceOf[ReactElement])
             case expected =>
               if (child != expected) {
-                fail(s"Child Element at index $i doesn't match for ${expectedElement.name}" +
+                fail(s"Child Element at index $i doesn't match for ${expectedInstance.`type`}" +
                   s"\n\texpected: $expected" +
                   s"\n\tactual:   $child")
               }

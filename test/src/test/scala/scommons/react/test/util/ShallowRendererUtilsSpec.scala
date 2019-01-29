@@ -135,7 +135,33 @@ class ShallowRendererUtilsSpec extends TestSpec with ShallowRendererUtils
     }
 
     //then
-    e.getMessage should include ("""Attribute value doesn't match for p.testArr""")
+    e.getMessage should include(
+      "Attribute value doesn't match for p.testArr" +
+        "\n\texpected: List(test2)" +
+        "\n\tactual:   List(test)")
+  }
+
+  it should "fail if object attribute doesn't match when assertNativeComponent" in {
+    //given
+    val compClass = React.createClass[Unit, Unit] { _ =>
+      <.p(^.testObj := js.Dynamic.literal(
+        test = 1
+      ))()
+    }
+    val comp = shallowRender(<(compClass)()())
+
+    //when
+    val Failed(e) = outcomeOf {
+      assertNativeComponent(comp, <.p(^.testObj := js.Dynamic.literal(
+        test = 2
+      ))())
+    }
+
+    //then
+    e.getMessage should include(
+      "Attribute value doesn't match for p.testObj.test" +
+        "\n\texpected: 2" +
+        "\n\tactual:   1")
   }
 
   it should "fail if boolean attribute doesn't match when assertNativeComponent" in {
@@ -151,7 +177,10 @@ class ShallowRendererUtilsSpec extends TestSpec with ShallowRendererUtils
     }
 
     //then
-    e.getMessage should include ("""Attribute value doesn't match for p.disabled""")
+    e.getMessage should include(
+      "Attribute value doesn't match for p.disabled" +
+        "\n\texpected: false" +
+        "\n\tactual:   true")
   }
 
   it should "fail if child doesn't match when assertNativeComponent" in {
@@ -191,7 +220,16 @@ class ShallowRendererUtilsSpec extends TestSpec with ShallowRendererUtils
         ^.hidden := true,
         ^.height := 10
       )(
-        <.div()("child1"),
+        <.div(
+          ^.testArr := js.Array("test"),
+          ^.testObj := js.Dynamic.literal(
+            test = 1,
+            nested = js.Dynamic.literal(
+              test2 = 2
+            )
+          )
+        )(),
+        <(TestComp())(^.wrapped := Comp1Props(1))("test2 child1"),
         <.div()("child2")
       )
     }
@@ -205,7 +243,16 @@ class ShallowRendererUtilsSpec extends TestSpec with ShallowRendererUtils
       ^.hidden := true,
       ^.height := 10
     )(
-      <.div()("child1"),
+      <.div(
+        ^.testArr := js.Array("test"),
+        ^.testObj := js.Dynamic.literal(
+          test = 1,
+          nested = js.Dynamic.literal(
+            test2 = 2
+          )
+        )
+      )(),
+      <(TestComp())(^.wrapped := Comp1Props(1))("test2 child1"),
       <.div()("child2")
     ))
   }
@@ -241,8 +288,14 @@ object ShallowRendererUtilsSpec {
     def :=(value: js.Array[String]): Attribute[js.Array[String]] = Attribute(name, value, AS_IS)
   }
 
+  case class TestObjectAttributeSpec(name: String) extends AttributeSpec {
+
+    def :=(value: js.Object): Attribute[js.Object] = Attribute(name, value, AS_IS)
+  }
+
   implicit class TestVirtualDOMAttributes(attributes: VirtualDOMAttributes) {
 
     lazy val testArr = TestArrayAttributeSpec("testArr")
+    lazy val testObj = TestObjectAttributeSpec("testObj")
   }
 }

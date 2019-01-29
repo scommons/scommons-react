@@ -1,7 +1,6 @@
 package scommons.react.test.raw
 
 import io.github.shogowada.scalajs.reactjs.React
-import io.github.shogowada.scalajs.reactjs.VirtualDOM._
 import scommons.react.test.TestSpec
 
 class TestRendererSpec extends TestSpec {

@@ -1,7 +1,6 @@
 package scommons.react.test.dom.raw
 
 import io.github.shogowada.scalajs.reactjs.React
-import io.github.shogowada.scalajs.reactjs.VirtualDOM._
 import scommons.react.test.TestSpec
 import scommons.react.test.dom.raw.ReactTestUtils._
 import scommons.react.test.dom.raw.ReactTestUtilsSpec.TestProps

@@ -1,5 +1,7 @@
 package scommons.react.test.raw
 
+import io.github.shogowada.scalajs.reactjs.elements.ReactElement
+
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 
@@ -18,7 +20,7 @@ class ShallowRenderer extends js.Object {
     * and only renders a single level deep. This means you can test components isolated
     * from how their children are implemented.
     */
-  def render(element: js.Object): Unit = js.native
+  def render(element: ReactElement): Unit = js.native
 
   /**
     * After `shallowRenderer.render()` has been called, you can use `shallowRenderer.getRenderOutput()`
@@ -33,6 +35,6 @@ class ShallowRenderer extends js.Object {
 trait ShallowInstance extends js.Object {
 
   val `type`: js.Any = js.native
-  val props: js.Dynamic = js.native
+  val props: js.Object with js.Dynamic = js.native
   val key: js.Any = js.native
 }
