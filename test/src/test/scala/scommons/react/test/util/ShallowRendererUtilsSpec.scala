@@ -183,6 +183,25 @@ class ShallowRendererUtilsSpec extends TestSpec with ShallowRendererUtils
         "\n\tactual:   true")
   }
 
+  it should "fail if key attribute doesn't match when assertNativeComponent" in {
+    //given
+    val compClass = React.createClass[Unit, Unit] { _ =>
+      <.p(^.key := "123")()
+    }
+    val comp = shallowRender(<(compClass)()())
+
+    //when
+    val Failed(e) = outcomeOf {
+      assertNativeComponent(comp, <.p(^.key := "12345")())
+    }
+
+    //then
+    e.getMessage should include(
+      "Attribute value doesn't match for p.key" +
+        "\n\texpected: 12345" +
+        "\n\tactual:   123")
+  }
+
   it should "fail if child doesn't match when assertNativeComponent" in {
     //given
     val comp = shallowRender(<(TestComp())(^.wrapped := Comp1Props(1))("test1 child"))

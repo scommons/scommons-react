@@ -82,6 +82,8 @@ trait ShallowRendererUtils extends Matchers {
     
     result.`type` shouldBe expectedInstance.`type`
 
+    assertValue(s"${expectedInstance.`type`}.key", result.key, expectedInstance.key)
+
     def assertValue(name: String, resultValue: Any, expectedValue: Any): Unit = {
       if (resultValue != expectedValue) {
         fail(s"Attribute value doesn't match for $name" +
