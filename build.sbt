@@ -8,7 +8,8 @@ lazy val `scommons-react` = (project in file("."))
   .settings(
     skip in publish := true,
     publish := (),
-    publishM2 := ()
+    publishM2 := (),
+    publishLocal := ()
   )
   .settings(
     ideExcludedDirectories += baseDirectory.value / "docs" / "_site"
@@ -16,9 +17,11 @@ lazy val `scommons-react` = (project in file("."))
   .aggregate(
   `scommons-react-core`,
   `scommons-react-test`,
-  `scommons-react-test-dom`
+  `scommons-react-test-dom`,
+  `scommons-react-showcase`
 )
 
 lazy val `scommons-react-core` = ReactCore.definition
 lazy val `scommons-react-test` = ReactTest.definition
 lazy val `scommons-react-test-dom` = ReactTestDom.definition
+lazy val `scommons-react-showcase` = ReactShowcase.definition

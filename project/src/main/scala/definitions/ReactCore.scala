@@ -4,6 +4,7 @@ import common.{Libs, TestLibs}
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
+import scoverage.ScoverageKeys.coverageExcludedPackages
 
 object ReactCore extends ScalaJsModule {
 
@@ -14,6 +15,7 @@ object ReactCore extends ScalaJsModule {
   override def definition: Project = super.definition
     .settings(
       description := "Core Scala.js, React.js UI utilities and components",
+      coverageExcludedPackages := "scommons.react.raw",
 
       requiresDOM in Test := false
     )
