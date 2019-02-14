@@ -1,4 +1,4 @@
-package scommons.react.showcase
+package scommons.react.showcase.hooks
 
 import io.github.shogowada.scalajs.reactjs.events.MouseSyntheticEvent
 import scommons.react._
@@ -6,7 +6,7 @@ import scommons.react.hooks._
 
 object UseStateDemo extends FunctionComponent[Unit] {
 
-  protected def render(props: Props[PropsType]): ReactElement = {
+  protected def render(props: Props): ReactElement = {
     val (counter1, setCounter1) = useState(0)
     val (counter2, setCounter2) = useState(() => 0)
 

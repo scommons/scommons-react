@@ -7,9 +7,11 @@ import scala.scalajs.js
 
 trait FunctionComponent[T] extends UiComponent[T] {
 
+  type Props = reactjs.React.Props[T]
+
   protected def name: String = getClass.getSimpleName
   
-  protected def render(props: Props[T]): ReactElement
+  protected def render(props: Props): ReactElement
 
   override protected def create(): ReactClass = {
     val render0: js.Function1[js.Dynamic, ReactElement] = { props =>

@@ -8,7 +8,6 @@ import scala.language.implicitConversions
 
 package object react {
 
-  type Props[T] = reactjs.React.Props[T]
   type ReactElement = reactjs.elements.ReactElement
   
   lazy val < : VirtualDOM.VirtualDOMElements = VirtualDOM.<

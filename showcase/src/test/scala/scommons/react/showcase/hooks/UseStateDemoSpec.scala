@@ -1,4 +1,4 @@
-package scommons.react.showcase
+package scommons.react.showcase.hooks
 
 import scommons.react.test.TestSpec
 import scommons.react.test.dom.TestDomSpec

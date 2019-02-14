@@ -31,8 +31,11 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
 
 ### Supported Features
 
+* Components:
+  * [FunctionComponent](showcase/src/main/scala/scommons/react/showcase/FunctionComponentDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/FunctionComponentDemoSpec.scala)
+
 * React Hooks:
-  * [useState](showcase/src/main/scala/scommons/react/showcase/UseStateDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/UseStateDemoSpec.scala)
+  * [useState](showcase/src/main/scala/scommons/react/showcase/hooks/UseStateDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseStateDemoSpec.scala)
 
 ### How to Build
 
