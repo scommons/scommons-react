@@ -1,17 +1,54 @@
 package scommons.react.test.dom.util
 
+import io.github.shogowada.scalajs.reactjs.ReactDOM
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import io.github.shogowada.statictags
 import org.scalajs.dom
 import org.scalajs.dom._
-import org.scalatest.Matchers
+import org.scalatest.{BeforeAndAfterEach, Matchers, Suite}
 import scommons.react.UiComponent
 import scommons.react.test.dom.raw.ReactTestUtils._
 import scommons.react.test.dom.raw.{ReactTestUtils, TestReactDOM}
 
 import scala.scalajs.js
 
-trait TestDOMUtils extends Matchers {
+trait TestDOMUtils extends Suite with Matchers with BeforeAndAfterEach {
+
+  protected var domContainer: Element = _
+
+  override protected def beforeEach(): Unit =  {
+    super.beforeEach()
+
+    domContainer = document.createElement("div")
+    document.body.appendChild(domContainer)
+  }
+
+  override protected def afterEach(): Unit =  {
+    super.afterEach()
+
+    document.body.removeChild(domContainer)
+    domContainer = null
+  }
+
+  def domRender(element: ReactElement): Unit = {
+    ReactTestUtils.act { () =>
+      ReactDOM.render(element, domContainer)
+    }
+  }
+
+  def fireDomEvent(block: => Unit): Unit = {
+    ReactTestUtils.act { () =>
+      block
+    }
+  }
+
+  def createDomEvent[T <: Event](args: js.Any*)(implicit tag: js.ConstructorTag[T]): T = {
+    js.Dynamic.newInstance(tag.constructor)(args: _*).asInstanceOf[T]
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  //START of deprecated methods section:
+  //  use domRender(...) and assert domContainer
 
   def renderIntoDocument(element: ReactElement): Instance = ReactTestUtils.renderIntoDocument(element)
 
@@ -21,12 +58,12 @@ trait TestDOMUtils extends Matchers {
   
   private def getComponentProps[T](component: Instance): T = component.props.wrapped.asInstanceOf[T]
 
-  def createDomEvent[T <: Event](args: js.Any*)(implicit tag: js.ConstructorTag[T]): T = {
-    js.Dynamic.newInstance(tag.constructor)(args: _*).asInstanceOf[T]
-  }
-
   def findReactElement(component: js.Any): dom.Element = asElement(TestReactDOM.findDOMNode(component))
 
+  //END of deprecated methods section
+  //////////////////////////////////////////////////////////////////////////////
+  
+  
   private def asElement(node: Node): dom.Element = node.asInstanceOf[dom.Element]
 
   def assertDOMElement(result: dom.Element, expected: statictags.Element): Unit = {

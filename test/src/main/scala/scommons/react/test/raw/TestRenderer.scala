@@ -14,6 +14,12 @@ import scala.scalajs.js.annotation.JSImport
 @js.native
 object TestRenderer extends js.Object {
 
+  /**
+    * To prepare a component for assertions, wrap the code rendering it and performing updates inside an act() call.
+    * This makes your test run closer to how React works in the browser.
+    */
+  def act(block: js.Function0[Unit]): Unit = js.native
+
   def create(element: ReactElement): TestRenderer = js.native
 }
 

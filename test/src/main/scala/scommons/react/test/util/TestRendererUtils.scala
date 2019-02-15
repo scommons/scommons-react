@@ -19,13 +19,26 @@ trait TestRendererUtils extends Matchers {
     } shouldBe Nil
   }
 
-  def createRenderer(element: ReactElement): TestRenderer = TestRenderer.create(element)
+  def createTestRenderer(element: ReactElement): TestRenderer = {
+    var result: TestRenderer = null
+    TestRenderer.act { () =>
+      result = TestRenderer.create(element)
+    }
+
+    result
+  }
   
-  def render(element: ReactElement): TestInstance = {
-    val root = createRenderer(element).root
+  def testRender(element: ReactElement): TestInstance = {
+    val root = createTestRenderer(element).root
     root.children(0)
   }
 
+  def testUpdate(renderer: TestRenderer, element: ReactElement): Unit = {
+    TestRenderer.act { () =>
+      renderer.update(element)
+    }
+  }
+  
   def findComponentProps[T](renderedComp: TestInstance, searchComp: UiComponent[T]): T = {
     findProps[T](renderedComp, searchComp).headOption match {
       case Some(comp) => comp
@@ -59,9 +72,9 @@ trait TestRendererUtils extends Matchers {
     result.toList
   }
 
-  def assertComponent[T](result: TestInstance, expectedComp: UiComponent[T])
-                        (assertProps: T => Assertion,
-                         assertChildren: List[TestInstance] => Assertion = _ => Succeeded): Assertion = {
+  def assertTestComponent[T](result: TestInstance, expectedComp: UiComponent[T])
+                            (assertProps: T => Assertion,
+                             assertChildren: List[TestInstance] => Assertion = _ => Succeeded): Assertion = {
 
     result.`type` shouldBe expectedComp.apply()
 
@@ -69,9 +82,13 @@ trait TestRendererUtils extends Matchers {
     assertChildren(getComponentChildren(result))
   }
 
+  def assertNativeComponent(result: TestInstance, expectedElement: Element): Assertion = {
+    assertNativeComponent(result, expectedElement, expectNoChildren)
+  }
+  
   def assertNativeComponent(result: TestInstance,
                             expectedElement: Element,
-                            assertChildren: List[TestInstance] => Assertion = expectNoChildren): Assertion = {
+                            assertChildren: List[TestInstance] => Assertion): Assertion = {
 
     result.`type` shouldBe expectedElement.name
 

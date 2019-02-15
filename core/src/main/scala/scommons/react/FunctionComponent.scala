@@ -9,7 +9,11 @@ trait FunctionComponent[T] extends UiComponent[T] {
 
   type Props = reactjs.React.Props[T]
 
-  protected def name: String = getClass.getSimpleName
+  protected def name: String = {
+    val name = getClass.getName
+    name.drop(name.lastIndexOf('.') + 1)
+      .stripSuffix("$")
+  }
   
   protected def render(props: Props): ReactElement
 

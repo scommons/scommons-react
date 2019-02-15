@@ -17,7 +17,7 @@ class TestRendererUtilsSpec extends TestSpec
 
   it should "return top child instance when render" in {
     //when
-    val comp = render(<(TestComp())(^.wrapped := Comp1Props(1))("test1 child"))
+    val comp = testRender(<(TestComp())(^.wrapped := Comp1Props(1))("test1 child"))
 
     //then
     assertNativeComponent(comp, <.p(^.className := "test1")(), { case List(child) =>
@@ -27,7 +27,7 @@ class TestRendererUtilsSpec extends TestSpec
 
   it should "fail if comp not found when findComponentProps" in {
     //given
-    val comp = render(<(emptyComp)()())
+    val comp = testRender(<(emptyComp)()())
     val searchComp = TestComp
 
     //when
@@ -41,7 +41,7 @@ class TestRendererUtilsSpec extends TestSpec
 
   it should "return props when findComponentProps" in {
     //given
-    val comp = render(<(comp2Class)()())
+    val comp = testRender(<(comp2Class)()())
 
     //when
     val result = findComponentProps(comp, TestComp)
@@ -52,7 +52,7 @@ class TestRendererUtilsSpec extends TestSpec
 
   it should "return components props when findProps" in {
     //given
-    val comp = render(<(comp2Class)()())
+    val comp = testRender(<(comp2Class)()())
 
     //when
     val result = findProps(comp, TestComp)
@@ -67,7 +67,7 @@ class TestRendererUtilsSpec extends TestSpec
   it should "return wrapped props when getComponentProps" in {
     //given
     val props = Comp1Props(1)
-    val root = createRenderer(<(TestComp())(^.wrapped := props)("test1 child")).root
+    val root = createTestRenderer(<(TestComp())(^.wrapped := props)("test1 child")).root
     
     //when
     val result = getComponentProps[Comp1Props](root)
@@ -78,7 +78,7 @@ class TestRendererUtilsSpec extends TestSpec
 
   it should "not find component when findComponents" in {
     //given
-    val comp = render(<(TestComp())(^.wrapped := Comp1Props(123))())
+    val comp = testRender(<(TestComp())(^.wrapped := Comp1Props(123))())
 
     //when & then
     findComponents(comp, TestComp()) shouldBe Nil
@@ -87,7 +87,7 @@ class TestRendererUtilsSpec extends TestSpec
 
   it should "find all components when findComponents" in {
     //given
-    val comp = render(<(comp2Class)(^.wrapped := Comp2Props(true))())
+    val comp = testRender(<(comp2Class)(^.wrapped := Comp2Props(true))())
 
     //when
     val results = findComponents(comp, TestComp())
@@ -96,31 +96,31 @@ class TestRendererUtilsSpec extends TestSpec
     results.map(getComponentProps[Comp1Props]) shouldBe List(Comp1Props(1), Comp1Props(2))
   }
 
-  it should "not fail if non-empty when assertComponent" in {
+  it should "not fail if non-empty when assertTestComponent" in {
     //given
-    val comp = render(<(comp2Class)(^.wrapped := Comp2Props(true))())
+    val comp = testRender(<(comp2Class)(^.wrapped := Comp2Props(true))())
 
     //when
     assertNativeComponent(comp, <.div(^.className := "test2")(), { case List(comp1, _) =>
-      assertComponent(comp1, TestComp) { props: Comp1Props =>
+      assertTestComponent(comp1, TestComp) { props: Comp1Props =>
         props shouldBe Comp1Props(1)
       }
     })
   }
 
-  it should "assert props and children when assertComponent" in {
+  it should "assert props and children when assertTestComponent" in {
     //given
-    val comp = render(<(comp2Class)(^.wrapped := Comp2Props(true))())
+    val comp = testRender(<(comp2Class)(^.wrapped := Comp2Props(true))())
 
     //when & then
     assertNativeComponent(comp, <.div(^.className := "test2")(), { case List(comp1, comp2) =>
-      assertComponent(comp1, TestComp)({ props =>
+      assertTestComponent(comp1, TestComp)({ props =>
         props shouldBe Comp1Props(1)
       }, { case List(child) =>
         assertNativeComponent(child, <.p(^.className := "test1")("test2 child1"))
       })
 
-      assertComponent(comp2, TestComp)({ props =>
+      assertTestComponent(comp2, TestComp)({ props =>
         props shouldBe Comp1Props(2)
       }, { case List(child) =>
         assertNativeComponent(child, <.p(^.className := "test1")("test2 child2"))
@@ -130,7 +130,7 @@ class TestRendererUtilsSpec extends TestSpec
 
   it should "fail if array attribute doesn't match when assertNativeComponent" in {
     //given
-    val comp = createRenderer(<.p(^.testArr := js.Array("test"))()).root
+    val comp = createTestRenderer(<.p(^.testArr := js.Array("test"))()).root
 
     //when
     val Failed(e) = outcomeOf {
@@ -143,7 +143,7 @@ class TestRendererUtilsSpec extends TestSpec
 
   it should "fail if boolean attribute doesn't match when assertNativeComponent" in {
     //given
-    val comp = createRenderer(<.p(^.disabled := true)()).root
+    val comp = createTestRenderer(<.p(^.disabled := true)()).root
 
     //when
     val Failed(e) = outcomeOf {
@@ -156,7 +156,7 @@ class TestRendererUtilsSpec extends TestSpec
 
   it should "fail if child doesn't match when assertNativeComponent" in {
     //given
-    val comp = render(<(TestComp())(^.wrapped := Comp1Props(1))("test1 child"))
+    val comp = testRender(<(TestComp())(^.wrapped := Comp1Props(1))("test1 child"))
 
     //when
     val Failed(e) = outcomeOf {
@@ -169,7 +169,7 @@ class TestRendererUtilsSpec extends TestSpec
 
   it should "fail if non-empty when assertNativeComponent" in {
     //given
-    val comp = render(<(TestComp())(^.wrapped := Comp1Props(1))("test1 child"))
+    val comp = testRender(<(TestComp())(^.wrapped := Comp1Props(1))("test1 child"))
 
     //when
     val Failed(e) = outcomeOf {
@@ -195,7 +195,7 @@ class TestRendererUtilsSpec extends TestSpec
         <.div()("child2")
       )
     }
-    val comp = render(<(compClass)()())
+    val comp = testRender(<(compClass)()())
 
     //when & then
     assertNativeComponent(comp, <.div(

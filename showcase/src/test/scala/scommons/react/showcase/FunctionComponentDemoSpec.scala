@@ -2,11 +2,15 @@ package scommons.react.showcase
 
 import scommons.react._
 import scommons.react.test.TestSpec
-import scommons.react.test.util.ShallowRendererUtils
+import scommons.react.test.dom.util.TestDOMUtils
+import scommons.react.test.util.{ShallowRendererUtils, TestRendererUtils}
 
 import scala.scalajs.js
 
-class FunctionComponentDemoSpec extends TestSpec with ShallowRendererUtils {
+class FunctionComponentDemoSpec extends TestSpec
+  with TestDOMUtils
+  with ShallowRendererUtils
+  with TestRendererUtils {
 
   it should "set function name" in {
     //given
@@ -22,6 +26,27 @@ class FunctionComponentDemoSpec extends TestSpec with ShallowRendererUtils {
     }
   }
 
+  it should "render component in dom" in {
+    //given
+    val props = FunctionComponentDemoProps(List("test"))
+    val comp = <(FunctionComponentDemoSpec.Wrapper())(^.wrapped := props)(
+      "some child"
+    )
+
+    //when
+    domRender(comp)
+
+    //then
+    assertDOMElement(domContainer.querySelector(".root"),
+      <.div(^("class") := "root")(
+        props.values.map { v =>
+          <.div()(v)
+        },
+        "some child"
+      )
+    )
+  }
+  
   it should "shallow render as top component" in {
     //given
     val props = FunctionComponentDemoProps(List("test"))
@@ -34,7 +59,7 @@ class FunctionComponentDemoSpec extends TestSpec with ShallowRendererUtils {
 
     //then
     assertNativeComponent(result,
-      <.div()(
+      <.div(^.className := "root")(
         props.values.zipWithIndex.map { case (v, i) =>
           <.div(^.key := s"$i")(v)
         },
@@ -73,6 +98,53 @@ class FunctionComponentDemoSpec extends TestSpec with ShallowRendererUtils {
     }, { case List(child) =>
       child shouldBe "some child"
     })
+  }
+  
+  it should "test render component" in {
+    //given
+    val props = FunctionComponentDemoProps(List("test"))
+    val comp = <(FunctionComponentDemoSpec.Wrapper())(^.wrapped := props)(
+      "some child"
+    )
+
+    //when
+    val result = testRender(comp)
+
+    //then
+    assertTestComponent(result, FunctionComponentDemo)({ resProps =>
+      resProps shouldBe props
+    }, { case List(child) =>
+      assertNativeComponent(child,
+        <.div(^.className := "root")(
+          props.values.map { v =>
+            <.div()(v)
+          },
+          "some child"
+        )
+      )
+    })
+  }
+  
+  it should "re-render component even if props hasn't changed" in {
+    //given
+    var isRendered = false
+    val compClass = new FunctionComponent[FunctionComponentDemoProps] {
+      protected def render(props: Props): ReactElement = {
+        isRendered = true
+        <.div.empty
+      }
+    }
+    val props = FunctionComponentDemoProps(List("test"))
+    val renderer = createRenderer()
+    renderer.render(<(compClass())(^.wrapped := props)())
+    isRendered shouldBe true
+    isRendered = false
+    
+    //when
+    renderer.render(<(compClass())(^.wrapped := props)())
+    
+    //then
+    isRendered shouldBe true
   }
 }
 
