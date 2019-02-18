@@ -128,7 +128,7 @@ class FunctionComponentDemoSpec extends TestSpec
   it should "re-render component even if props hasn't changed" in {
     //given
     var isRendered = false
-    val compClass = new FunctionComponent[FunctionComponentDemoProps] {
+    val funcComp = new FunctionComponent[FunctionComponentDemoProps] {
       protected def render(props: Props): ReactElement = {
         isRendered = true
         <.div.empty
@@ -136,12 +136,12 @@ class FunctionComponentDemoSpec extends TestSpec
     }
     val props = FunctionComponentDemoProps(List("test"))
     val renderer = createRenderer()
-    renderer.render(<(compClass())(^.wrapped := props)())
+    renderer.render(<(funcComp())(^.wrapped := props)())
     isRendered shouldBe true
     isRendered = false
     
     //when
-    renderer.render(<(compClass())(^.wrapped := props)())
+    renderer.render(<(funcComp())(^.wrapped := props)())
     
     //then
     isRendered shouldBe true

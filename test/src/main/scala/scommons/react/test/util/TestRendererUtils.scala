@@ -33,12 +33,6 @@ trait TestRendererUtils extends Matchers {
     root.children(0)
   }
 
-  def testUpdate(renderer: TestRenderer, element: ReactElement): Unit = {
-    TestRenderer.act { () =>
-      renderer.update(element)
-    }
-  }
-  
   def findComponentProps[T](renderedComp: TestInstance, searchComp: UiComponent[T]): T = {
     findProps[T](renderedComp, searchComp).headOption match {
       case Some(comp) => comp

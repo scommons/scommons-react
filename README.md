@@ -33,6 +33,7 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
 
 * Components:
   * [FunctionComponent](showcase/src/main/scala/scommons/react/showcase/FunctionComponentDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/FunctionComponentDemoSpec.scala)
+  * [React.memo](showcase/src/main/scala/scommons/react/showcase/ReactMemoDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/ReactMemoDemoSpec.scala)
 
 * React Hooks:
   * [useState](showcase/src/main/scala/scommons/react/showcase/hooks/UseStateDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseStateDemoSpec.scala)
