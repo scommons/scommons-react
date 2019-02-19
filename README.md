@@ -37,6 +37,7 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
 
 * React Hooks:
   * [useState](showcase/src/main/scala/scommons/react/showcase/hooks/UseStateDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseStateDemoSpec.scala)
+  * [useMemo](showcase/src/main/scala/scommons/react/showcase/hooks/UseMemoDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseMemoDemoSpec.scala)
 
 ### How to Build
 

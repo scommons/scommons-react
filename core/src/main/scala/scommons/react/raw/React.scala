@@ -15,5 +15,7 @@ object React extends js.Object {
            areEqual: js.Function2[js.Dynamic, js.Dynamic, Boolean]): ReactClass = js.native
   
   def useState(initialState: js.Any): js.Array[js.Any] = js.native
+  
+  def useMemo(calculate: js.Function0[js.Any], inputs: js.Array[js.Any]): js.Any = js.native
 
 }
