@@ -9,7 +9,7 @@ class UseMemoDemoSpec extends TestSpec
   with ShallowRendererUtils
   with TestRendererUtils {
 
-  it should "dom render component" in {
+  it should "render component in dom" in {
     //given
     val comp = new UseMemoDemo(() => ())
     val props = UseMemoDemoProps(1, "2")
