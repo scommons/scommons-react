@@ -29,7 +29,7 @@ the proper dependency resolver to your `build.sbt` settings:
 resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
 ```
 
-### Supported Features
+### How to use it
 
 * Components:
   * [FunctionComponent](showcase/src/main/scala/scommons/react/showcase/FunctionComponentDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/FunctionComponentDemoSpec.scala)
@@ -39,12 +39,13 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
 * React Hooks:
   * [useState](showcase/src/main/scala/scommons/react/showcase/hooks/UseStateDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseStateDemoSpec.scala)
   * [useMemo](showcase/src/main/scala/scommons/react/showcase/hooks/UseMemoDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseMemoDemoSpec.scala)
+  * [useContext](showcase/src/main/scala/scommons/react/showcase/hooks/UseContextDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseContextDemoSpec.scala)
 
 ### How to Build
 
 To build and run all the tests use the following command:
 ```bash
-sbt clean test
+sbt test
 ```
 
 ## Documentation

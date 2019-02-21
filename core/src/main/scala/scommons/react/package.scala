@@ -7,6 +7,7 @@ import io.github.shogowada.scalajs.reactjs.VirtualDOM._
 import io.github.shogowada.statictags._
 
 import scala.language.implicitConversions
+import scala.scalajs.js
 
 package object react {
 
@@ -15,7 +16,24 @@ package object react {
   implicit class ReactVirtualDOMElements(elements: VirtualDOMElements) {
     lazy val > : ReactClassElementSpec = elements(raw.React.Fragment)
   }
-  
+
+  object ReactVirtualDOMAttributes {
+
+    import VirtualDOMAttributes.Type._
+
+    case class ContextValueAttributeSpec(name: String) extends AttributeSpec {
+      def :=(value: js.Any): Attribute[js.Any] = Attribute(name, value, AS_IS)
+      def :=(value: AnyRef): Attribute[js.Any] = Attribute(name, value.asInstanceOf[js.Any], AS_IS)
+    }
+  }
+
+  implicit class ReactVirtualDOMAttributes(attributes: VirtualDOMAttributes) {
+
+    import ReactVirtualDOMAttributes._
+
+    lazy val contextValue = ContextValueAttributeSpec("value")
+  }
+
   lazy val < : VirtualDOM.VirtualDOMElements = VirtualDOM.<
   lazy val ^ : VirtualDOM.VirtualDOMAttributes = VirtualDOM.^
 
