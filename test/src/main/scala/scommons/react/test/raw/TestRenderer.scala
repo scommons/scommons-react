@@ -34,9 +34,7 @@ trait TestRenderer extends js.Object {
 }
 
 @js.native
-trait TestInstance extends js.Object {
+trait TestInstance extends RenderedInstance {
 
-  val `type`: js.Any = js.native
-  val props: js.Dynamic = js.native
   val children: js.Array[TestInstance] = js.native
 }

@@ -32,9 +32,7 @@ class ShallowRenderer extends js.Object {
 }
 
 @js.native
-trait ShallowInstance extends js.Object {
+trait ShallowInstance extends RenderedInstance {
 
-  val `type`: js.Any = js.native
-  val props: js.Object with js.Dynamic = js.native
   val key: js.Any = js.native
 }
