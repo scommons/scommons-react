@@ -69,6 +69,8 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
     val expectedInstance = expectedElement.asInstanceOf[Instance]
     
     result.`type` shouldBe expectedInstance.`type`
+    
+    val expectedType = js.Object(expectedInstance.`type`).toString
 
     def assertArray(name: String, resultValue: js.Any, expectedArr: js.Array[_]): Unit = {
       assertAttrValue(name, js.Array.isArray(resultValue), true)
@@ -106,15 +108,15 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
       js.typeOf(expectedValue) match {
         case "object" =>
           if (js.Array.isArray(expectedValue)) {
-            assertArray(s"${expectedInstance.`type`}.$attr",
+            assertArray(s"$expectedType.$attr",
               resultValue, expectedValue.asInstanceOf[js.Array[_]])
           }
           else {
-            assertObject(s"${expectedInstance.`type`}.$attr",
+            assertObject(s"$expectedType.$attr",
               resultValue, expectedValue.asInstanceOf[js.Object with js.Dynamic])
           }
         case _ =>
-          assertAttrValue(s"${expectedInstance.`type`}.$attr", resultValue, expectedValue)
+          assertAttrValue(s"$expectedType.$attr", resultValue, expectedValue)
       }
     }
 
@@ -131,7 +133,7 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
               assertNativeComponent(child, expected.asInstanceOf[ReactElement], expectNoChildren)
             case expected =>
               if (child != expected) {
-                fail(s"Child Element at index $i doesn't match for ${expectedInstance.`type`}" +
+                fail(s"Child Element at index $i doesn't match for $expectedType" +
                   s"\n\texpected: $expected" +
                   s"\n\tactual:   $child")
               }
@@ -185,7 +187,8 @@ object RendererUtils {
 
       val expectedInstance = expectedElement.asInstanceOf[ShallowInstance]
 
-      assertAttrValue(s"${expectedInstance.`type`}.key", result.key, expectedInstance.key)
+      val expectedType = js.Object(expectedInstance.`type`).toString
+      assertAttrValue(s"$expectedType.key", result.key, expectedInstance.key)
 
       super.assertNativeComponent(result, expectedElement, assertChildren)
     }
