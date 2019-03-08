@@ -8,12 +8,14 @@ import org.scalajs.dom._
 import org.scalatest.{BeforeAndAfterEach, Matchers, Suite}
 import scommons.react.UiComponent
 import scommons.react.test.dom.raw.ReactTestUtils._
-import scommons.react.test.dom.raw.{ReactTestUtils, TestReactDOM}
+import scommons.react.test.dom.raw.{ReactTestUtils, Simulate, TestReactDOM}
 
 import scala.scalajs.js
 
 trait TestDOMUtils extends Suite with Matchers with BeforeAndAfterEach {
 
+  protected val Simulate: Simulate with js.Dynamic = ReactTestUtils.Simulate
+  
   protected var domContainer: Element = _
 
   override protected def beforeEach(): Unit =  {

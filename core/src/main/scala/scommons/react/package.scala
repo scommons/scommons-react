@@ -25,6 +25,10 @@ package object react {
       def :=(value: js.Any): Attribute[js.Any] = Attribute(name, value, AS_IS)
       def :=(value: AnyRef): Attribute[js.Any] = Attribute(name, value.asInstanceOf[js.Any], AS_IS)
     }
+    
+    case class ReactRefAttributeSpec(name: String) extends AttributeSpec {
+      def :=(value: ReactRef[_]): Attribute[js.Any] = Attribute(name, value.native, AS_IS)
+    }
   }
 
   implicit class ReactVirtualDOMAttributes(attributes: VirtualDOMAttributes) {
@@ -32,6 +36,7 @@ package object react {
     import ReactVirtualDOMAttributes._
 
     lazy val contextValue = ContextValueAttributeSpec("value")
+    lazy val reactRef = ReactRefAttributeSpec("ref")
   }
 
   lazy val < : VirtualDOM.VirtualDOMElements = VirtualDOM.<

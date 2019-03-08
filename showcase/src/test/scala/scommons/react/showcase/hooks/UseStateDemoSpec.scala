@@ -1,7 +1,6 @@
 package scommons.react.showcase.hooks
 
 import scommons.react.test.TestSpec
-import scommons.react.test.dom.raw.ReactTestUtils.Simulate
 import scommons.react.test.dom.util.TestDOMUtils
 import scommons.react.test.util.{ShallowRendererUtils, TestRendererUtils}
 

@@ -16,6 +16,7 @@ object React extends js.Object {
            areEqual: js.Function2[js.Dynamic, js.Dynamic, Boolean]): ReactClass = js.native
   
   def createContext(defaultValue: js.Any): NativeContext = js.native
+  def createRef(): NativeRef = js.native
   
   //////////////////////////////////////////////////////////////////////////////
   // hooks
@@ -23,4 +24,16 @@ object React extends js.Object {
   def useState(initialState: js.Any): js.Array[js.Any] = js.native
   def useMemo(calculate: js.Function0[js.Any], inputs: js.Array[js.Any]): js.Any = js.native
   def useContext(context: NativeContext): js.Any = js.native
+}
+
+@js.native
+trait NativeContext extends js.Object {
+
+  val Provider: ReactClass = js.native
+}
+
+@js.native
+trait NativeRef extends js.Object {
+
+  val current: js.Any = js.native
 }
