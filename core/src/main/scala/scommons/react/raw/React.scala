@@ -24,6 +24,7 @@ object React extends js.Object {
   def useState(initialState: js.Any): js.Array[js.Any] = js.native
   def useMemo(calculate: js.Function0[js.Any], inputs: js.Array[js.Any]): js.Any = js.native
   def useContext(context: NativeContext): js.Any = js.native
+  def useRef(initialValue: js.Any): NativeRef = js.native
 }
 
 @js.native
@@ -35,5 +36,6 @@ trait NativeContext extends js.Object {
 @js.native
 trait NativeRef extends js.Object {
 
-  val current: js.Any = js.native
+  def current: js.Any = js.native
+  def current_=(value: js.Any): Unit = js.native
 }

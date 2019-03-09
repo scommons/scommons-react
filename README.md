@@ -41,6 +41,7 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
   * [useState](showcase/src/main/scala/scommons/react/showcase/hooks/UseStateDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseStateDemoSpec.scala)
   * [useMemo](showcase/src/main/scala/scommons/react/showcase/hooks/UseMemoDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseMemoDemoSpec.scala)
   * [useContext](showcase/src/main/scala/scommons/react/showcase/hooks/UseContextDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseContextDemoSpec.scala)
+  * [useRef](showcase/src/main/scala/scommons/react/showcase/hooks/UseRefDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseRefDemoSpec.scala)
 
 ### How to Build
 
