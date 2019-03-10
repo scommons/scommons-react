@@ -52,7 +52,7 @@ class UseMemoDemoSpec extends TestSpec
     renderer.render(<(comp())(^.wrapped := props)())
 
     //then
-    called = false
+    called shouldBe false
   }
   
   it should "call memo callback func if one of inputs has changed" in {
@@ -72,7 +72,7 @@ class UseMemoDemoSpec extends TestSpec
     renderer.render(<(comp())(^.wrapped := newProps)())
 
     //then
-    called = true
+    called shouldBe true
     assertNativeComponent(renderer.getRenderOutput(),
       <.div()(s"a: ${newProps.a}, b: ${newProps.b}")
     )

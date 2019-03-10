@@ -5,3 +5,5 @@ package object hooks
     with UseMemo
     with UseContext
     with UseRef
+    with UseEffect
+    with UseLayoutEffect

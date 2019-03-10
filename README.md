@@ -42,6 +42,8 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
   * [useMemo](showcase/src/main/scala/scommons/react/showcase/hooks/UseMemoDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseMemoDemoSpec.scala)
   * [useContext](showcase/src/main/scala/scommons/react/showcase/hooks/UseContextDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseContextDemoSpec.scala)
   * [useRef](showcase/src/main/scala/scommons/react/showcase/hooks/UseRefDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseRefDemoSpec.scala)
+  * [useEffect](showcase/src/main/scala/scommons/react/showcase/hooks/UseEffectDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseEffectDemoSpec.scala)
+  * [useLayoutEffect](showcase/src/main/scala/scommons/react/showcase/hooks/UseLayoutEffectDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseLayoutEffectDemoSpec.scala)
 
 ### How to Build
 
