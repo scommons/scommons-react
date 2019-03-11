@@ -43,9 +43,13 @@ trait ShallowRendererUtils {
     utils.assertComponent(result, expectedComp)(assertProps, assertChildren)
   }
 
+  def assertNativeComponent(result: ShallowInstance, expectedElement: ReactElement): Assertion = {
+    assertNativeComponent(result, expectedElement, utils.expectNoChildren)
+  }
+  
   def assertNativeComponent(result: ShallowInstance,
                             expectedElement: ReactElement,
-                            assertChildren: List[ShallowInstance] => Assertion = utils.expectNoChildren
+                            assertChildren: List[ShallowInstance] => Assertion
                            ): Assertion = {
 
     utils.assertNativeComponent(result, expectedElement, assertChildren)
