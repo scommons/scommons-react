@@ -1,6 +1,5 @@
 package scommons.react
 
-import io.github.shogowada.scalajs.reactjs.classes.ReactClass
 import scommons.react.raw.NativeContext
 
 import scala.scalajs.js

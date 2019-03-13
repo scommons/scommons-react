@@ -1,7 +1,5 @@
 package scommons.react
 
-import io.github.shogowada.scalajs.reactjs.classes.ReactClass
-
 trait UiComponent[T] {
 
   type PropsType = T
@@ -11,4 +9,10 @@ trait UiComponent[T] {
   private lazy val reactClass: ReactClass = create()
 
   protected def create(): ReactClass
+
+  protected def displayName: String = {
+    val name = getClass.getName
+    name.drop(name.lastIndexOf('.') + 1)
+      .stripSuffix("$")
+  }
 }

@@ -12,6 +12,7 @@ import scala.scalajs.js
 package object react {
 
   type ReactElement = reactjs.elements.ReactElement
+  type ReactClass = reactjs.classes.ReactClass
   
   implicit class ReactVirtualDOMElements(elements: VirtualDOMElements) {
     lazy val > : ReactClassElementSpec = elements(raw.React.Fragment)
