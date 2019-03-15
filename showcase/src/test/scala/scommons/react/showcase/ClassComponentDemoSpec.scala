@@ -366,7 +366,7 @@ class ClassComponentDemoSpec extends TestSpec
     renderer.unmount()
   }
 
-  ignore should "set component name" in {
+  it should "set component name" in {
     //given
     val comp = <(ClassComponentDemoSpec.TestComp())()()
 
@@ -374,7 +374,7 @@ class ClassComponentDemoSpec extends TestSpec
     val result = createTestRenderer(comp).root
 
     //then
-    result.`type`.toString shouldBe "TestComp"
+    result.`type`.toString shouldBe "ClassComponentDemoSpec$TestComp"
   }
 }
 
