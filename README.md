@@ -17,6 +17,7 @@ val scommonsReactVer = "0.1.0-SNAPSHOT"
 
 libraryDependencies ++= Seq(
   "org.scommons.react" %%% "scommons-react-core" % scommonsReactVer,
+  "org.scommons.react" %%% "scommons-react-dom" % scommonsReactVer,
   
   "org.scommons.react" %%% "scommons-react-test" % scommonsReactVer % "test",
   "org.scommons.react" %%% "scommons-react-test-dom" % scommonsReactVer % "test"
@@ -36,6 +37,8 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
   * [FunctionComponent](showcase/src/main/scala/scommons/react/showcase/FunctionComponentDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/FunctionComponentDemoSpec.scala)
   * [React.memo](showcase/src/main/scala/scommons/react/showcase/ReactMemoDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/ReactMemoDemoSpec.scala)
   * [React.Fragment](showcase/src/main/scala/scommons/react/showcase/ReactFragmentDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/ReactFragmentDemoSpec.scala)
+
+* React API
   * [React.createRef()](showcase/src/main/scala/scommons/react/showcase/ReactRefDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/ReactRefDemoSpec.scala)
 
 * React Hooks:

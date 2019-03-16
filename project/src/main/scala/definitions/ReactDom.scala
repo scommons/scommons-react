@@ -7,24 +7,26 @@ import scoverage.ScoverageKeys.coverageExcludedPackages
 
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
 
-object ReactCore extends ScalaJsModule {
+object ReactDom extends ScalaJsModule {
 
-  override val id: String = "scommons-react-core"
+  override val id: String = "scommons-react-dom"
 
-  override val base: File = file("core")
+  override val base: File = file("dom")
 
   override def definition: Project = super.definition
     .settings(
-      description := "Scala.js facades for React.js core utilities and components",
-      coverageExcludedPackages := "scommons.react.raw",
+      description := "Scala.js facades for React.js DOM utilities and components",
+      coverageExcludedPackages := "scommons.react.dom.raw",
 
-      requireJsDomEnv in Test := false
+      requireJsDomEnv in Test := true
     )
 
-  override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Nil
+  override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Seq(
+    ReactCore.definition
+  )
 
   override val runtimeDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
-    Libs.sjsReactJs.value
+    Libs.scalajsDom.value
   ))
 
   override val testDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(

@@ -1,9 +1,11 @@
 package definitions
 
-import common.{Libs, TestLibs}
+import common.TestLibs
 import sbt.Keys._
 import sbt._
 import scoverage.ScoverageKeys.coverageExcludedPackages
+
+import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
 
 object ReactTestDom extends ScalaJsModule {
 
@@ -14,16 +16,17 @@ object ReactTestDom extends ScalaJsModule {
   override def definition: Project = super.definition
     .settings(
       description := "Web DOM Scala.js, React.js testing utilities",
-      coverageExcludedPackages := "scommons.react.test.dom.raw"
+      coverageExcludedPackages := "scommons.react.test.dom.raw",
+
+      requireJsDomEnv in Test := true
     )
 
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Seq(
+    ReactDom.definition,
     ReactTest.definition
   )
 
   override val runtimeDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
-    Libs.scalajsDom.value,
-    
     TestLibs.scalaTestJs.value,
     TestLibs.scalaMockJs.value
   ))
