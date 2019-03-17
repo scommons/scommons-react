@@ -40,6 +40,7 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
 
 * React API
   * [React.createRef()](showcase/src/main/scala/scommons/react/showcase/ReactRefDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/ReactRefDemoSpec.scala)
+  * [ReactDOM.createPortal()](showcase/src/main/scala/scommons/react/showcase/dom/ReactPortalDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/dom/ReactPortalDemoSpec.scala)
 
 * React Hooks:
   * [useState](showcase/src/main/scala/scommons/react/showcase/hooks/UseStateDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseStateDemoSpec.scala)
