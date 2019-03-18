@@ -22,9 +22,10 @@ object React extends js.Object {
   // hooks
 
   def useState(initialState: js.Any): js.Array[js.Any] = js.native
-  def useMemo(calculate: js.Function0[js.Any], inputs: js.Array[js.Any]): js.Any = js.native
   def useContext(context: NativeContext): js.Any = js.native
   def useRef(initialValue: js.Any): NativeRef = js.native
+  
+  def useMemo(calculate: js.Function0[js.Any], dependencies: js.Array[js.Any]): js.Any = js.native
   
   def useEffect(didUpdate: js.Function0[js.Any]): Unit = js.native
   def useEffect(didUpdate: js.Function0[js.Any], dependencies: js.Array[js.Any]): Unit = js.native

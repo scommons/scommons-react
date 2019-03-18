@@ -15,7 +15,7 @@ class UseMemoDemo(checkCall: () => Unit) extends FunctionComponent[UseMemoDemoPr
       checkCall()
       
       s"a: $a, b: $b"
-    }, a, b)
+    }, List(a, b))
 
     <.div()(result)
   }
