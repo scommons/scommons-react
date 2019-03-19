@@ -19,12 +19,12 @@ object ReactTest extends ScalaJsModule {
       coverageExcludedPackages := "scommons.react.test.raw",
 
       npmDependencies in Compile ++= Seq(
-        "react-test-renderer" -> "^16.6.3"
+        "react-test-renderer" -> "^16.8.0"
       ),
 
 //      npmResolutions in Test := Map(
-//        "react" -> "^16.6.3",
-//        "react-dom" -> "^16.6.3" //TODO: remove dependency on the react-dom !!!
+//        "react" -> "^16.8.0",
+//        "react-dom" -> "^16.8.0" //TODO: remove dependency on the react-dom !!!
 //      ),
       requireJsDomEnv in Test := false
     )
