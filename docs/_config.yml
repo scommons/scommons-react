@@ -1,0 +1,33 @@
+title: Scala Commons React
+
+#description: >- # this means to ignore newlines
+#  Common Scala utilities and components.
+
+baseurl: "/scommons-react" # the subpath of your site, e.g. /blog
+#url: "" # the base hostname & protocol for your site, e.g. http://example.com
+#twitter_username: jekyllrb
+#github_username:  jekyll
+#repository:  scommons/scommons
+
+#is_project_page: true
+#repository_url: "https://github.com/scommons/scommons"
+
+# Build settings
+#markdown: kramdown
+theme: jekyll-theme-cayman
+
+#plugins:
+#  - jekyll-feed
+#  - jekyll-github-metadata
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/

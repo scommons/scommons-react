@@ -60,4 +60,4 @@ sbt test
 
 ## Documentation
 
-You can find more documentation [here](https://scommons.org)
+You can find more documentation [here](https://scommons.org/scommons-react)
