@@ -8,20 +8,20 @@ import scala.scalajs.js
 trait UseState {
   
   def useState[T](initialState: T): (T, SetState[T]) = {
-    getStateData(raw.React.useState(initialState.asInstanceOf[js.Any]))
+    extractData(raw.React.useState(initialState.asInstanceOf[js.Any]))
   }
   
   def useState[T](initialState: () => T): (T, SetState[T]) = {
-    getStateData(raw.React.useState(initialState))
+    extractData(raw.React.useState(initialState))
   }
   
-  private def getStateData[T](data: js.Array[js.Any]): (T, SetState[T]) = {
-    val value = data.head.asInstanceOf[T]
+  private def extractData[T](data: js.Array[js.Any]): (T, SetState[T]) = {
+    val value = data(0).asInstanceOf[T]
     val setState = data(1).asInstanceOf[js.Function1[js.Any, Unit]]
     
     value -> new SetState[T] {
-      override def apply(value: T): Unit = setState(value.asInstanceOf[js.Any])
-      override def apply(updater: T => T): Unit = setState(updater)
+      def apply(value: T): Unit = setState(value.asInstanceOf[js.Any])
+      def apply(updater: T => T): Unit = setState(updater)
     }
   }
 }

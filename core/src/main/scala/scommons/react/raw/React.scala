@@ -22,6 +22,11 @@ object React extends js.Object {
   // hooks
 
   def useState(initialState: js.Any): js.Array[js.Any] = js.native
+  
+  def useReducer(reducer: js.Function2[js.Any, js.Any, js.Any],
+                 initialArg: js.Any,
+                 init: js.Function1[js.Any, js.Any]): js.Array[js.Any] = js.native
+  
   def useContext(context: NativeContext): js.Any = js.native
   def useRef(initialValue: js.Any): NativeRef = js.native
   
