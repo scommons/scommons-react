@@ -12,21 +12,21 @@ object ShowcaseReactApp {
     document.title = "scommons-react-showcase"
 
     ReactDOM.render(
-      //<(ShowcaseReactAppRoot())()(
+      <(ShowcaseReactAppRoot())()(
         <.p()(
           "Hello World!"
-        ),
-      //),
+        )
+      ),
       mountNode
     )
   }
 }
 
-//object ShowcaseReactAppRoot extends ClassComponent[Unit] {
-//  
-//  protected def create(): ReactClass = createClass[Unit](
-//    render = { self =>
-//      self.props.children
-//    }
-//  )
-//}
+object ShowcaseReactAppRoot extends ClassComponent[Unit] {
+
+  protected def create(): ReactClass = createClass[Unit](
+    render = { self =>
+      self.props.children
+    }
+  )
+}
