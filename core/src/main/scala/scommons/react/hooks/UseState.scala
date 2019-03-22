@@ -1,35 +1,38 @@
 package scommons.react.hooks
 
-import scommons.react.hooks.UseState.SetState
 import scommons.react.raw
 
 import scala.scalajs.js
 
 trait UseState {
   
-  def useState[T](initialState: T): (T, SetState[T]) = {
+  def useState[T](initialState: T): (T, js.Function1[T, Unit]) = {
     extractData(raw.React.useState(initialState.asInstanceOf[js.Any]))
   }
   
-  def useState[T](initialState: () => T): (T, SetState[T]) = {
+  def useState[T](initialState: () => T): (T, js.Function1[T, Unit]) = {
     extractData(raw.React.useState(initialState))
   }
   
-  private def extractData[T](data: js.Array[js.Any]): (T, SetState[T]) = {
-    val value = data(0).asInstanceOf[T]
-    val setState = data(1).asInstanceOf[js.Function1[js.Any, Unit]]
-    
-    value -> new SetState[T] {
-      def apply(value: T): Unit = setState(value.asInstanceOf[js.Any])
-      def apply(updater: T => T): Unit = setState(updater)
-    }
+  def useStateUpdater[T](initialState: T): (T, js.Function1[js.Function1[T, T], Unit]) = {
+    extractUpdater(raw.React.useState(initialState.asInstanceOf[js.Any]))
   }
-}
-
-object UseState {
-
-  sealed trait SetState[T] {
-    def apply(value: T): Unit
-    def apply(updater: T => T): Unit
+  
+  def useStateUpdater[T](initialState: () => T): (T, js.Function1[js.Function1[T, T], Unit]) = {
+    extractUpdater(raw.React.useState(initialState))
+  }
+  
+  private def extractData[T](data: js.Array[js.Any]): (T, js.Function1[T, Unit]) = {
+    val value = data(0).asInstanceOf[T]
+    val setState = data(1).asInstanceOf[js.Function1[T, Unit]]
+    
+    (value, setState)
+  }
+  
+  private def extractUpdater[T](data: js.Array[js.Any]): (T, js.Function1[js.Function1[T, T], Unit]) = {
+    val value = data(0).asInstanceOf[T]
+    val setState = data(1).asInstanceOf[js.Function1[js.Function1[T, T], Unit]]
+    
+    (value, setState)
   }
 }
