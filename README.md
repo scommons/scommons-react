@@ -32,6 +32,10 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
 
 ### How to use it
 
+* Demo Application
+  * [app](showcase/src/main/scala/scommons/react/showcase/app/ShowcaseReactApp.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/ShowcaseReactAppSpec.scala)
+  * [live](https://scommons.org/scommons-react/showcase/) => [How to Build and Run](showcase/README.md)
+
 * Components:
   * [ClassComponent](showcase/src/main/scala/scommons/react/showcase/ClassComponentDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/ClassComponentDemoSpec.scala)
   * [FunctionComponent](showcase/src/main/scala/scommons/react/showcase/FunctionComponentDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/FunctionComponentDemoSpec.scala)

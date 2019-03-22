@@ -1,7 +1,11 @@
 package definitions
 
+import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
+
+import scalajsbundler.BundlingMode
+import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
 
 object ReactShowcase extends ScalaJsModule {
 
@@ -14,7 +18,10 @@ object ReactShowcase extends ScalaJsModule {
       skip in publish := true,
       publish := ((): Unit),
       publishLocal := ((): Unit),
-      publishM2 := ((): Unit)
+      publishM2 := ((): Unit),
+
+      scalaJSUseMainModuleInitializer := true,
+      webpackBundlingMode := BundlingMode.LibraryOnly()
     )
 
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Seq(
