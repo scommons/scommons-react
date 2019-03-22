@@ -23,12 +23,10 @@ object ReactShowcase extends ScalaJsModule {
       scalaJSUseMainModuleInitializer := true,
       webpackBundlingMode := BundlingMode.LibraryOnly(),
 
-      //TODO: move to ReactCore module
       npmDevDependencies in Compile ++= Seq(
-        "babel-core" -> "6.26.3",
-        "babel-loader" -> "7.1.5", //see: https://github.com/babel/babel-loader/tree/7.x
-        //"@babel/preset-env" -> "7.4.2",
-        "babel-preset-es2015" -> "6.24.1",
+        "babel-loader" -> "8.0.5",
+        "@babel/core" -> "7.4.0",
+        "@babel/preset-env" -> "7.4.2",
         "webpack-merge" -> "4.2.1"
       ),
 

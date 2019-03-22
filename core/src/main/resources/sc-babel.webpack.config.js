@@ -9,7 +9,7 @@ module.exports = {
       test: /\.js$/i,
       loader: 'babel-loader',
       options: {
-        presets: ['es2015']
+        presets: ['@babel/preset-env']
       },
       exclude: /node_modules/
     }]
