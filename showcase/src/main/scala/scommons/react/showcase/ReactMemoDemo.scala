@@ -1,31 +1,41 @@
 package scommons.react.showcase
 
-import io.github.shogowada.scalajs.reactjs.React.Props
-import io.github.shogowada.scalajs.reactjs.classes.ReactClass
 import scommons.react._
-import scommons.react.raw.React
 
-import scala.scalajs.js
+case class ReactMemoDemoProps(values: List[String])
 
-object ReactMemoDemo {
-
+class ReactMemoDemo(checkRender: () => Unit) extends FunctionComponent[ReactMemoDemoProps] {
   /**
     * React.memo is a higher order component. It's similar to React.PureComponent but for
     * function components instead of classes.
-    *
+    */
+  override protected def create(): ReactClass = {
+    ReactMemo(super.create())
+  }
+  
+  protected def render(props: Props): ReactElement = {
+    checkRender()
+    <.div.empty
+  }
+}
+
+class ReactCustomMemoDemo(checkRender: () => Unit,
+                          checkAreEqual: () => Unit
+                         ) extends FunctionComponent[ReactMemoDemoProps] {
+  /**
     * By default it will only shallowly compare complex objects in the props object.
     * If you want control over the comparison, you can also provide a custom comparison
     * function as the second argument.
     */
-  def withMemo[T](component: FunctionComponent[T]): ReactClass = {
-    React.memo(component())
+  override protected def create(): ReactClass = {
+    ReactMemo[Props](super.create(), { (prevProps, nextProps) =>
+      checkAreEqual()
+      prevProps.wrapped == nextProps.wrapped
+    })
   }
 
-  def withCustomMemo[T](component: FunctionComponent[T])
-                       (areEqual: (Props[T], Props[T]) => Boolean): ReactClass = {
-    
-    React.memo(component(), { (prev: js.Dynamic, next: js.Dynamic) =>
-      areEqual(Props(prev), Props(next))
-    })
+  protected def render(props: Props): ReactElement = {
+    checkRender()
+    <.div.empty
   }
 }

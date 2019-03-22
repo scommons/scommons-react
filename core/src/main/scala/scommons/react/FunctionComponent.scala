@@ -1,7 +1,6 @@
 package scommons.react
 
 import io.github.shogowada.scalajs.reactjs
-import scommons.react.raw.ReactFunction
 
 import scala.scalajs.js
 
@@ -11,10 +10,6 @@ trait FunctionComponent[T] extends UiComponent[T] {
 
   protected def render(props: Props): ReactElement
 
-  override def apply(): ReactFunction = {
-    super.apply().asInstanceOf[ReactFunction]
-  }
-  
   override protected def create(): ReactClass = {
     val render0: js.Function1[js.Dynamic, ReactElement] = { props =>
       render(reactjs.React.Props(props))

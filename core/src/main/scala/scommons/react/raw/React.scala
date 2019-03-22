@@ -11,9 +11,8 @@ object React extends js.Object {
 
   val Fragment: ReactClass = js.native
   
-  def memo(comp: ReactFunction): ReactClass = js.native
-  def memo(comp: ReactFunction,
-           areEqual: js.Function2[js.Dynamic, js.Dynamic, Boolean]): ReactClass = js.native
+  def memo(comp: ReactClass): ReactClass = js.native
+  def memo(comp: ReactClass, areEqual: js.Function2[js.Dynamic, js.Dynamic, Boolean]): ReactClass = js.native
   
   def createContext(defaultValue: js.Any): NativeContext = js.native
   def createRef(): NativeRef = js.native
