@@ -4,7 +4,7 @@
 [![Scala.js](https://www.scala-js.org/assets/badges/scalajs-0.6.17.svg)](https://www.scala-js.org)
 
 ## Scala Commons React
-Scala.js facades for common React utilities and components.
+[Scala.js](https://www.scala-js.org) facades for common [React.js](https://reactjs.org) utilities and components.
 
 It uses excellent [scalajs-reactjs](https://github.com/shogowada/scalajs-reactjs) binding/facade library.
 

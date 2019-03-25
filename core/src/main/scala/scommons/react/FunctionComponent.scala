@@ -21,6 +21,7 @@ trait FunctionComponent[T] extends UiComponent[T] {
     val fn = new js.Function("render", "return function " + displayName + "(props){ return render(props) };")
       .call(null, render0)
 
+    fn.asInstanceOf[js.Dynamic].displayName = displayName
     fn.asInstanceOf[ReactClass]
   }
 }

@@ -25295,7 +25295,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 var React = __webpack_require__(1);
 
 module.exports = {
-  create: function create(displayName, renderDef, getInitialState, componentWillMountDef, componentDidMountDef, componentWillReceivePropsDef, shouldComponentUpdateDef, componentWillUpdateDef, componentDidUpdateDef, componentWillUnmountDef) {
+  create: function create(displayName, renderDef, getInitialState, componentDidMountDef, shouldComponentUpdateDef, componentDidUpdateDef, componentWillUnmountDef) {
     var ReactComponentImpl =
     /*#__PURE__*/
     function (_React$Component) {
@@ -25312,29 +25312,14 @@ module.exports = {
       }
 
       _createClass(ReactComponentImpl, [{
-        key: "componentWillMount",
-        value: function componentWillMount() {
-          componentWillMountDef.call(this);
-        }
-      }, {
         key: "componentDidMount",
         value: function componentDidMount() {
           componentDidMountDef.call(this);
         }
       }, {
-        key: "componentWillReceiveProps",
-        value: function componentWillReceiveProps(nextProps) {
-          componentWillReceivePropsDef.call(this, nextProps);
-        }
-      }, {
         key: "shouldComponentUpdate",
         value: function shouldComponentUpdate(nextProps, nextState) {
           return shouldComponentUpdateDef.call(this, nextProps, nextState);
-        }
-      }, {
-        key: "componentWillUpdate",
-        value: function componentWillUpdate(nextProps, nextState) {
-          componentWillUpdateDef.call(this, nextProps, nextState);
         }
       }, {
         key: "componentDidUpdate",

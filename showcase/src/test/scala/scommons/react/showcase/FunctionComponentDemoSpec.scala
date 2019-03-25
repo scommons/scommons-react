@@ -21,6 +21,7 @@ class FunctionComponentDemoSpec extends TestSpec
     
     //then
     result.name shouldBe "FunctionComponentDemo"
+    result.displayName shouldBe "FunctionComponentDemo"
     result.toString shouldBe {
       "function FunctionComponentDemo(props){ return render(props) }"
     }
