@@ -19,6 +19,7 @@ trait ClassComponent[T] extends UiComponent[T] {
     },
     componentDidUpdate: (Self[T, S], Props[T], S) => Unit = null,
     componentWillUnmount: Self[T, S] => Unit = null,
+    componentDidCatch: (Self[T, S], js.Object, js.Dynamic) => Unit = null
   ): ReactClass = {
     
     raw.CreateClass.create(
@@ -50,7 +51,15 @@ trait ClassComponent[T] extends UiComponent[T] {
         if (componentWillUnmount != null) {
           componentWillUnmount(Self(native))
         }
-      })
+      }),
+      componentDidCatch = {
+        if (componentDidCatch != null) {
+          js.ThisFunction.fromFunction3((native: js.Dynamic, error: js.Object, info: js.Dynamic) => {
+            componentDidCatch(Self(native), error, info)
+          })
+        }
+        else null
+      }
     )
   }
 }

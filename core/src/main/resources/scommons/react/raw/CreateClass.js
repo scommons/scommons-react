@@ -9,7 +9,8 @@ module.exports = {
     componentDidMountDef,
     shouldComponentUpdateDef,
     componentDidUpdateDef,
-    componentWillUnmountDef) {
+    componentWillUnmountDef,
+    componentDidCatchDef) {
     
     class ReactComponentImpl extends React.Component {
       constructor(props) {
@@ -42,6 +43,18 @@ module.exports = {
     ReactComponentImpl.toString = function () {
       return displayName;
     };
+    
+    if (componentDidCatchDef) {
+      
+      class ErrorBoundaryImpl extends ReactComponentImpl {
+        
+        componentDidCatch(error, info) {
+          componentDidCatchDef.call(this, error, info);
+        }      
+      };
+      
+      return ErrorBoundaryImpl;
+    }
     
     return ReactComponentImpl;
   }

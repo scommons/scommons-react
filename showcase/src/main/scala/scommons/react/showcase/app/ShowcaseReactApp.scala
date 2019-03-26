@@ -3,6 +3,7 @@ package scommons.react.showcase.app
 import io.github.shogowada.scalajs.reactjs.ReactDOM
 import org.scalajs.dom.document
 import scommons.react._
+import scommons.react.showcase.ErrorBoundaryDemo
 
 object ShowcaseReactApp {
 
@@ -12,7 +13,7 @@ object ShowcaseReactApp {
     document.title = "scommons-react-showcase"
 
     ReactDOM.render(
-      <(ShowcaseReactAppRoot())()(
+      <(ErrorBoundaryDemo())()(
         <.p()(
           "Hello World!"
         )
@@ -20,13 +21,4 @@ object ShowcaseReactApp {
       mountNode
     )
   }
-}
-
-object ShowcaseReactAppRoot extends ClassComponent[Unit] {
-
-  protected def create(): ReactClass = createClass[Unit](
-    render = { self =>
-      self.props.children
-    }
-  )
 }

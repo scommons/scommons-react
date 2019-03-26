@@ -17,6 +17,7 @@ object CreateClass extends js.Object {
               componentDidMount: js.ThisFunction0[js.Dynamic, Unit],
               shouldComponentUpdate: js.ThisFunction2[js.Dynamic, js.Dynamic, js.Dynamic, Boolean],
               componentDidUpdate: js.ThisFunction2[js.Dynamic, js.Dynamic, js.Dynamic, Unit],
-              componentWillUnmount: js.ThisFunction0[js.Dynamic, Unit]
+              componentWillUnmount: js.ThisFunction0[js.Dynamic, Unit],
+              componentDidCatch: js.ThisFunction2[js.Dynamic, js.Object, js.Dynamic, Unit]
             ): ReactClass = js.native
 }

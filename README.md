@@ -38,6 +38,7 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
 
 * Components:
   * [ClassComponent](showcase/src/main/scala/scommons/react/showcase/ClassComponentDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/ClassComponentDemoSpec.scala)
+  * [ErrorBoundary](showcase/src/main/scala/scommons/react/showcase/ErrorBoundaryDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/ErrorBoundaryDemoSpec.scala)
   * [FunctionComponent](showcase/src/main/scala/scommons/react/showcase/FunctionComponentDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/FunctionComponentDemoSpec.scala)
   * [React.memo](showcase/src/main/scala/scommons/react/showcase/ReactMemoDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/ReactMemoDemoSpec.scala)
   * [React.Fragment](showcase/src/main/scala/scommons/react/showcase/ReactFragmentDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/ReactFragmentDemoSpec.scala)

@@ -25295,7 +25295,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 var React = __webpack_require__(1);
 
 module.exports = {
-  create: function create(displayName, renderDef, getInitialState, componentDidMountDef, shouldComponentUpdateDef, componentDidUpdateDef, componentWillUnmountDef) {
+  create: function create(displayName, renderDef, getInitialState, componentDidMountDef, shouldComponentUpdateDef, componentDidUpdateDef, componentWillUnmountDef, componentDidCatchDef) {
     var ReactComponentImpl =
     /*#__PURE__*/
     function (_React$Component) {
@@ -25347,6 +25347,32 @@ module.exports = {
     ReactComponentImpl.toString = function () {
       return displayName;
     };
+
+    if (componentDidCatchDef) {
+      var ErrorBoundaryImpl =
+      /*#__PURE__*/
+      function (_ReactComponentImpl) {
+        _inherits(ErrorBoundaryImpl, _ReactComponentImpl);
+
+        function ErrorBoundaryImpl() {
+          _classCallCheck(this, ErrorBoundaryImpl);
+
+          return _possibleConstructorReturn(this, _getPrototypeOf(ErrorBoundaryImpl).apply(this, arguments));
+        }
+
+        _createClass(ErrorBoundaryImpl, [{
+          key: "componentDidCatch",
+          value: function componentDidCatch(error, info) {
+            componentDidCatchDef.call(this, error, info);
+          }
+        }]);
+
+        return ErrorBoundaryImpl;
+      }(ReactComponentImpl);
+
+      ;
+      return ErrorBoundaryImpl;
+    }
 
     return ReactComponentImpl;
   }
