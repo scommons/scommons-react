@@ -2,7 +2,6 @@ package scommons.react
 
 import io.github.shogowada.scalajs.reactjs.React
 import io.github.shogowada.scalajs.reactjs.React.{Props, Self}
-import io.github.shogowada.scalajs.reactjs.utils.Utils
 
 import scala.scalajs.js
 
@@ -12,11 +11,7 @@ trait ClassComponent[T] extends UiComponent[T] {
     render: Self[T, S] => ReactElement,
     getInitialState: Self[T, S] => S = null,
     componentDidMount: Self[T, S] => Unit = null,
-    shouldComponentUpdate: (Self[T, S], Props[T], S) => Boolean =
-    (self: Self[T, S], nextProps: Props[T], nextState: S) => {
-      self.props.wrapped != nextProps.wrapped || self.state != nextState ||
-        !Utils.shallowEqual(self.props.native, nextProps.native, React.WrappedProperty)
-    },
+    shouldComponentUpdate: (Self[T, S], Props[T], S) => Boolean = null,
     componentDidUpdate: (Self[T, S], Props[T], S) => Unit = null,
     componentWillUnmount: Self[T, S] => Unit = null,
     componentDidCatch: (Self[T, S], js.Object, js.Dynamic) => Unit = null
@@ -40,7 +35,10 @@ trait ClassComponent[T] extends UiComponent[T] {
         }
       }),
       shouldComponentUpdate = js.ThisFunction.fromFunction3((native: js.Dynamic, nextProps: js.Dynamic, nextState: js.Dynamic) => {
-        shouldComponentUpdate(Self(native), Props(nextProps), React.stateFromNative(nextState))
+        if (shouldComponentUpdate != null) {
+          shouldComponentUpdate(Self(native), Props(nextProps), React.stateFromNative(nextState))
+        }
+        else true
       }),
       componentDidUpdate = js.ThisFunction.fromFunction3((native: js.Dynamic, prevProps: js.Dynamic, prevState: js.Dynamic) => {
         if (componentDidUpdate != null) {

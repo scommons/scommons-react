@@ -8,6 +8,7 @@ case class ClassComponentDemoState(stateValue: String)
 
 class ClassComponentDemo(
   componentDidMount: (ClassComponentDemoProps, ClassComponentDemoState) => ClassComponentDemoState,
+  shouldComponentUpdate: (ClassComponentDemoProps, ClassComponentDemoState, ClassComponentDemoProps, ClassComponentDemoState) => Boolean,
   componentDidUpdate: (ClassComponentDemoProps, ClassComponentDemoState, ClassComponentDemoProps, ClassComponentDemoState) => Unit,
   componentWillUnmount: (ClassComponentDemoProps, ClassComponentDemoState) => Unit,
   rendered: (ClassComponentDemoProps, ClassComponentDemoState) => Unit
@@ -22,6 +23,9 @@ class ClassComponentDemo(
       if (newState != self.state) {
         self.setState(newState)
       }
+    },
+    shouldComponentUpdate = { (self, nextProps, nextState) =>
+      shouldComponentUpdate(self.props.wrapped, self.state, nextProps.wrapped, nextState)
     },
     componentDidUpdate = { (self, prevProps, prevState) =>
       componentDidUpdate(self.props.wrapped, self.state, prevProps.wrapped, prevState)

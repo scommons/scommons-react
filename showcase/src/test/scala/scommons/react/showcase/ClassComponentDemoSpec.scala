@@ -18,6 +18,7 @@ class ClassComponentDemoSpec extends TestSpec
   it should "render component in dom" in {
     //given
     val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
+    val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]
     val componentDidUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Unit]
     val componentWillUnmount = mock[(DemoProps, DemoState) => Unit]
     val rendered = mock[(ClassComponentDemoProps, ClassComponentDemoState) => Unit]
@@ -25,6 +26,7 @@ class ClassComponentDemoSpec extends TestSpec
     val props = ClassComponentDemoProps("test")
     val comp = new ClassComponentDemo(
       componentDidMount = componentDidMount,
+      shouldComponentUpdate = shouldComponentUpdate,
       componentDidUpdate = componentDidUpdate,
       componentWillUnmount = componentWillUnmount,
       rendered = rendered
@@ -34,6 +36,7 @@ class ClassComponentDemoSpec extends TestSpec
     inSequence {
       (rendered.apply _).expects(props, state)
       (componentDidMount.apply _).expects(props, state).returning(state)
+      (shouldComponentUpdate.apply _).expects(*, *, *, *).never()
       (componentDidUpdate.apply _).expects(*, *, *, *).never()
       (componentWillUnmount.apply _).expects(*, *).never()
     }
@@ -54,6 +57,7 @@ class ClassComponentDemoSpec extends TestSpec
   it should "shallow render component" in {
     //given
     val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
+    val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]
     val componentDidUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Unit]
     val componentWillUnmount = mock[(DemoProps, DemoState) => Unit]
     val rendered = mock[(ClassComponentDemoProps, ClassComponentDemoState) => Unit]
@@ -61,6 +65,7 @@ class ClassComponentDemoSpec extends TestSpec
     val props = ClassComponentDemoProps("test")
     val comp = new ClassComponentDemo(
       componentDidMount = componentDidMount,
+      shouldComponentUpdate = shouldComponentUpdate,
       componentDidUpdate = componentDidUpdate,
       componentWillUnmount = componentWillUnmount,
       rendered = rendered
@@ -70,6 +75,7 @@ class ClassComponentDemoSpec extends TestSpec
     inSequence {
       (rendered.apply _).expects(props, state)
       (componentDidMount.apply _).expects(*, *).never()
+      (shouldComponentUpdate.apply _).expects(*, *, *, *).never()
       (componentDidUpdate.apply _).expects(*, *, *, *).never()
       (componentWillUnmount.apply _).expects(*, *).never()
     }
@@ -90,6 +96,7 @@ class ClassComponentDemoSpec extends TestSpec
   it should "test render component" in {
     //given
     val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
+    val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]
     val componentDidUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Unit]
     val componentWillUnmount = mock[(DemoProps, DemoState) => Unit]
     val rendered = mock[(ClassComponentDemoProps, ClassComponentDemoState) => Unit]
@@ -97,6 +104,7 @@ class ClassComponentDemoSpec extends TestSpec
     val props = ClassComponentDemoProps("test")
     val comp = new ClassComponentDemo(
       componentDidMount = componentDidMount,
+      shouldComponentUpdate = shouldComponentUpdate,
       componentDidUpdate = componentDidUpdate,
       componentWillUnmount = componentWillUnmount,
       rendered = rendered
@@ -106,6 +114,7 @@ class ClassComponentDemoSpec extends TestSpec
     inSequence {
       (rendered.apply _).expects(props, state)
       (componentDidMount.apply _).expects(props, state).returning(state)
+      (shouldComponentUpdate.apply _).expects(*, *, *, *).never()
       (componentDidUpdate.apply _).expects(*, *, *, *).never()
       (componentWillUnmount.apply _).expects(*, *).never()
     }
@@ -126,6 +135,7 @@ class ClassComponentDemoSpec extends TestSpec
   it should "update component when props change" in {
     //given
     val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
+    val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]
     val componentDidUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Unit]
     val componentWillUnmount = mock[(DemoProps, DemoState) => Unit]
     val rendered = mock[(ClassComponentDemoProps, ClassComponentDemoState) => Unit]
@@ -133,6 +143,7 @@ class ClassComponentDemoSpec extends TestSpec
     val props = ClassComponentDemoProps("test")
     val comp = new ClassComponentDemo(
       componentDidMount = componentDidMount,
+      shouldComponentUpdate = shouldComponentUpdate,
       componentDidUpdate = componentDidUpdate,
       componentWillUnmount = componentWillUnmount,
       rendered = rendered
@@ -144,6 +155,7 @@ class ClassComponentDemoSpec extends TestSpec
     inSequence {
       (rendered.apply _).expects(props, state)
       (componentDidMount.apply _).expects(props, state).returning(state)
+      (shouldComponentUpdate.apply _).expects(props, state, newProps, state).returning(true)
       (rendered.apply _).expects(newProps, state)
       (componentDidUpdate.apply _).expects(newProps, state, props, state)
       (componentWillUnmount.apply _).expects(newProps, state)
@@ -159,6 +171,7 @@ class ClassComponentDemoSpec extends TestSpec
   it should "update component when state change" in {
     //given
     val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
+    val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]
     val componentDidUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Unit]
     val componentWillUnmount = mock[(DemoProps, DemoState) => Unit]
     val rendered = mock[(ClassComponentDemoProps, ClassComponentDemoState) => Unit]
@@ -166,6 +179,7 @@ class ClassComponentDemoSpec extends TestSpec
     val props = ClassComponentDemoProps("test")
     val comp = new ClassComponentDemo(
       componentDidMount = componentDidMount,
+      shouldComponentUpdate = shouldComponentUpdate,
       componentDidUpdate = componentDidUpdate,
       componentWillUnmount = componentWillUnmount,
       rendered = rendered
@@ -177,8 +191,12 @@ class ClassComponentDemoSpec extends TestSpec
     inSequence {
       (rendered.apply _).expects(props, state)
       (componentDidMount.apply _).expects(props, state).returning(newState)
+      (shouldComponentUpdate.apply _).expects(props, state, props, newState).returning(true)
       (rendered.apply _).expects(props, newState)
       (componentDidUpdate.apply _).expects(props, newState, props, state)
+      (shouldComponentUpdate.apply _).expects(props, newState, props, newState).returning(true)
+      (rendered.apply _).expects(props, newState)
+      (componentDidUpdate.apply _).expects(props, newState, props, newState)
       (componentWillUnmount.apply _).expects(props, newState)
     }
 
@@ -192,6 +210,7 @@ class ClassComponentDemoSpec extends TestSpec
   it should "update component when children change" in {
     //given
     val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
+    val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]
     val componentDidUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Unit]
     val componentWillUnmount = mock[(DemoProps, DemoState) => Unit]
     val rendered = mock[(ClassComponentDemoProps, ClassComponentDemoState) => Unit]
@@ -199,6 +218,7 @@ class ClassComponentDemoSpec extends TestSpec
     val props = ClassComponentDemoProps("test")
     val comp = new ClassComponentDemo(
       componentDidMount = componentDidMount,
+      shouldComponentUpdate = shouldComponentUpdate,
       componentDidUpdate = componentDidUpdate,
       componentWillUnmount = componentWillUnmount,
       rendered = rendered
@@ -209,6 +229,7 @@ class ClassComponentDemoSpec extends TestSpec
     inSequence {
       (rendered.apply _).expects(props, state)
       (componentDidMount.apply _).expects(props, state).returning(state)
+      (shouldComponentUpdate.apply _).expects(props, state, props, state).returning(true)
       (rendered.apply _).expects(props, state)
       (componentDidUpdate.apply _).expects(props, state, props, state)
       (componentWillUnmount.apply _).expects(props, state)
@@ -232,9 +253,10 @@ class ClassComponentDemoSpec extends TestSpec
     renderer.unmount()
   }
   
-  it should "not re-render component if props hasn't changed" in {
+  it should "re-render component if props hasn't changed when shouldComponentUpdate => true" in {
     //given
     val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
+    val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]
     val componentDidUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Unit]
     val componentWillUnmount = mock[(DemoProps, DemoState) => Unit]
     val rendered = mock[(ClassComponentDemoProps, ClassComponentDemoState) => Unit]
@@ -242,6 +264,7 @@ class ClassComponentDemoSpec extends TestSpec
     val props = ClassComponentDemoProps("test")
     val comp = new ClassComponentDemo(
       componentDidMount = componentDidMount,
+      shouldComponentUpdate = shouldComponentUpdate,
       componentDidUpdate = componentDidUpdate,
       componentWillUnmount = componentWillUnmount,
       rendered = rendered
@@ -253,7 +276,9 @@ class ClassComponentDemoSpec extends TestSpec
     inSequence {
       (rendered.apply _).expects(props, state)
       (componentDidMount.apply _).expects(props, state).returning(state)
-      (componentDidUpdate.apply _).expects(*, *, *, *).never()
+      (shouldComponentUpdate.apply _).expects(props, state, props, state).returning(true)
+      (rendered.apply _).expects(props, state)
+      (componentDidUpdate.apply _).expects(props, state, props, state)
       (componentWillUnmount.apply _).expects(sameProps, state)
     }
     
@@ -264,9 +289,10 @@ class ClassComponentDemoSpec extends TestSpec
     renderer.unmount()
   }
 
-  it should "not re-render component if state hasn't changed" in {
+  it should "re-render component if state hasn't changed when shouldComponentUpdate => true" in {
     //given
     val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
+    val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]
     val componentDidUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Unit]
     val componentWillUnmount = mock[(DemoProps, DemoState) => Unit]
     val rendered = mock[(ClassComponentDemoProps, ClassComponentDemoState) => Unit]
@@ -274,6 +300,7 @@ class ClassComponentDemoSpec extends TestSpec
     val props = ClassComponentDemoProps("test")
     val comp = new ClassComponentDemo(
       componentDidMount = componentDidMount,
+      shouldComponentUpdate = shouldComponentUpdate,
       componentDidUpdate = componentDidUpdate,
       componentWillUnmount = componentWillUnmount,
       rendered = rendered
@@ -285,6 +312,80 @@ class ClassComponentDemoSpec extends TestSpec
     inSequence {
       (rendered.apply _).expects(props, state)
       (componentDidMount.apply _).expects(props, state).returning(sameState)
+      (shouldComponentUpdate.apply _).expects(props, state, props, state).returning(true)
+      (rendered.apply _).expects(props, state)
+      (componentDidUpdate.apply _).expects(props, state, props, state)
+      (componentWillUnmount.apply _).expects(props, sameState)
+    }
+
+    val renderer = createTestRenderer(<(comp())(^.wrapped := props)("some child"))
+
+    //when
+    renderer.update(<(comp())(^.wrapped := props)("some child"))
+    renderer.unmount()
+  }
+
+  it should "not re-render component if props hasn't changed when shouldComponentUpdate => false" in {
+    //given
+    val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
+    val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]
+    val componentDidUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Unit]
+    val componentWillUnmount = mock[(DemoProps, DemoState) => Unit]
+    val rendered = mock[(ClassComponentDemoProps, ClassComponentDemoState) => Unit]
+
+    val props = ClassComponentDemoProps("test")
+    val comp = new ClassComponentDemo(
+      componentDidMount = componentDidMount,
+      shouldComponentUpdate = shouldComponentUpdate,
+      componentDidUpdate = componentDidUpdate,
+      componentWillUnmount = componentWillUnmount,
+      rendered = rendered
+    )
+    val state = ClassComponentDemoState(s"initial: ${props.propValue}")
+    val sameProps = props.copy(propValue = props.propValue)
+
+    //then
+    inSequence {
+      (rendered.apply _).expects(props, state)
+      (componentDidMount.apply _).expects(props, state).returning(state)
+      (shouldComponentUpdate.apply _).expects(props, state, props, state).returning(false)
+      (rendered.apply _).expects(*, *).never()
+      (componentDidUpdate.apply _).expects(*, *, *, *).never()
+      (componentWillUnmount.apply _).expects(sameProps, state)
+    }
+    
+    val renderer = createTestRenderer(<(comp())(^.wrapped := props)("some child"))
+
+    //when
+    renderer.update(<(comp())(^.wrapped := sameProps)("some child"))
+    renderer.unmount()
+  }
+
+  it should "not re-render component if state hasn't changed when shouldComponentUpdate => false" in {
+    //given
+    val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
+    val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]
+    val componentDidUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Unit]
+    val componentWillUnmount = mock[(DemoProps, DemoState) => Unit]
+    val rendered = mock[(ClassComponentDemoProps, ClassComponentDemoState) => Unit]
+
+    val props = ClassComponentDemoProps("test")
+    val comp = new ClassComponentDemo(
+      componentDidMount = componentDidMount,
+      shouldComponentUpdate = shouldComponentUpdate,
+      componentDidUpdate = componentDidUpdate,
+      componentWillUnmount = componentWillUnmount,
+      rendered = rendered
+    )
+    val state = ClassComponentDemoState(s"initial: ${props.propValue}")
+    val sameState = state.copy(stateValue = state.stateValue)
+
+    //then
+    inSequence {
+      (rendered.apply _).expects(props, state)
+      (componentDidMount.apply _).expects(props, state).returning(sameState)
+      (shouldComponentUpdate.apply _).expects(props, state, props, state).returning(false)
+      (rendered.apply _).expects(*, *).never()
       (componentDidUpdate.apply _).expects(*, *, *, *).never()
       (componentWillUnmount.apply _).expects(props, sameState)
     }
