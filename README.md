@@ -1,7 +1,7 @@
 
 [![Build Status](https://travis-ci.org/scommons/scommons-react.svg?branch=master)](https://travis-ci.org/scommons/scommons-react)
 [![Coverage Status](https://coveralls.io/repos/github/scommons/scommons-react/badge.svg?branch=master)](https://coveralls.io/github/scommons/scommons-react?branch=master)
-[![scala-index](https://index.scala-lang.org/scommons/scommons-react-core/latest.svg?color=orange)](https://index.scala-lang.org/scommons/scommons-react-core)
+[![scala-index](https://index.scala-lang.org/scommons/scommons-react/scommons-react-core/latest.svg?color=orange)](https://index.scala-lang.org/scommons/scommons-react/scommons-react-core)
 [![Scala.js](https://www.scala-js.org/assets/badges/scalajs-0.6.17.svg)](https://www.scala-js.org)
 
 ## Scala Commons React
