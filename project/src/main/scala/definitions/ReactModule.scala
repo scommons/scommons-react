@@ -3,6 +3,7 @@ package definitions
 import sbt.Keys._
 import sbt._
 import scommons.sbtplugin.project.CommonModule
+import xerial.sbt.Sonatype.autoImport._
 
 trait ReactModule extends CommonModule {
 
@@ -22,6 +23,7 @@ object ReactModule {
     //
     // publish/release related settings:
     //
+    sonatypeProfileName := "org.scommons",
     publishMavenStyle := true,
     publishArtifact in Test := false,
     publishTo := {
