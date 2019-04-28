@@ -4,22 +4,35 @@ import io.github.shogowada.scalajs.reactjs.classes.ReactClass
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import org.scalatest.{Assertion, Succeeded}
 import scommons.react.UiComponent
+import scommons.react.test.raw
 import scommons.react.test.raw.{TestInstance, TestRenderer}
 import scommons.react.test.util.RendererUtils.{testInstanceUtils => utils}
 
+import scala.scalajs.js
+
 trait TestRendererUtils {
 
-  def createTestRenderer(element: ReactElement): TestRenderer = {
+  def createTestRenderer(element: ReactElement,
+                         createMock: js.Function1[TestInstance, js.Any] = null): TestRenderer = {
+    
     var result: TestRenderer = null
     TestRenderer.act { () =>
-      result = TestRenderer.create(element)
+      result = TestRenderer.create(
+        element,
+        if (createMock != null) new raw.TestRendererOptions {
+          override val createNodeMock = createMock
+        }
+        else null
+      )
     }
 
     result
   }
   
-  def testRender(element: ReactElement): TestInstance = {
-    val root = createTestRenderer(element).root
+  def testRender(element: ReactElement,
+                 createMock: js.Function1[TestInstance, js.Any] = null): TestInstance = {
+    
+    val root = createTestRenderer(element, createMock).root
     root.children(0)
   }
 

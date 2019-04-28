@@ -20,7 +20,7 @@ object TestRenderer extends js.Object {
     */
   def act(block: js.Function0[Unit]): Unit = js.native
 
-  def create(element: ReactElement): TestRenderer = js.native
+  def create(element: ReactElement, options: TestRendererOptions): TestRenderer = js.native
 }
 
 @js.native
@@ -37,4 +37,9 @@ trait TestRenderer extends js.Object {
 trait TestInstance extends RenderedInstance {
 
   val children: js.Array[TestInstance] = js.native
+}
+
+trait TestRendererOptions extends js.Object {
+
+  val createNodeMock: js.UndefOr[js.Function1[TestInstance, js.Any]] = js.undefined
 }

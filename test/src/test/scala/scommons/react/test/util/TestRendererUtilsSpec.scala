@@ -1,13 +1,50 @@
 package scommons.react.test.util
 
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
+import org.scalajs.dom.raw.HTMLInputElement
+import scommons.react._
+import scommons.react.hooks._
 import scommons.react.test.raw.TestInstance
 import scommons.react.test.util.RendererUtilsSpec._
+import scommons.react.test.util.TestRendererUtilsSpec._
+
+import scala.scalajs.js
+import scala.scalajs.js.annotation.JSExportAll
 
 class TestRendererUtilsSpec extends RendererUtilsSpec[TestInstance]
   with TestRendererUtils {
 
   protected def doRender(element: ReactElement): TestInstance = testRender(element)
+
+  it should "render mock reference" in {
+    //given
+    val comp = new FunctionComponent[Unit] {
+      protected def render(props: Props): ReactElement = {
+        val elementRef = useRef[HTMLInputElement](null)
+
+        useLayoutEffect({ () =>
+          elementRef.current.focus()
+        }, Nil)
+        
+        <.input(
+          ^.`type` := "text",
+          ^.reactRef := elementRef
+        )()
+      }
+    }
+    val inputMock = mock[HTMLInputElementMock]
+
+    //then
+    (inputMock.focus _).expects()
+
+    //when
+    testRender(<(comp())()(), { el =>
+      if (el.`type` == "input".asInstanceOf[js.Any]) {
+        inputMock.asInstanceOf[HTMLInputElement]
+      }
+      else null
+    })
+  }
 
   it should "return top child instance when render" in {
     //when
@@ -61,5 +98,14 @@ class TestRendererUtilsSpec extends RendererUtilsSpec[TestInstance]
         assertNativeComponent(child, <.p(^.className := "test1")("test2 child2"))
       })
     })
+  }
+}
+
+object TestRendererUtilsSpec {
+
+  @JSExportAll
+  trait HTMLInputElementMock {
+
+    def focus(): Unit
   }
 }
