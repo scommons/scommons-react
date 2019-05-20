@@ -78,4 +78,18 @@ trait AsyncTestSpec extends AsyncFlatSpec
 
     promise.future
   }
+
+  def executeAfterDelay(millis: Int)(block: => Assertion): Future[Assertion] = {
+    val promise = Promise[Assertion]()
+
+    dom.window.setTimeout({ () =>
+      try {
+        promise.success(block)
+      } catch {
+        case NonFatal(ex) => promise.failure(ex)
+      }
+    }, millis.toDouble)
+
+    promise.future
+  }
 }

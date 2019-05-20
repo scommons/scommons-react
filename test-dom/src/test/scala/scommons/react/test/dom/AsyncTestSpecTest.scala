@@ -26,10 +26,40 @@ class AsyncTestSpecTest extends AsyncTestSpec {
     //given
     val value = 5
 
-    //when & then
-    eventually {
+    //when
+    val resultF = eventually {
       value shouldBe 1
-    }.failed.map { result =>
+    }
+    
+    //then
+    resultF.failed.map { result =>
+      result.getMessage should include ("5 was not equal to 1")
+    }
+  }
+
+  it should "run successfully after delay when executeAfterDelay" in {
+    //given
+    val delay = 500
+    val value = 5
+
+    //when & then
+    executeAfterDelay(delay) {
+      value shouldBe 5
+    }
+  }
+
+  it should "fail if not succeeded after delay when executeAfterDelay" in {
+    //given
+    val delay = 500
+    val value = 5
+
+    //when
+    val resultF = executeAfterDelay(delay) {
+      value shouldBe 1
+    }
+    
+    //then
+    resultF.failed.map { result =>
       result.getMessage should include ("5 was not equal to 1")
     }
   }
