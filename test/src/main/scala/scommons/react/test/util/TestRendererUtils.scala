@@ -2,6 +2,7 @@ package scommons.react.test.util
 
 import io.github.shogowada.scalajs.reactjs.classes.ReactClass
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
+import org.scalactic.source.Position
 import org.scalatest.{Assertion, Succeeded}
 import scommons.react.UiComponent
 import scommons.react.test.raw
@@ -36,7 +37,9 @@ trait TestRendererUtils {
     root.children(0)
   }
 
-  def findComponentProps[T](renderedComp: TestInstance, searchComp: UiComponent[T]): T = {
+  def findComponentProps[T](renderedComp: TestInstance,
+                            searchComp: UiComponent[T])(implicit pos: Position): T = {
+    
     utils.findComponentProps(renderedComp, searchComp)
   }
 
@@ -54,18 +57,23 @@ trait TestRendererUtils {
 
   def assertTestComponent[T](result: TestInstance, expectedComp: UiComponent[T])
                             (assertProps: T => Assertion,
-                             assertChildren: List[TestInstance] => Assertion = _ => Succeeded): Assertion = {
+                             assertChildren: List[TestInstance] => Assertion = _ => Succeeded
+                            )(implicit pos: Position): Assertion = {
 
     utils.assertComponent(result, expectedComp)(assertProps, assertChildren)
   }
 
-  def assertNativeComponent(result: TestInstance, expectedElement: ReactElement): Assertion = {
+  def assertNativeComponent(result: TestInstance,
+                            expectedElement: ReactElement
+                           )(implicit pos: Position): Assertion = {
+    
     assertNativeComponent(result, expectedElement, utils.expectNoChildren)
   }
   
   def assertNativeComponent(result: TestInstance,
                             expectedElement: ReactElement,
-                            assertChildren: List[TestInstance] => Assertion): Assertion = {
+                            assertChildren: List[TestInstance] => Assertion
+                           )(implicit pos: Position): Assertion = {
 
     utils.assertNativeComponent(result, expectedElement, assertChildren)
   }

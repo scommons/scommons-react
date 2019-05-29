@@ -2,6 +2,7 @@ package scommons.react.test.util
 
 import io.github.shogowada.scalajs.reactjs.classes.ReactClass
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
+import org.scalactic.source.Position
 import org.scalatest.{Assertion, Matchers, Succeeded}
 import scommons.react.UiComponent
 import scommons.react.test.raw.RenderedInstance
@@ -11,17 +12,22 @@ import scala.scalajs.js
 
 sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
 
-  private[util] val expectNoChildren: List[Instance] => Assertion = { children =>
-    children.map {
+  private[util] def expectNoChildren(implicit pos: Position): List[Instance] => Assertion = { children =>
+    val resultChildren = children.map {
       case i if !scalajs.js.isUndefined(i.`type`) => i.`type`.toString
       case i => i.toString
-    } shouldBe Nil
+    }
+    
+    assert(resultChildren.isEmpty, ": Expected no children")
   }
 
-  def findComponentProps[T](renderedComp: Instance, searchComp: UiComponent[T]): T = {
+  def findComponentProps[T](renderedComp: Instance,
+                            searchComp: UiComponent[T]
+                           )(implicit pos: Position): T = {
+    
     findProps[T](renderedComp, searchComp).headOption match {
       case Some(comp) => comp
-      case None => throw new IllegalStateException(s"UiComponent $searchComp not found")
+      case None => fail(s"UiComponent $searchComp not found")
     }
   }
 
@@ -54,7 +60,8 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
 
   def assertComponent[T](result: Instance, expectedComp: UiComponent[T])
                         (assertProps: T => Assertion,
-                         assertChildren: List[Instance] => Assertion): Assertion = {
+                         assertChildren: List[Instance] => Assertion
+                        )(implicit pos: Position): Assertion = {
 
     result.`type` shouldBe expectedComp.apply()
 
@@ -64,7 +71,8 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
 
   def assertNativeComponent(result: Instance,
                             expectedElement: ReactElement,
-                            assertChildren: List[Instance] => Assertion): Assertion = {
+                            assertChildren: List[Instance] => Assertion
+                           )(implicit pos: Position): Assertion = {
 
     val expectedInstance = expectedElement.asInstanceOf[Instance]
     
@@ -145,7 +153,10 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
     }
   }
 
-  protected def assertAttrValue(name: String, resultValue: Any, expectedValue: Any): Unit = {
+  protected def assertAttrValue(name: String,
+                                resultValue: Any,
+                                expectedValue: Any)(implicit pos: Position): Unit = {
+    
     if (resultValue != expectedValue) {
       fail(s"Attribute value doesn't match for $name" +
         s"\n\texpected: $expectedValue" +
@@ -183,7 +194,8 @@ object RendererUtils {
 
     override def assertNativeComponent(result: ShallowInstance,
                                        expectedElement: ReactElement,
-                                       assertChildren: List[ShallowInstance] => Assertion): Assertion = {
+                                       assertChildren: List[ShallowInstance] => Assertion
+                                      )(implicit pos: Position): Assertion = {
 
       val expectedInstance = expectedElement.asInstanceOf[ShallowInstance]
 

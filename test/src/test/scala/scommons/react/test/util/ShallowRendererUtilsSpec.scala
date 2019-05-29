@@ -36,7 +36,7 @@ class ShallowRendererUtilsSpec extends RendererUtilsSpec[ShallowInstance]
       }
 
       //then
-      e.getMessage should include ("""List("test2 child1") was not equal to List()""")
+      e.getMessage should include ("""List("test2 child1") was not empty : Expected no children""")
     })
   }
 

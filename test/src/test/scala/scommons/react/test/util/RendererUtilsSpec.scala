@@ -5,6 +5,8 @@ import io.github.shogowada.scalajs.reactjs.VirtualDOM._
 import io.github.shogowada.scalajs.reactjs.classes.ReactClass
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import io.github.shogowada.statictags.{Attribute, AttributeSpec}
+import org.scalactic.source.Position
+import org.scalatest.exceptions.TestFailedException
 import org.scalatest.{Assertion, Failed, OutcomeOf}
 import scommons.react.UiComponent
 import scommons.react.test.TestSpec
@@ -18,11 +20,11 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
 
   protected def doRender(element: ReactElement): Instance
 
-  def findComponentProps[T](renderedComp: Instance, searchComp: UiComponent[T]): T
+  def findComponentProps[T](renderedComp: Instance, searchComp: UiComponent[T])(implicit pos: Position): T
   def findProps[T](renderedComp: Instance, searchComp: UiComponent[T]): List[T]
   def getComponentProps[T](component: Instance): T
   def findComponents(component: Instance, componentClass: ReactClass): List[Instance]
-  def assertNativeComponent(result: Instance, expectedElement: ReactElement): Assertion
+  def assertNativeComponent(result: Instance, expectedElement: ReactElement)(implicit pos: Position): Assertion
   
   it should "fail if comp not found when findComponentProps" in {
     //given
@@ -30,7 +32,7 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
     val searchComp = TestComp
 
     //when
-    val e = the[IllegalStateException] thrownBy {
+    val e = the[TestFailedException] thrownBy {
       findComponentProps(comp, searchComp)
     }
 
@@ -167,7 +169,7 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
     }
 
     //then
-    e.getMessage should include ("""List("test1 child") was not equal to List()""")
+    e.getMessage should include ("""List("test1 child") was not empty : Expected no children""")
   }
 
   it should "assert props and children when assertNativeComponent" in {
