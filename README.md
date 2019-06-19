@@ -18,6 +18,7 @@ val scommonsReactVer = "1.0.0-SNAPSHOT"
 libraryDependencies ++= Seq(
   "org.scommons.react" %%% "scommons-react-core" % scommonsReactVer,
   "org.scommons.react" %%% "scommons-react-dom" % scommonsReactVer,
+  "org.scommons.react" %%% "scommons-react-redux" % scommonsReactVer,
   
   "org.scommons.react" %%% "scommons-react-test" % scommonsReactVer % "test",
   "org.scommons.react" %%% "scommons-react-test-dom" % scommonsReactVer % "test"

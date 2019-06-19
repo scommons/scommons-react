@@ -17,6 +17,7 @@ lazy val `scommons-react` = (project in file("."))
   .aggregate(
   `scommons-react-core`,
   `scommons-react-dom`,
+  `scommons-react-redux`,
   `scommons-react-test`,
   `scommons-react-test-dom`,
   `scommons-react-showcase`
@@ -24,6 +25,7 @@ lazy val `scommons-react` = (project in file("."))
 
 lazy val `scommons-react-core` = ReactCore.definition
 lazy val `scommons-react-dom` = ReactDom.definition
+lazy val `scommons-react-redux` = ReactRedux.definition
 lazy val `scommons-react-test` = ReactTest.definition
 lazy val `scommons-react-test-dom` = ReactTestDom.definition
 lazy val `scommons-react-showcase` = ReactShowcase.definition
