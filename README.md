@@ -34,8 +34,13 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
 ### How to use it
 
 * Demo Application
-  * [app](showcase/src/main/scala/scommons/react/showcase/app/ShowcaseReactApp.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/ShowcaseReactAppSpec.scala)
-  * [live](https://scommons.org/scommons-react/showcase/) => [How to Build and Run](showcase/README.md)
+  * [live demo](https://scommons.org/scommons-react/showcase/) => [How to Build and Run](showcase/README.md)
+  * [AppMain](showcase/src/main/scala/scommons/react/showcase/app/ShowcaseReactApp.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/ShowcaseReactAppSpec.scala)
+  * [AppState](showcase/src/main/scala/scommons/react/showcase/app/ShowcaseState.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/ShowcaseStateReducerSpec.scala)
+  * [CounterActions](showcase/src/main/scala/scommons/react/showcase/app/counter/CounterActions.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/counter/CounterActionsSpec.scala)
+  * [CounterController](showcase/src/main/scala/scommons/react/showcase/app/counter/CounterController.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/counter/CounterControllerSpec.scala)
+  * [CounterPanel](showcase/src/main/scala/scommons/react/showcase/app/counter/CounterPanel.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/counter/CounterPanelSpec.scala)
+  * [CounterState](showcase/src/main/scala/scommons/react/showcase/app/counter/CounterState.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/counter/CounterStateReducerSpec.scala)
 
 * Components:
   * [ClassComponent](showcase/src/main/scala/scommons/react/showcase/ClassComponentDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/ClassComponentDemoSpec.scala)

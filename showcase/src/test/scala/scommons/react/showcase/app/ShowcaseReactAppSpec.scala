@@ -18,8 +18,12 @@ class ShowcaseReactAppSpec extends TestSpec with TestDOMUtils {
     
     assertDOMElement(domContainer, <.div(^.id := "root")(
       <.p()(
-        "Hello World!"
-      )
+        "Welcome to the React Counter showcase example App." +
+          " Use buttons bellow to increase/decrease the counter:"
+      ),
+      <.p()("0"),
+      <.button()("+"),
+      <.button()("-")
     ))
   }
 }

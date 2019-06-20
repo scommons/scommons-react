@@ -39,6 +39,7 @@ object ReactShowcase extends ScalaJsModule {
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Seq(
     ReactCore.definition,
     ReactDom.definition,
+    ReactRedux.definition,
     ReactTest.definition % "test",
     ReactTestDom.definition % "test"
   )
