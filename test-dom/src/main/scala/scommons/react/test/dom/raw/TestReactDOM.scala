@@ -9,8 +9,6 @@ import scala.scalajs.js.annotation.JSImport
 @JSImport("react-dom", JSImport.Namespace)
 object TestReactDOM extends js.Object {
 
-  def findDOMNode(component: js.Any): Node = js.native
-
   /**
     * Remove a mounted React component from the DOM and clean up its event handlers and state.
     *

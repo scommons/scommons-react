@@ -1,13 +1,12 @@
 package scommons.react.test.dom.raw
 
-import io.github.shogowada.scalajs.reactjs.React
 import io.github.shogowada.scalajs.reactjs.events.MouseSyntheticEvent
 import scommons.react.test.TestSpec
-import scommons.react.test.dom.raw.ReactTestUtils._
+import scommons.react.test.dom.util.TestDOMUtils
 
 import scala.scalajs.js
 
-class SimulateSpec extends TestSpec {
+class SimulateSpec extends TestSpec with TestDOMUtils {
 
   it should "simulate onClick event" in {
     //given
@@ -19,18 +18,14 @@ class SimulateSpec extends TestSpec {
       clientX = e.clientX
       clientY = e.clientY
     }
-    val comp = renderIntoDocument(React.createElement(React.createClass[Unit, Unit](_ =>
-      <.div()(
-        <.button(^.onClick := onClick)("Click me")
-      )
-    )))
-    val button = findRenderedDOMComponentWithTag(comp, "button")
+    domRender(<.button(^.onClick := onClick)("Click me"))
+    val button = domContainer.querySelector("button")
 
     //when
-    ReactTestUtils.Simulate.click(button, js.Dynamic.literal(
+    fireDomEvent(Simulate.click(button, js.Dynamic.literal(
       clientX = 1,
       clientY = 2
-    ))
+    )))
 
     //then
     clicked shouldBe true

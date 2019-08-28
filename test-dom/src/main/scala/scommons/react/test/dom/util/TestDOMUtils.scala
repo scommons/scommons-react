@@ -6,9 +6,7 @@ import io.github.shogowada.statictags
 import org.scalajs.dom
 import org.scalajs.dom._
 import org.scalatest.{BeforeAndAfterEach, Matchers, Suite}
-import scommons.react.UiComponent
-import scommons.react.test.dom.raw.ReactTestUtils._
-import scommons.react.test.dom.raw.{ReactTestUtils, Simulate, TestReactDOM}
+import scommons.react.test.dom.raw.{ReactTestUtils, Simulate}
 
 import scala.scalajs.js
 
@@ -47,26 +45,6 @@ trait TestDOMUtils extends Suite with Matchers with BeforeAndAfterEach {
   def createDomEvent[T <: Event](args: js.Any*)(implicit tag: js.ConstructorTag[T]): T = {
     js.Dynamic.newInstance(tag.constructor)(args: _*).asInstanceOf[T]
   }
-
-  //////////////////////////////////////////////////////////////////////////////
-  //START of deprecated methods section:
-  //  use domRender(...) and assert domContainer
-
-  def renderIntoDocument(element: ReactElement): Instance = ReactTestUtils.renderIntoDocument(element)
-
-  def findRenderedComponentProps[T](tree: Instance, searchComp: UiComponent[T]): T = {
-    getComponentProps[T](findRenderedComponentWithType(tree, searchComp.apply()))
-  }
-  
-  private def getComponentProps[T](component: Instance): T = component.props.wrapped.asInstanceOf[T]
-
-  def findReactElement(component: js.Any): dom.Element = asElement(TestReactDOM.findDOMNode(component))
-
-  //END of deprecated methods section
-  //////////////////////////////////////////////////////////////////////////////
-  
-  
-  private def asElement(node: Node): dom.Element = node.asInstanceOf[dom.Element]
 
   def assertDOMElement(result: dom.Element, expected: statictags.Element): Unit = {
     assertElement(TestDOMPath(result, result), expected)
@@ -184,7 +162,7 @@ trait TestDOMUtils extends Suite with Matchers with BeforeAndAfterEach {
     }
 
     for (i <- result.indices) {
-      assertElement(path.at(asElement(result(i))), i)
+      assertElement(path.at(result(i).asInstanceOf[dom.Element]), i)
     }
   }
 
