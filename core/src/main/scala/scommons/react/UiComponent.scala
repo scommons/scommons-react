@@ -2,8 +2,6 @@ package scommons.react
 
 trait UiComponent[T] {
 
-  type PropsType = T
-
   def apply(): ReactClass = reactClass
   
   private lazy val reactClass: ReactClass = create()

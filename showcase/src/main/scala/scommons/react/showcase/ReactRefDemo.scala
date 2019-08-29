@@ -1,16 +1,14 @@
 package scommons.react.showcase
 
-import io.github.shogowada.scalajs.reactjs.React
-import io.github.shogowada.scalajs.reactjs.classes.ReactClass
 import io.github.shogowada.scalajs.reactjs.events.MouseSyntheticEvent
 import org.scalajs.dom.raw.HTMLInputElement
 import scommons.react._
 
-object ReactRefDemo extends UiComponent[Unit] {
+object ReactRefDemo extends ClassComponent[Unit] {
   
   private case class ReactRefDemoState(textInput: ReactRef[HTMLInputElement])
   
-  protected def create(): ReactClass = React.createClass[Unit, ReactRefDemoState](
+  protected def create(): ReactClass = createClass[ReactRefDemoState](
     getInitialState = { _ =>
       ReactRefDemoState(ReactRef.create[HTMLInputElement])
     },

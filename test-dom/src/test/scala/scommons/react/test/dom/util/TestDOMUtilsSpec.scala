@@ -1,8 +1,8 @@
 package scommons.react.test.dom.util
 
-import io.github.shogowada.scalajs.reactjs.React
 import org.scalajs.dom.MouseEvent
 import org.scalatest.{Failed, OutcomeOf}
+import scommons.react._
 import scommons.react.test.TestSpec
 
 class TestDOMUtilsSpec extends TestSpec
@@ -100,19 +100,21 @@ class TestDOMUtilsSpec extends TestSpec
   it should "assert props and children when assertDOMElement" in {
     //given
     val id = System.currentTimeMillis().toString
-    val compClass = React.createClass[Unit, Unit] { _ =>
-      <.div(
-        ^.className := "test1 test2",
-        ^.style := Map("display" -> "none"),
-        ^.id := id,
-        ^.hidden := true,
-        ^.height := 10
-      )(
-        <.div()("child1"),
-        <.div()("child2")
-      )
+    val compClass = new FunctionComponent[Unit] {
+      protected def render(props: Props): ReactElement = {
+        <.div(
+          ^.className := "test1 test2",
+          ^.style := Map("display" -> "none"),
+          ^.id := id,
+          ^.hidden := true,
+          ^.height := 10
+        )(
+          <.div()("child1"),
+          <.div()("child2")
+        )
+      }
     }
-    domRender(<(compClass)()())
+    domRender(<(compClass())()())
 
     //when & then
     assertDOMElement(domContainer, <.div()(

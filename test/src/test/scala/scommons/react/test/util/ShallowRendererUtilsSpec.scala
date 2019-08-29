@@ -1,8 +1,7 @@
 package scommons.react.test.util
 
-import io.github.shogowada.scalajs.reactjs.React
-import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import org.scalatest.Failed
+import scommons.react._
 import scommons.react.test.raw.ShallowInstance
 import scommons.react.test.util.RendererUtilsSpec._
 
@@ -62,10 +61,12 @@ class ShallowRendererUtilsSpec extends RendererUtilsSpec[ShallowInstance]
 
   it should "fail if key attribute doesn't match when assertNativeComponent" in {
     //given
-    val compClass = React.createClass[Unit, Unit] { _ =>
-      <.p(^.key := "123")()
+    val compClass = new FunctionComponent[Unit] {
+      protected def render(props: Props): ReactElement = {
+        <.p(^.key := "123")()
+      }
     }
-    val comp = shallowRender(<(compClass)()())
+    val comp = shallowRender(<(compClass())()())
 
     //when
     val Failed(e) = outcomeOf {

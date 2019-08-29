@@ -1,14 +1,10 @@
 package scommons.react.test.util
 
-import io.github.shogowada.scalajs.reactjs.React
-import io.github.shogowada.scalajs.reactjs.VirtualDOM._
-import io.github.shogowada.scalajs.reactjs.classes.ReactClass
-import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import io.github.shogowada.statictags.{Attribute, AttributeSpec}
 import org.scalactic.source.Position
 import org.scalatest.exceptions.TestFailedException
 import org.scalatest.{Assertion, Failed, OutcomeOf}
-import scommons.react.UiComponent
+import scommons.react._
 import scommons.react.test.TestSpec
 import scommons.react.test.raw.RenderedInstance
 import scommons.react.test.util.RendererUtilsSpec._
@@ -87,10 +83,12 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
 
   it should "fail if array attribute doesn't match when assertNativeComponent" in {
     //given
-    val compClass = React.createClass[Unit, Unit] { _ =>
-      <.p(^.testArr := js.Array("test"))()
+    val compClass = new FunctionComponent[Unit] {
+      protected def render(props: Props): ReactElement = {
+        <.p(^.testArr := js.Array("test"))()
+      }
     }
-    val comp = doRender(<(compClass)()())
+    val comp = doRender(<(compClass())()())
 
     //when
     val Failed(e) = outcomeOf {
@@ -106,12 +104,14 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
 
   it should "fail if object attribute doesn't match when assertNativeComponent" in {
     //given
-    val compClass = React.createClass[Unit, Unit] { _ =>
-      <.p(^.testObj := js.Dynamic.literal(
-        test = 1
-      ))()
+    val compClass = new FunctionComponent[Unit] {
+      protected def render(props: Props): ReactElement = {
+        <.p(^.testObj := js.Dynamic.literal(
+          test = 1
+        ))()
+      }
     }
-    val comp = doRender(<(compClass)()())
+    val comp = doRender(<(compClass())()())
 
     //when
     val Failed(e) = outcomeOf {
@@ -129,10 +129,12 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
 
   it should "fail if boolean attribute doesn't match when assertNativeComponent" in {
     //given
-    val compClass = React.createClass[Unit, Unit] { _ =>
-      <.p(^.disabled := true)()
+    val compClass = new FunctionComponent[Unit] {
+      protected def render(props: Props): ReactElement = {
+        <.p(^.disabled := true)()
+      }
     }
-    val comp = doRender(<(compClass)()())
+    val comp = doRender(<(compClass())()())
 
     //when
     val Failed(e) = outcomeOf {
@@ -175,28 +177,30 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
   it should "assert props and children when assertNativeComponent" in {
     //given
     val id = System.currentTimeMillis().toString
-    val compClass = React.createClass[Unit, Unit] { _ =>
-      <.div(
-        ^.className := "test1 test2",
-        ^.style := Map("display" -> "none"),
-        ^.id := id,
-        ^.hidden := true,
-        ^.height := 10
-      )(
+    val compClass = new FunctionComponent[Unit] {
+      protected def render(props: Props): ReactElement = {
         <.div(
-          ^.testArr := js.Array("test"),
-          ^.testObj := js.Dynamic.literal(
-            test = 1,
-            nested = js.Dynamic.literal(
-              test2 = 2
+          ^.className := "test1 test2",
+          ^.style := Map("display" -> "none"),
+          ^.id := id,
+          ^.hidden := true,
+          ^.height := 10
+        )(
+          <.div(
+            ^.testArr := js.Array("test"),
+            ^.testObj := js.Dynamic.literal(
+              test = 1,
+              nested = js.Dynamic.literal(
+                test2 = 2
+              )
             )
-          )
-        )(),
-        <.div()("child1"),
-        <.div()("child2")
-      )
+          )(),
+          <.div()("child1"),
+          <.div()("child2")
+        )
+      }
     }
-    val comp = doRender(<(compClass)()())
+    val comp = doRender(<(compClass())()())
 
     //when & then
     assertNativeComponent(comp, <.div(
@@ -226,24 +230,28 @@ object RendererUtilsSpec {
   case class Comp1Props(a: Int)
   case class Comp2Props(b: Boolean)
 
-  object TestComp extends UiComponent[Comp1Props] {
-
-    protected def create(): ReactClass = React.createClass[Comp1Props, Unit] { self =>
-      <.p(^.className := "test1")(self.props.children)
+  object TestComp extends FunctionComponent[Comp1Props] {
+    protected def render(props: Props): ReactElement = {
+      <.p(^.className := "test1")(props.children)
     }
   }
 
-  val emptyComp: ReactClass = React.createClass[Comp1Props, Unit] { _ =>
-    <.div.empty
-  }
+  val emptyComp: ReactClass = new FunctionComponent[Comp1Props] {
+    protected def render(props: Props): ReactElement = {
+      <.div.empty
+    }
+  }.apply()
 
-  val comp2Class: ReactClass = React.createClass[Comp2Props, Unit] { _ =>
-    <.div(^.className := "test2")(
-      <(TestComp())(^.wrapped := Comp1Props(1))("test2 child1"),
-      <(TestComp())(^.wrapped := Comp1Props(2))("test2 child2")
-    )
-  }
+  val comp2Class: ReactClass = new FunctionComponent[Comp2Props] {
+    protected def render(props: Props): ReactElement = {
+      <.div(^.className := "test2")(
+        <(TestComp())(^.wrapped := Comp1Props(1))("test2 child1"),
+        <(TestComp())(^.wrapped := Comp1Props(2))("test2 child2")
+      )
+    }
+  }.apply()
 
+  import io.github.shogowada.scalajs.reactjs.VirtualDOM.VirtualDOMAttributes
   import VirtualDOMAttributes.Type._
 
   case class TestArrayAttributeSpec(name: String) extends AttributeSpec {
