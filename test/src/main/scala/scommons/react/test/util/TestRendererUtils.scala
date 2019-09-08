@@ -1,6 +1,5 @@
 package scommons.react.test.util
 
-import io.github.shogowada.scalajs.reactjs.classes.ReactClass
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import org.scalactic.source.Position
 import org.scalatest.{Assertion, Succeeded}
@@ -47,12 +46,8 @@ trait TestRendererUtils {
     utils.findProps(renderedComp, searchComp)
   }
 
-  def getComponentProps[T](component: TestInstance): T = {
-    utils.getComponentProps(component)
-  }
-
-  def findComponents(component: TestInstance, componentClass: ReactClass): List[TestInstance] = {
-    utils.findComponents(component, componentClass)
+  def findComponents(component: TestInstance, componentType: Any): List[TestInstance] = {
+    utils.findComponents(component, componentType)
   }
 
   def assertTestComponent[T](result: TestInstance, expectedComp: UiComponent[T])

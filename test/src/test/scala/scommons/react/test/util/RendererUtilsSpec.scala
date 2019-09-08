@@ -18,8 +18,7 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
 
   def findComponentProps[T](renderedComp: Instance, searchComp: UiComponent[T])(implicit pos: Position): T
   def findProps[T](renderedComp: Instance, searchComp: UiComponent[T]): List[T]
-  def getComponentProps[T](component: Instance): T
-  def findComponents(component: Instance, componentClass: ReactClass): List[Instance]
+  def findComponents(component: Instance, componentType: Any): List[Instance]
   def assertNativeComponent(result: Instance, expectedElement: ReactElement)(implicit pos: Position): Assertion
   
   it should "fail if comp not found when findComponentProps" in {
@@ -78,7 +77,9 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
     val results = findComponents(comp, TestComp())
 
     //then
-    results.map(getComponentProps[Comp1Props]) shouldBe List(Comp1Props(1), Comp1Props(2))
+    results.map(p => p.props.wrapped.asInstanceOf[Comp1Props]) shouldBe {
+      List(Comp1Props(1), Comp1Props(2))
+    }
   }
 
   it should "fail if array attribute doesn't match when assertNativeComponent" in {

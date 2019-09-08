@@ -1,6 +1,5 @@
 package scommons.react.test.util
 
-import io.github.shogowada.scalajs.reactjs.classes.ReactClass
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import org.scalactic.source.Position
 import org.scalatest.{Assertion, Matchers, Succeeded}
@@ -32,20 +31,21 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
   }
 
   def findProps[T](renderedComp: Instance, searchComp: UiComponent[T]): List[T] = {
-    findComponents(renderedComp, searchComp.apply()).map(getComponentProps[T])
+    def getComponentProps(component: Instance): T = {
+      component.props.wrapped.asInstanceOf[T]
+    }
+    
+    findComponents(renderedComp, searchComp.apply()).map(getComponentProps)
   }
 
-  def getComponentProps[T](component: Instance): T = component.props.wrapped.asInstanceOf[T]
-
-  def findComponents(component: Instance,
-                     componentClass: ReactClass): List[Instance] = {
+  def findComponents(component: Instance, componentType: Any): List[Instance] = {
 
     def search(components: List[Instance],
                result: ListBuffer[Instance]): Unit = components match {
 
       case Nil =>
       case head :: tail =>
-        if (head.`type` == componentClass) {
+        if (head.`type` == componentType) {
           result += head
         }
 

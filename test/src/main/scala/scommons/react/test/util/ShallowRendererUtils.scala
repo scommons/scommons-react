@@ -1,6 +1,5 @@
 package scommons.react.test.util
 
-import io.github.shogowada.scalajs.reactjs.classes.ReactClass
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import org.scalactic.source.Position
 import org.scalatest.Assertion
@@ -13,14 +12,11 @@ trait ShallowRendererUtils {
   def createRenderer(): ShallowRenderer = new ShallowRenderer
 
   def shallowRender(element: ReactElement): ShallowInstance = {
-    shallowRender(createRenderer(), element)
-  }
-  
-  def shallowRender(renderer: ShallowRenderer, element: ReactElement): ShallowInstance = {
+    val renderer = createRenderer()
     renderer.render(element)
     renderer.getRenderOutput()
   }
-
+  
   def findComponentProps[T](renderedComp: ShallowInstance,
                             searchComp: UiComponent[T])(implicit pos: Position): T = {
     
@@ -31,12 +27,8 @@ trait ShallowRendererUtils {
     utils.findProps(renderedComp, searchComp)
   }
 
-  def getComponentProps[T](component: ShallowInstance): T = {
-    utils.getComponentProps(component)
-  }
-
-  def findComponents(component: ShallowInstance, componentClass: ReactClass): List[ShallowInstance] = {
-    utils.findComponents(component, componentClass)
+  def findComponents(component: ShallowInstance, componentType: Any): List[ShallowInstance] = {
+    utils.findComponents(component, componentType)
   }
 
   def assertComponent[T](result: ShallowInstance, expectedComp: UiComponent[T])

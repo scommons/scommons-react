@@ -56,18 +56,6 @@ class TestRendererUtilsSpec extends RendererUtilsSpec[TestInstance]
     })
   }
 
-  it should "return wrapped props when getComponentProps" in {
-    //given
-    val props = Comp1Props(1)
-    val root = createTestRenderer(<(TestComp())(^.wrapped := props)("test1 child")).root
-    
-    //when
-    val result = getComponentProps[Comp1Props](root)
-
-    //then
-    result shouldBe props
-  }
-
   it should "not fail if non-empty when assertTestComponent" in {
     //given
     val comp = testRender(<(comp2Class)(^.wrapped := Comp2Props(true))())
