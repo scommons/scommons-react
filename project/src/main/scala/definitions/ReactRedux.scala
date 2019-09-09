@@ -20,7 +20,9 @@ object ReactRedux extends ScalaJsModule {
     )
 
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Seq(
-    ReactCore.definition
+    ReactCore.definition,
+    ReactTest.definition % "test",
+    ReactTestDom.definition % "test"
   )
 
   override val runtimeDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(

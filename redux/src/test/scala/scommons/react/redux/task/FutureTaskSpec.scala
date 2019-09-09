@@ -1,17 +1,12 @@
 package scommons.react.redux.task
 
-import org.scalamock.scalatest.AsyncMockFactory
-import org.scalatest.{AsyncFlatSpec, Matchers, Succeeded}
+import org.scalatest.Succeeded
+import scommons.react.test.dom.AsyncTestSpec
 
-import scala.concurrent.{ExecutionContext, Future}
-import scala.scalajs.concurrent.JSExecutionContext
+import scala.concurrent.Future
 import scala.util.{Success, Try}
 
-class FutureTaskSpec extends AsyncFlatSpec
-  with Matchers
-  with AsyncMockFactory {
-
-  implicit override val executionContext: ExecutionContext = JSExecutionContext.queue
+class FutureTaskSpec extends AsyncTestSpec {
 
   it should "call future.onComplete when onComplete" in {
     //given
