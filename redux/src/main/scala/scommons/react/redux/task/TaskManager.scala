@@ -31,7 +31,7 @@ object TaskManager extends FunctionComponent[TaskManagerProps] {
       throw JavaScriptException(Error("TaskManager.uiComponent is not specified"))
     }
     
-    useEffect({ () =>
+    useLayoutEffect({ () =>
       props.startTask.foreach { task =>
         onTaskStart(setState, task)
       }
@@ -93,16 +93,16 @@ object TaskManager extends FunctionComponent[TaskManagerProps] {
     "%.3f".format(durationMillis / 1000.0)
   }
 
-  private[task] def printStackTrace(x: Throwable): String = {
+  def printStackTrace(x: Throwable, sep: String = "&nbsp"): String = {
     val sb = new StringBuilder(x.toString)
     val trace = x.getStackTrace
     for (t <- trace) {
-      sb.append("\n\tat&nbsp").append(t)
+      sb.append(s"\n\tat$sep").append(t)
     }
 
     val cause = x.getCause
     if (cause != null) {
-      printStackTraceAsCause(sb, cause, trace)
+      printStackTraceAsCause(sb, cause, trace, sep)
     }
 
     sb.toString
@@ -113,7 +113,8 @@ object TaskManager extends FunctionComponent[TaskManagerProps] {
     */
   private def printStackTraceAsCause(sb: StringBuilder,
                                      cause: Throwable,
-                                     causedTrace: Array[StackTraceElement]): Unit = {
+                                     causedTrace: Array[StackTraceElement],
+                                     sep: String): Unit = {
 
     // Compute number of frames in common between this and caused
     val trace = cause.getStackTrace
@@ -128,17 +129,17 @@ object TaskManager extends FunctionComponent[TaskManagerProps] {
     sb.append("\nCaused by: " + cause)
 
     for (i <- 0 to m) {
-      sb.append("\n\tat&nbsp").append(trace(i))
+      sb.append(s"\n\tat$sep").append(trace(i))
     }
 
     if (framesInCommon != 0) {
-      sb.append("\n\t...&nbsp").append(framesInCommon).append("&nbspmore")
+      sb.append(s"\n\t...$sep").append(framesInCommon).append(s"${sep}more")
     }
 
     // Recurse if we have a cause
     val ourCause = cause.getCause
     if (ourCause != null) {
-      printStackTraceAsCause(sb, ourCause, trace)
+      printStackTraceAsCause(sb, ourCause, trace, sep)
     }
   }
 }
