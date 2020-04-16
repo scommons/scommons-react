@@ -1,8 +1,6 @@
 package scommons.react.showcase
 
-import scommons.react.test.TestSpec
-import scommons.react.test.raw.TestRenderer
-import scommons.react.test.util.TestRendererUtils
+import scommons.react.test._
 
 class ReactMemoDemoSpec extends TestSpec with TestRendererUtils {
 

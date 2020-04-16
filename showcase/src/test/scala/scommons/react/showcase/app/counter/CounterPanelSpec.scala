@@ -1,12 +1,11 @@
 package scommons.react.showcase.app.counter
 
-import org.scalajs.dom
+import org.scalajs.dom.document
 import scommons.react._
 import scommons.react.redux.task.FutureTask
 import scommons.react.showcase.app.counter.CounterActions._
-import scommons.react.test.TestSpec
-import scommons.react.test.dom.util.TestDOMUtils
-import scommons.react.test.util.ShallowRendererUtils
+import scommons.react.test._
+import scommons.react.test.dom._
 
 import scala.concurrent.Future
 
@@ -21,7 +20,7 @@ class CounterPanelSpec extends TestSpec
     val state = CounterState(123)
     val props = CounterPanelProps(dispatch, actions, state)
     domRender(<(CounterPanel())(^.wrapped := props)())
-    val button = dom.document.body.querySelectorAll("button").item(0)
+    val button = document.body.querySelectorAll("button").item(0)
     val action = CounterChangeAction(
       FutureTask("Changing Counter", Future.successful(0))
     )
@@ -41,7 +40,7 @@ class CounterPanelSpec extends TestSpec
     val state = CounterState(123)
     val props = CounterPanelProps(dispatch, actions, state)
     domRender(<(CounterPanel())(^.wrapped := props)())
-    val button = dom.document.body.querySelectorAll("button").item(1)
+    val button = document.body.querySelectorAll("button").item(1)
     val action = CounterChangeAction(
       FutureTask("Changing Counter", Future.successful(0))
     )

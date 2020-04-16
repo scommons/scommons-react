@@ -1,9 +1,9 @@
 package scommons.react.showcase
 
 import scommons.react._
-import scommons.react.test.TestSpec
-import scommons.react.test.dom.util.TestDOMUtils
-import scommons.react.test.util.{ShallowRendererUtils, TestRendererUtils}
+import scommons.react.raw.React.{Fragment => ReactFragment}
+import scommons.react.test._
+import scommons.react.test.dom._
 
 class ReactFragmentDemoSpec extends TestSpec
   with TestDOMUtils
@@ -38,7 +38,7 @@ class ReactFragmentDemoSpec extends TestSpec
     val result = shallowRender(comp)
 
     //then
-    result.`type` shouldBe raw.React.Fragment
+    result.`type` shouldBe ReactFragment
     
     assertNativeComponent(result,
       <.>()(

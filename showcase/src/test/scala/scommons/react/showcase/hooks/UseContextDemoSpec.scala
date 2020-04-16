@@ -2,10 +2,8 @@ package scommons.react.showcase.hooks
 
 import scommons.react._
 import scommons.react.showcase.hooks.UseContextDemoApp._
-import scommons.react.test.TestSpec
-import scommons.react.test.dom.util.TestDOMUtils
-import scommons.react.test.raw.{ShallowInstance, TestRenderer}
-import scommons.react.test.util.{ShallowRendererUtils, TestRendererUtils}
+import scommons.react.test._
+import scommons.react.test.dom._
 
 class UseContextDemoSpec extends TestSpec
   with TestDOMUtils

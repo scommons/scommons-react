@@ -2,9 +2,8 @@ package scommons.react.showcase
 
 import org.scalajs.dom.{Event, window}
 import scommons.react._
-import scommons.react.test.TestSpec
-import scommons.react.test.dom.util.TestDOMUtils
-import scommons.react.test.util.{ShallowRendererUtils, TestRendererUtils}
+import scommons.react.test._
+import scommons.react.test.dom._
 
 import scala.scalajs.js
 

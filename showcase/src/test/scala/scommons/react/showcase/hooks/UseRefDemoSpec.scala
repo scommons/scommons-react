@@ -1,10 +1,9 @@
 package scommons.react.showcase.hooks
 
-import org.scalajs.dom
+import org.scalajs.dom.document
 import scommons.react._
-import scommons.react.test.TestSpec
-import scommons.react.test.dom.util.TestDOMUtils
-import scommons.react.test.util.{ShallowRendererUtils, TestRendererUtils}
+import scommons.react.test._
+import scommons.react.test.dom._
 
 class UseRefDemoSpec extends TestSpec
   with TestDOMUtils
@@ -30,14 +29,14 @@ class UseRefDemoSpec extends TestSpec
     domRender(<(UseRefDemo())()())
     
     val button = domContainer.querySelector("button")
-    dom.document.hasFocus() shouldBe false
+    document.hasFocus() shouldBe false
 
     //when
     fireDomEvent(Simulate.click(button))
 
     //then
-    domContainer.querySelector("input") shouldBe dom.document.activeElement
-    dom.document.hasFocus() shouldBe true
+    domContainer.querySelector("input") shouldBe document.activeElement
+    document.hasFocus() shouldBe true
   }
   
   it should "shallow render component" in {

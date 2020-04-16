@@ -1,8 +1,8 @@
 package scommons.react.showcase.app
 
 import org.scalajs.dom
-import scommons.react.test.TestSpec
-import scommons.react.test.dom.util.TestDOMUtils
+import scommons.react.test._
+import scommons.react.test.dom._
 
 class ShowcaseReactAppSpec extends TestSpec with TestDOMUtils {
 

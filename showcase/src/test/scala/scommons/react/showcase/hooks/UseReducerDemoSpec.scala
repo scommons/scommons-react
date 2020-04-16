@@ -1,8 +1,7 @@
 package scommons.react.showcase.hooks
 
-import scommons.react.test.TestSpec
-import scommons.react.test.dom.util.TestDOMUtils
-import scommons.react.test.util.{ShallowRendererUtils, TestRendererUtils}
+import scommons.react.test._
+import scommons.react.test.dom._
 
 class UseReducerDemoSpec extends TestSpec
   with TestDOMUtils

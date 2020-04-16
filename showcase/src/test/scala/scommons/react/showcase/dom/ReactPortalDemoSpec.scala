@@ -1,9 +1,9 @@
 package scommons.react.showcase.dom
 
-import org.scalajs.dom
+import org.scalajs.dom.{Element, document}
 import scommons.react._
-import scommons.react.test.TestSpec
-import scommons.react.test.dom.util.TestDOMUtils
+import scommons.react.test._
+import scommons.react.test.dom._
 
 class ReactPortalDemoSpec extends TestSpec with TestDOMUtils {
 
@@ -14,7 +14,7 @@ class ReactPortalDemoSpec extends TestSpec with TestDOMUtils {
     ))
 
     assertDOMElement(domContainer, <.div()())
-    assertDOMElement(dom.document.body.querySelector(".portal-content"),
+    assertDOMElement(document.body.querySelector(".portal-content"),
       <.div(^("class") := "portal-content")(
         "Portal Child"
       )
@@ -23,7 +23,7 @@ class ReactPortalDemoSpec extends TestSpec with TestDOMUtils {
     //when & then
     domRender(<(ReactPortalDemo())(^.wrapped := ReactPortalDemoProps(show = false))())
 
-    dom.document.body.querySelectorAll(".portal-content").length shouldBe 0
+    document.body.querySelectorAll(".portal-content").length shouldBe 0
   }
   
   it should "re-render portal content" in {
@@ -32,7 +32,7 @@ class ReactPortalDemoSpec extends TestSpec with TestDOMUtils {
       "Portal Child"
     ))
     assertDOMElement(domContainer, <.div()())
-    assertDOMElement(dom.document.body.querySelector(".portal-content"),
+    assertDOMElement(document.body.querySelector(".portal-content"),
       <.div(^("class") := "portal-content")(
         "Portal Child"
       )
@@ -42,7 +42,7 @@ class ReactPortalDemoSpec extends TestSpec with TestDOMUtils {
     domRender(<(ReactPortalDemo())(^.wrapped := ReactPortalDemoProps(show = true))(
       "Portal Updated"
     ))
-    assertDOMElement(dom.document.body.querySelector(".portal-content"),
+    assertDOMElement(document.body.querySelector(".portal-content"),
       <.div(^("class") := "portal-content")(
         "Portal Updated"
       )
@@ -50,7 +50,7 @@ class ReactPortalDemoSpec extends TestSpec with TestDOMUtils {
     
     //when & then
     domRender(<(ReactPortalDemo())(^.wrapped := ReactPortalDemoProps(show = false))())
-    dom.document.body.querySelectorAll(".portal-content").length shouldBe 0
+    document.body.querySelectorAll(".portal-content").length shouldBe 0
   }
   
   it should "render several portals" in {
@@ -81,13 +81,13 @@ class ReactPortalDemoSpec extends TestSpec with TestDOMUtils {
 
     assertDOMElement(domContainer, <.div()())
     
-    val portals = dom.document.body.querySelectorAll(".portal-content")
-    assertDOMElement(portals.item(0).asInstanceOf[dom.Element],
+    val portals = document.body.querySelectorAll(".portal-content")
+    assertDOMElement(portals.item(0).asInstanceOf[Element],
       <.div(^("class") := "portal-content")(
         "Portal 1"
       )
     )
-    assertDOMElement(portals.item(1).asInstanceOf[dom.Element],
+    assertDOMElement(portals.item(1).asInstanceOf[Element],
       <.div(^("class") := "portal-content")(
         "Portal 2"
       )
@@ -95,6 +95,6 @@ class ReactPortalDemoSpec extends TestSpec with TestDOMUtils {
     
     //when & then
     domRender(<(comp())(^.wrapped := Tuple2(false, false))())
-    dom.document.body.querySelectorAll(".portal-content").length shouldBe 0
+    document.body.querySelectorAll(".portal-content").length shouldBe 0
   }
 }
