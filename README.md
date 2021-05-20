@@ -35,7 +35,7 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
 
 * Demo Application
   * [live demo](https://scommons.org/scommons-react/showcase/) => [How to Build and Run](showcase/README.md)
-  * [AppMain](showcase/src/main/scala/scommons/react/showcase/app/ShowcaseReactApp.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/ShowcaseReactAppSpec.scala)
+  * [AppMain](showcase/src/main/scala/scommons/react/showcase/app/ShowcaseReactApp.scala)
   * [AppState](showcase/src/main/scala/scommons/react/showcase/app/ShowcaseState.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/ShowcaseStateReducerSpec.scala)
   * [CounterActions](showcase/src/main/scala/scommons/react/showcase/app/counter/CounterActions.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/counter/CounterActionsSpec.scala)
   * [CounterController](showcase/src/main/scala/scommons/react/showcase/app/counter/CounterController.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/counter/CounterControllerSpec.scala)
@@ -51,7 +51,7 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
 
 * React API
   * [React.createRef()](showcase/src/main/scala/scommons/react/showcase/ReactRefDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/ReactRefDemoSpec.scala)
-  * [ReactDOM.createPortal()](showcase/src/main/scala/scommons/react/showcase/dom/ReactPortalDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/dom/ReactPortalDemoSpec.scala)
+  * [ReactDOM.createPortal()](showcase/src/main/scala/scommons/react/showcase/dom/ReactPortalDemo.scala)
 
 * React Hooks:
   * [useState](showcase/src/main/scala/scommons/react/showcase/hooks/UseStateDemo.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/hooks/UseStateDemoSpec.scala)

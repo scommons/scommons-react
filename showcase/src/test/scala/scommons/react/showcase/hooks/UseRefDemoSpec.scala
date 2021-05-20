@@ -1,61 +1,32 @@
 package scommons.react.showcase.hooks
 
-import org.scalajs.dom.document
-import scommons.react._
+import scommons.react.showcase.hooks.UseRefDemoSpec.MouseSyntheticEventMock
 import scommons.react.test._
-import scommons.react.test.dom._
 
-class UseRefDemoSpec extends TestSpec
-  with TestDOMUtils
-  with ShallowRendererUtils
-  with TestRendererUtils {
+import scala.scalajs.js
+import scala.scalajs.js.annotation.JSExportAll
 
-  it should "render component in dom" in {
-    //given
-    val comp = <(UseRefDemo())()()
-
-    //when
-    domRender(comp)
-
-    //then
-    assertDOMElement(domContainer, <.div()(
-      <.input(^.`type` := "text")(),
-      <.button()("Focus the input")
-    ))
-  }
+class UseRefDemoSpec extends TestSpec with TestRendererUtils {
   
   it should "set focus to input element when onClick" in {
     //given
-    domRender(<(UseRefDemo())()())
-    
-    val button = domContainer.querySelector("button")
-    document.hasFocus() shouldBe false
-
-    //when
-    fireDomEvent(Simulate.click(button))
-
-    //then
-    domContainer.querySelector("input") shouldBe document.activeElement
-    document.hasFocus() shouldBe true
-  }
-  
-  it should "shallow render component" in {
-    //given
-    val comp = <(UseRefDemo())()()
-
-    //when
-    val result = shallowRender(comp)
+    val inputMock = mock[MouseSyntheticEventMock]
+    val root = createTestRenderer(<(UseRefDemo())()(), { el =>
+      if (el.`type` == "input".asInstanceOf[js.Any]) inputMock.asInstanceOf[js.Any]
+      else null
+    }).root
+    val button = inside(findComponents(root, <.button.name)) {
+      case List(b) => b
+    }
 
     //then
-    assertNativeComponent(result,
-      <.>()(
-        <.input(^.`type` := "text")(),
-        <.button()("Focus the input")
-      )
-    )
+    (inputMock.focus _).expects()
+
+    //when
+    button.props.onClick(null)
   }
   
-  it should "test render component" in {
+  it should "render component" in {
     //given
     val comp = <(UseRefDemo())()()
 
@@ -63,12 +34,18 @@ class UseRefDemoSpec extends TestSpec
     val result = createTestRenderer(comp).root
 
     //then
-    result.children.size shouldBe 2
-    assertNativeComponent(result.children(0),
-      <.input(^.`type` := "text")()
-    )
-    assertNativeComponent(result.children(1),
-      <.button()("Focus the input")
-    )
+    inside(result.children.toList) { case List(input, button) =>
+      assertNativeComponent(input, <.input(^.`type` := "text")())
+      assertNativeComponent(button, <.button()("Focus the input"))
+    }
+  }
+}
+
+object UseRefDemoSpec {
+  
+  @JSExportAll
+  trait MouseSyntheticEventMock {
+
+    def focus(): Unit
   }
 }

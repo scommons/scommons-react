@@ -10,13 +10,17 @@ object UseRefDemo extends FunctionComponent[Unit] {
   protected def render(props: Props): ReactElement = {
     val inputEl = useRef[HTMLInputElement](null)
   
-    def onButtonClick(e: MouseSyntheticEvent): Unit = {
-      inputEl.current.focus()
-    }
-    
     <.>()(
-      <.input(^.reactRef := inputEl, ^.`type` := "text")(),
-      <.button(^.onClick := onButtonClick _)("Focus the input")
+      <.input(
+        ^.reactRef := inputEl,
+        ^.`type` := "text"
+      )(),
+      
+      <.button(
+        ^.onClick := { _: MouseSyntheticEvent =>
+          inputEl.current.focus()
+        }
+      )("Focus the input")
     )
   }
 }

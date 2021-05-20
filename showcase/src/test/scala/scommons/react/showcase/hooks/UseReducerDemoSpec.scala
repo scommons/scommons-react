@@ -1,50 +1,35 @@
 package scommons.react.showcase.hooks
 
 import scommons.react.test._
-import scommons.react.test.dom._
 
-class UseReducerDemoSpec extends TestSpec
-  with TestDOMUtils
-  with ShallowRendererUtils
-  with TestRendererUtils {
+class UseReducerDemoSpec extends TestSpec with TestRendererUtils {
 
   it should "increase/decrease counters when onClick" in {
     //given
-    domRender(<(UseReducerDemo())()())
+    val root = createTestRenderer(<(UseReducerDemo())()()).root
     
-    val p = domContainer.querySelector("p")
-    p.textContent shouldBe "counter1: 0, counter2: 10"
-    val button1 = domContainer.querySelector(".counter1")
-    val button2 = domContainer.querySelector(".counter2")
+    inside(findComponents(root, <.p.name)) {
+      case List(p) => p.children.toList shouldBe List("counter1: 0, counter2: 10")
+    }
+    val (button1, button2) = inside(findComponents(root, <.button.name)) {
+      case List(b1, b2) => (b1, b2)
+    }
 
     //when & then
-    fireDomEvent(Simulate.click(button1))
-    domContainer.querySelector("p").textContent shouldBe "counter1: 1, counter2: 10"
+    button1.props.onClick(null)
+    inside(findComponents(root, <.p.name)) {
+      case List(p) => p.children.toList shouldBe List("counter1: 1, counter2: 10")
+    }
     
     //when & then
-    fireDomEvent(Simulate.click(button2))
-    fireDomEvent(Simulate.click(button1))
-    domContainer.querySelector("p").textContent shouldBe "counter1: 2, counter2: 9"
+    button2.props.onClick(null)
+    button1.props.onClick(null)
+    inside(findComponents(root, <.p.name)) {
+      case List(p) => p.children.toList shouldBe List("counter1: 2, counter2: 9")
+    }
   }
   
-  it should "shallow render component" in {
-    //given
-    val comp = <(UseReducerDemo())()()
-
-    //when
-    val result = shallowRender(comp)
-
-    //then
-    assertNativeComponent(result,
-      <.div()(
-        <.p()("counter1: 0, counter2: 10"),
-        <.button(^.className := "counter1")("Increase counter1"),
-        <.button(^.className := "counter2")("Decrease counter2")
-      )
-    )
-  }
-  
-  it should "test render component" in {
+  it should "render component" in {
     //given
     val comp = <(UseReducerDemo())()()
 

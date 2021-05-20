@@ -1,58 +1,28 @@
 package scommons.react.showcase
 
 import scommons.react._
-import scommons.react.raw.React.{Fragment => ReactFragment}
 import scommons.react.test._
-import scommons.react.test.dom._
 
-class ReactFragmentDemoSpec extends TestSpec
-  with TestDOMUtils
-  with ShallowRendererUtils
-  with TestRendererUtils {
+class ReactFragmentDemoSpec extends TestSpec with TestRendererUtils {
 
-  it should "render component in dom" in {
+  it should "render component" in {
     //given
     val props = ReactFragmentDemoProps(List("test 1", "test 2"))
-    val comp = <(ReactFragmentDemoSpec.Wrapper())(^.wrapped := props)()
-
-    //when
-    domRender(comp)
-
-    //then
-    assertDOMElement(domContainer,
-      <.div()(
-        <.div()("Item #1"),
-        <.div()("test 1"),
-        <.div()("Item #2"),
-        <.div()("test 2")
-      )
-    )
-  }
-  
-  it should "shallow render component" in {
-    //given
-    val props = ReactFragmentDemoProps(List("test"))
     val comp = <(ReactFragmentDemo())(^.wrapped := props)()
 
     //when
-    val result = shallowRender(comp)
+    val results = createTestRenderer(comp).root.children.toList
 
     //then
-    result.`type` shouldBe ReactFragment
-    
-    assertNativeComponent(result,
-      <.>()(
-        props.values.zipWithIndex.map { case (v, i) =>
-          <.>(^.key := s"$i")(
-            <.div()(s"Item #${i + 1}"),
-            <.div()(v)
-          )
-        }
-      )
-    )
+    inside(results) { case List(child1, child2, child3, child4) =>
+      assertNativeComponent(child1, <.div()("Item #1"))
+      assertNativeComponent(child2, <.div()("test 1"))
+      assertNativeComponent(child3, <.div()("Item #2"))
+      assertNativeComponent(child4, <.div()("test 2"))
+    }
   }
   
-  it should "test render component" in {
+  it should "render as child component" in {
     //given
     val props = ReactFragmentDemoProps(List("test"))
     val comp = <(ReactFragmentDemoSpec.Wrapper())(^.wrapped := props)()

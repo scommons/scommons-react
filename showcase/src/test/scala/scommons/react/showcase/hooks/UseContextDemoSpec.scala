@@ -1,41 +1,16 @@
 package scommons.react.showcase.hooks
 
-import scommons.react._
 import scommons.react.showcase.hooks.UseContextDemoApp._
 import scommons.react.test._
-import scommons.react.test.dom._
 
-class UseContextDemoSpec extends TestSpec
-  with TestDOMUtils
-  with ShallowRendererUtils
-  with TestRendererUtils {
-
-  it should "render component in dom" in {
-    //given
-    val value1 = 123
-    val value2 = ContextObj(456, "test")
-    val app = new UseContextDemoApp(value1, value2)
-    val child = new UseContextDemo(() => ())
-    
-    //when
-    domRender(<(app())()(
-      <(child())()()
-    ))
-    
-    //then
-    assertDOMElement(domContainer,
-      <.div()(
-        <.div()(s"#1: $value1, #2: $value2, #3: defValue")
-      )
-    )
-  }
-
-  it should "shallow render child component" in {
+class UseContextDemoSpec extends TestSpec with TestRendererUtils {
+  
+  it should "render child component" in {
     //given
     val child = new UseContextDemo(() => ())
 
     //when
-    val result = shallowRender(<(child())()())
+    val result = testRender(<(child())()())
 
     //then
     assertNativeComponent(result,
@@ -43,33 +18,7 @@ class UseContextDemoSpec extends TestSpec
     )
   }
 
-  it should "shallow render app component" in {
-    //given
-    val value1 = 123
-    val value2 = ContextObj(456, "test")
-    val app = new UseContextDemoApp(value1, value2)
-    val child = new UseContextDemo(() => ())
-
-    //when
-    val result = shallowRender(<(app())()(
-      <(child())()()
-    ))
-
-    //then
-    assertNativeComponent(result,
-      <(Context1.Provider)(^.contextValue := value1)(), { children1: List[ShallowInstance] =>
-        assertNativeComponent(children1.head,
-          <(Context2.Provider)(^.contextValue := value2)(), { children2: List[ShallowInstance] =>
-            assertComponent(children2.head, child)({ resProps =>
-              resProps shouldBe ((): Unit)
-            })
-          }
-        )
-      }
-    )
-  }
-
-  it should "test render component" in {
+  it should "render component" in {
     //given
     val value1 = 123
     val value2 = ContextObj(456, "test")

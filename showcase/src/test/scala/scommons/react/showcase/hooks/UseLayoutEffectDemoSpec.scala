@@ -1,50 +1,10 @@
 package scommons.react.showcase.hooks
 
 import scommons.react.test._
-import scommons.react.test.dom._
 
-class UseLayoutEffectDemoSpec extends TestSpec
-  with TestDOMUtils
-  with ShallowRendererUtils
-  with TestRendererUtils {
+class UseLayoutEffectDemoSpec extends TestSpec with TestRendererUtils {
 
-  it should "render component in dom" in {
-    //given
-    val comp = new UseLayoutEffectDemo(
-      afterEveryRender = () => (),
-      onlyOnce = () => () => (),
-      whenDependenciesChange = () => () => ()
-    )
-    val props = UseLayoutEffectDemoProps(1, "2")
-    
-    //when
-    domRender(<(comp())(^.wrapped := props)())
-    
-    //then
-    assertDOMElement(domContainer, <.div()(
-      <.div()(s"a: ${props.a}, b: ${props.b}")
-    ))
-  }
-  
-  it should "shallow render component" in {
-    //given
-    val comp = new UseLayoutEffectDemo(
-      afterEveryRender = () => (),
-      onlyOnce = () => () => (),
-      whenDependenciesChange = () => () => ()
-    )
-    val props = UseLayoutEffectDemoProps(1, "2")
-
-    //when
-    val result = shallowRender(<(comp())(^.wrapped := props)())
-
-    //then
-    assertNativeComponent(result,
-      <.div()(s"a: ${props.a}, b: ${props.b}")
-    )
-  }
-  
-  it should "test render component" in {
+  it should "render component" in {
     //given
     val comp = new UseLayoutEffectDemo(
       afterEveryRender = () => (),

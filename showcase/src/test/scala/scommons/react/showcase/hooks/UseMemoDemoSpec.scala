@@ -1,33 +1,16 @@
 package scommons.react.showcase.hooks
 
 import scommons.react.test._
-import scommons.react.test.dom._
 
-class UseMemoDemoSpec extends TestSpec
-  with TestDOMUtils
-  with ShallowRendererUtils
-  with TestRendererUtils {
+class UseMemoDemoSpec extends TestSpec with TestRendererUtils {
 
-  it should "render component in dom" in {
-    //given
-    val comp = new UseMemoDemo(() => ())
-    val props = UseMemoDemoProps(1, "2")
-    
-    //when
-    domRender(<(comp())(^.wrapped := props)())
-    
-    //then
-    val div = domContainer.querySelector("div")
-    div.textContent shouldBe s"a: ${props.a}, b: ${props.b}"
-  }
-  
-  it should "shallow render component" in {
+  it should "render component" in {
     //given
     val comp = new UseMemoDemo(() => ())
     val props = UseMemoDemoProps(1, "2")
 
     //when
-    val result = shallowRender(<(comp())(^.wrapped := props)())
+    val result = testRender(<(comp())(^.wrapped := props)())
 
     //then
     assertNativeComponent(result,
@@ -42,13 +25,14 @@ class UseMemoDemoSpec extends TestSpec
       called = true
     })
     val props = UseMemoDemoProps(1, "2")
-    val renderer = createRenderer()
-    renderer.render(<(comp())(^.wrapped := props)())
+    val renderer = createTestRenderer(<(comp())(^.wrapped := props)())
     called shouldBe true
     called = false
 
     //when
-    renderer.render(<(comp())(^.wrapped := props)())
+    TestRenderer.act { () =>
+      renderer.update(<(comp())(^.wrapped := props)())
+    }
 
     //then
     called shouldBe false
@@ -61,33 +45,20 @@ class UseMemoDemoSpec extends TestSpec
       called = true
     })
     val props = UseMemoDemoProps(1, "2")
-    val renderer = createRenderer()
-    renderer.render(<(comp())(^.wrapped := props)())
+    val renderer = createTestRenderer(<(comp())(^.wrapped := props)())
     called shouldBe true
     called = false
     val newProps = props.copy(b = "3")
 
     //when
-    renderer.render(<(comp())(^.wrapped := newProps)())
+    TestRenderer.act { () =>
+      renderer.update(<(comp())(^.wrapped := newProps)())
+    }
 
     //then
     called shouldBe true
-    assertNativeComponent(renderer.getRenderOutput(),
+    assertNativeComponent(renderer.root.children(0),
       <.div()(s"a: ${newProps.a}, b: ${newProps.b}")
-    )
-  }
-  
-  it should "test render component" in {
-    //given
-    val comp = new UseMemoDemo(() => ())
-    val props = UseMemoDemoProps(1, "2")
-
-    //when
-    val result = testRender(<(comp())(^.wrapped := props)())
-
-    //then
-    assertNativeComponent(result,
-      <.div()(s"a: ${props.a}, b: ${props.b}")
     )
   }
 }

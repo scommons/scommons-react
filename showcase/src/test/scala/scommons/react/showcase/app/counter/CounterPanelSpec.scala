@@ -1,17 +1,12 @@
 package scommons.react.showcase.app.counter
 
-import org.scalajs.dom.document
-import scommons.react._
 import scommons.react.redux.task.FutureTask
 import scommons.react.showcase.app.counter.CounterActions._
 import scommons.react.test._
-import scommons.react.test.dom._
 
 import scala.concurrent.Future
 
-class CounterPanelSpec extends TestSpec
-  with TestDOMUtils
-  with ShallowRendererUtils {
+class CounterPanelSpec extends TestSpec with TestRendererUtils {
 
   it should "dispatch CounterChangeAction when onClick on plus button" in {
     //given
@@ -19,8 +14,10 @@ class CounterPanelSpec extends TestSpec
     val actions = mock[CounterActions]
     val state = CounterState(123)
     val props = CounterPanelProps(dispatch, actions, state)
-    domRender(<(CounterPanel())(^.wrapped := props)())
-    val button = document.body.querySelectorAll("button").item(0)
+    val root = createTestRenderer(<(CounterPanel())(^.wrapped := props)()).root
+    val button = inside(findComponents(root, <.button.name)) {
+      case List(b, _) => b
+    }
     val action = CounterChangeAction(
       FutureTask("Changing Counter", Future.successful(0))
     )
@@ -30,7 +27,7 @@ class CounterPanelSpec extends TestSpec
     dispatch.expects(action)
     
     //when
-    fireDomEvent(Simulate.click(button))
+    button.props.onClick(null)
   }
 
   it should "dispatch CounterChangeAction when onClick on minus button" in {
@@ -39,8 +36,10 @@ class CounterPanelSpec extends TestSpec
     val actions = mock[CounterActions]
     val state = CounterState(123)
     val props = CounterPanelProps(dispatch, actions, state)
-    domRender(<(CounterPanel())(^.wrapped := props)())
-    val button = document.body.querySelectorAll("button").item(1)
+    val root = createTestRenderer(<(CounterPanel())(^.wrapped := props)()).root
+    val button = inside(findComponents(root, <.button.name)) {
+      case List(_, b) => b
+    }
     val action = CounterChangeAction(
       FutureTask("Changing Counter", Future.successful(0))
     )
@@ -50,7 +49,7 @@ class CounterPanelSpec extends TestSpec
     dispatch.expects(action)
     
     //when
-    fireDomEvent(Simulate.click(button))
+    button.props.onClick(null)
   }
 
   it should "render component" in {
@@ -61,20 +60,17 @@ class CounterPanelSpec extends TestSpec
     val props = CounterPanelProps(dispatch, actions, state)
 
     //when
-    val result = shallowRender(<(CounterPanel())(^.wrapped := props)())
+    val result = createTestRenderer(<(CounterPanel())(^.wrapped := props)()).root
 
     //then
-    assertNativeComponent(result,
-      <.>()(
-        <.p()(
-          "Welcome to the React Counter showcase example App." +
-            " Use buttons bellow to increase/decrease the counter:"
-        ),
-        <.p()(s"${props.state.value}"),
-
-        <.button()("+"),
-        <.button()("-")
-      )
-    )
+    inside(result.children.toList) { case List(p1, p2, b1, b2) =>
+      assertNativeComponent(p1, <.p()(
+        "Welcome to the React Counter showcase example App." +
+          " Use buttons bellow to increase/decrease the counter:"
+      ))
+      assertNativeComponent(p2, <.p()(s"${props.state.value}"))
+      assertNativeComponent(b1, <.button()("+"))
+      assertNativeComponent(b2, <.button()("-"))
+    }
   }
 }

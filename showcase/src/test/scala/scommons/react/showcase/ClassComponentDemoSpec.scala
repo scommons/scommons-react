@@ -2,97 +2,15 @@ package scommons.react.showcase
 
 import scommons.react._
 import scommons.react.test._
-import scommons.react.test.dom._
 
 import scala.scalajs.js
 
-class ClassComponentDemoSpec extends TestSpec
-  with TestDOMUtils
-  with ShallowRendererUtils
-  with TestRendererUtils {
+class ClassComponentDemoSpec extends TestSpec with TestRendererUtils {
   
   private type DemoProps = ClassComponentDemoProps
   private type DemoState = ClassComponentDemoState
 
-  it should "render component in dom" in {
-    //given
-    val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
-    val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]
-    val componentDidUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Unit]
-    val componentWillUnmount = mock[(DemoProps, DemoState) => Unit]
-    val rendered = mock[(ClassComponentDemoProps, ClassComponentDemoState) => Unit]
-
-    val props = ClassComponentDemoProps("test")
-    val comp = new ClassComponentDemo(
-      componentDidMount = componentDidMount,
-      shouldComponentUpdate = shouldComponentUpdate,
-      componentDidUpdate = componentDidUpdate,
-      componentWillUnmount = componentWillUnmount,
-      rendered = rendered
-    )
-    val state = ClassComponentDemoState(s"initial: ${props.propValue}")
-
-    inSequence {
-      (rendered.apply _).expects(props, state)
-      (componentDidMount.apply _).expects(props, state).returning(state)
-      (shouldComponentUpdate.apply _).expects(*, *, *, *).never()
-      (componentDidUpdate.apply _).expects(*, *, *, *).never()
-      (componentWillUnmount.apply _).expects(*, *).never()
-    }
-
-    //when
-    domRender(<(comp())(^.wrapped := props)("some child"))
-
-    //then
-    assertDOMElement(domContainer, <.div()(
-      <.div()(
-        s"${props.propValue}",
-        s"initial: ${props.propValue}",
-        "some child"
-      )
-    ))
-  }
-  
-  it should "shallow render component" in {
-    //given
-    val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
-    val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]
-    val componentDidUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Unit]
-    val componentWillUnmount = mock[(DemoProps, DemoState) => Unit]
-    val rendered = mock[(ClassComponentDemoProps, ClassComponentDemoState) => Unit]
-
-    val props = ClassComponentDemoProps("test")
-    val comp = new ClassComponentDemo(
-      componentDidMount = componentDidMount,
-      shouldComponentUpdate = shouldComponentUpdate,
-      componentDidUpdate = componentDidUpdate,
-      componentWillUnmount = componentWillUnmount,
-      rendered = rendered
-    )
-    val state = ClassComponentDemoState(s"initial: ${props.propValue}")
-
-    inSequence {
-      (rendered.apply _).expects(props, state)
-      (componentDidMount.apply _).expects(*, *).never()
-      (shouldComponentUpdate.apply _).expects(*, *, *, *).never()
-      (componentDidUpdate.apply _).expects(*, *, *, *).never()
-      (componentWillUnmount.apply _).expects(*, *).never()
-    }
-
-    //when
-    val result = shallowRender(<(comp())(^.wrapped := props)("some child"))
-
-    //then
-    assertNativeComponent(result,
-      <.div()(
-        s"${props.propValue}",
-        s"initial: ${props.propValue}",
-        "some child"
-      )
-    )
-  }
-  
-  it should "test render component" in {
+  it should "render component" in {
     //given
     val componentDidMount = mock[(DemoProps, DemoState) => ClassComponentDemoState]
     val shouldComponentUpdate = mock[(DemoProps, DemoState, DemoProps, DemoState) => Boolean]

@@ -3,6 +3,7 @@ package definitions
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
+import scoverage.ScoverageKeys.coverageExcludedPackages
 
 import scalajsbundler.BundlingMode
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
@@ -19,6 +20,10 @@ object ReactShowcase extends ScalaJsModule {
       publish := ((): Unit),
       publishLocal := ((): Unit),
       publishM2 := ((): Unit),
+
+      coverageExcludedPackages :=
+        "scommons.react.showcase.app.ShowcaseReactApp" +
+          ";scommons.react.showcase.dom.ReactPortalDemo",
 
       scalaJSUseMainModuleInitializer := true,
       webpackBundlingMode := BundlingMode.LibraryOnly(),
