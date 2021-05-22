@@ -1,8 +1,8 @@
 package scommons.react.showcase.app.counter
 
+import scommons.nodejs.test.AsyncTestSpec
 import scommons.react.redux.task.FutureTask
 import scommons.react.showcase.app.counter.CounterActions._
-import scommons.react.test.dom.AsyncTestSpec
 
 class CounterActionsSpec extends AsyncTestSpec {
 

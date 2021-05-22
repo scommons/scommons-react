@@ -3,7 +3,7 @@ package definitions
 import common.TestLibs
 import sbt.Keys._
 import sbt._
-import scoverage.ScoverageKeys.coverageExcludedPackages
+import scoverage.ScoverageKeys._
 
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
 
@@ -16,6 +16,8 @@ object ReactTestDom extends ScalaJsModule {
   override def definition: Project = super.definition
     .settings(
       description := "Web DOM Scala.js, React.js testing utilities",
+      
+      coverageEnabled := false, //until this is fixed: https://github.com/scalacenter/scalajs-bundler/issues/197
       coverageExcludedPackages := "scommons.react.test.dom.raw",
 
       requireJsDomEnv in Test := true

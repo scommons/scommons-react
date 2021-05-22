@@ -2,15 +2,16 @@ package scommons.react.redux.task
 
 import org.scalactic.source.Position
 import org.scalatest.{Assertion, Succeeded}
+import scommons.nodejs.test.AsyncTestSpec
 import scommons.react._
-import scommons.react.test.dom.AsyncTestSpec
+import scommons.react.test.BaseTestSpec
 import scommons.react.test.raw.TestRenderer
 import scommons.react.test.util.{ShallowRendererUtils, TestRendererUtils}
 
 import scala.concurrent.{Future, Promise}
 import scala.scalajs.js.JavaScriptException
 
-class TaskManagerSpec extends AsyncTestSpec
+class TaskManagerSpec extends AsyncTestSpec with BaseTestSpec
   with ShallowRendererUtils
   with TestRendererUtils {
 

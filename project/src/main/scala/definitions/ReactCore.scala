@@ -16,9 +16,7 @@ object ReactCore extends ScalaJsModule {
   override def definition: Project = super.definition
     .settings(
       description := "Scala.js facades for React.js core utilities and components",
-      coverageExcludedPackages := "scommons.react.raw",
-
-      requireJsDomEnv in Test := false
+      coverageExcludedPackages := "scommons.react.raw"
     )
 
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Nil

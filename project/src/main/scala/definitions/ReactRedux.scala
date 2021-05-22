@@ -4,8 +4,6 @@ import common.{Libs, TestLibs}
 import sbt.Keys._
 import sbt._
 
-import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
-
 object ReactRedux extends ScalaJsModule {
 
   override val id: String = "scommons-react-redux"
@@ -14,15 +12,12 @@ object ReactRedux extends ScalaJsModule {
 
   override def definition: Project = super.definition
     .settings(
-      description := "Scala.js facades for react-redux utilities and components",
-
-      requireJsDomEnv in Test := true
+      description := "Scala.js facades for react-redux utilities and components"
     )
 
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Seq(
     ReactCore.definition,
-    ReactTest.definition % "test",
-    ReactTestDom.definition % "test"
+    ReactTest.definition % "test"
   )
 
   override val runtimeDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
@@ -30,7 +25,6 @@ object ReactRedux extends ScalaJsModule {
   ))
 
   override val testDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
-    TestLibs.scalaTestJs.value,
-    TestLibs.scalaMockJs.value
+    TestLibs.scommonsNodejsTest.value
   ).map(_ % "test"))
 }

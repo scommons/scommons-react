@@ -1,5 +1,6 @@
 package definitions
 
+import common.TestLibs
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
@@ -20,6 +21,8 @@ object ReactShowcase extends ScalaJsModule {
       publish := ((): Unit),
       publishLocal := ((): Unit),
       publishM2 := ((): Unit),
+
+      requireJsDomEnv in Test := true,
 
       coverageExcludedPackages :=
         "scommons.react.showcase.app.ShowcaseReactApp" +
@@ -45,13 +48,14 @@ object ReactShowcase extends ScalaJsModule {
     ReactCore.definition,
     ReactDom.definition,
     ReactRedux.definition,
-    ReactTest.definition % "test",
-    ReactTestDom.definition % "test"
+    ReactTest.definition % "test"
   )
 
   override val superRepoProjectsDependencies: Seq[(String, String, Option[String])] = Nil
 
   override val runtimeDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Nil)
 
-  override val testDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Nil)
+  override val testDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
+    TestLibs.scommonsNodejsTest.value
+  ).map(_ % "test"))
 }

@@ -16,9 +16,7 @@ object ReactDom extends ScalaJsModule {
   override def definition: Project = super.definition
     .settings(
       description := "Scala.js facades for React.js DOM utilities and components",
-      coverageExcludedPackages := "scommons.react.dom.raw",
-
-      requireJsDomEnv in Test := true
+      coverageExcludedPackages := "scommons.react.dom.raw"
     )
 
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Seq(

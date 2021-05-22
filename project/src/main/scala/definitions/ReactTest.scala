@@ -20,13 +20,12 @@ object ReactTest extends ScalaJsModule {
 
       npmDependencies in Compile ++= Seq(
         "react-test-renderer" -> "^16.8.0"
-      ),
+      )
 
 //      npmResolutions in Test := Map(
 //        "react" -> "^16.8.0",
 //        "react-dom" -> "^16.8.0" //TODO: remove dependency on the react-dom !!!
 //      ),
-      requireJsDomEnv in Test := false
     )
 
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Seq(

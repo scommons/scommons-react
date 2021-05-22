@@ -1,7 +1,7 @@
 package scommons.react.redux.task
 
 import org.scalatest.Succeeded
-import scommons.react.test.dom.AsyncTestSpec
+import scommons.nodejs.test.AsyncTestSpec
 
 import scala.concurrent.Future
 import scala.util.{Success, Try}
