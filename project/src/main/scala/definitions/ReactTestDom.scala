@@ -5,8 +5,6 @@ import sbt.Keys._
 import sbt._
 import scoverage.ScoverageKeys._
 
-import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
-
 object ReactTestDom extends ScalaJsModule {
 
   override val id: String = "scommons-react-test-dom"
@@ -18,9 +16,7 @@ object ReactTestDom extends ScalaJsModule {
       description := "Web DOM Scala.js, React.js testing utilities",
       
       coverageEnabled := false, //until this is fixed: https://github.com/scalacenter/scalajs-bundler/issues/197
-      coverageExcludedPackages := "scommons.react.test.dom.raw",
-
-      requireJsDomEnv in Test := true
+      coverageExcludedPackages := "scommons.react.test.dom.raw"
     )
 
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Seq(

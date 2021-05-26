@@ -6,7 +6,8 @@ import scommons.react.test.dom.util.TestDOMUtils
 
 import scala.scalajs.js
 
-class SimulateSpec extends TestSpec with TestDOMUtils {
+//disabled until this is fixed: https://github.com/scalacenter/scalajs-bundler/issues/197
+trait SimulateSpec extends TestSpec with TestDOMUtils {
 
   it should "simulate onClick event" in {
     //given

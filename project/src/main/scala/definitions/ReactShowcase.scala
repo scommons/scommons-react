@@ -22,8 +22,6 @@ object ReactShowcase extends ScalaJsModule {
       publishLocal := ((): Unit),
       publishM2 := ((): Unit),
 
-      requireJsDomEnv in Test := true,
-
       coverageExcludedPackages :=
         "scommons.react.showcase.app.ShowcaseReactApp" +
           ";scommons.react.showcase.dom.ReactPortalDemo",

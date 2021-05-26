@@ -5,7 +5,8 @@ import org.scalatest.{Failed, OutcomeOf}
 import scommons.react._
 import scommons.react.test.TestSpec
 
-class TestDOMUtilsSpec extends TestSpec
+//disabled until this is fixed: https://github.com/scalacenter/scalajs-bundler/issues/197
+trait TestDOMUtilsSpec extends TestSpec
   with TestDOMUtils
   with OutcomeOf {
 

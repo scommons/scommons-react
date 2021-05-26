@@ -2,7 +2,8 @@ package scommons.react.test.dom
 
 import org.scalatest.time.{Millis, Span}
 
-class AsyncTestSpecTest extends AsyncTestSpec {
+//disabled until this is fixed: https://github.com/scalacenter/scalajs-bundler/issues/197
+trait AsyncTestSpecTest extends AsyncTestSpec {
 
   implicit override val patienceConfig: PatienceConfig = PatienceConfig(
     timeout = scaled(Span(500, Millis)),
