@@ -3,7 +3,8 @@ package scommons.react.test
 import io.github.shogowada.scalajs.reactjs.VirtualDOM
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import io.github.shogowada.statictags.Element
-import org.scalatest.{Inside, Matchers}
+import org.scalatest.Inside
+import org.scalatest.matchers.should.Matchers
 
 import scala.language.implicitConversions
 

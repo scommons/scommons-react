@@ -2,7 +2,8 @@ package scommons.react.test.util
 
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import org.scalactic.source.Position
-import org.scalatest.{Assertion, Matchers, Succeeded}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.{Assertion, Succeeded}
 import scommons.react.UiComponent
 import scommons.react.test.raw.RenderedInstance
 

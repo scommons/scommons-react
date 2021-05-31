@@ -3,10 +3,11 @@ package scommons.react.test.dom
 import org.scalactic.source.Position
 import org.scalajs.dom
 import org.scalamock.scalatest.AsyncMockFactory
+import org.scalatest.Assertion
 import org.scalatest.concurrent.PatienceConfiguration
 import org.scalatest.exceptions.{StackDepthException, TestFailedDueToTimeoutException}
+import org.scalatest.flatspec.AsyncFlatSpec
 import org.scalatest.time.{Millis, Seconds, Span}
-import org.scalatest.{Assertion, AsyncFlatSpec}
 import scommons.react.test.BaseTestSpec
 
 import scala.concurrent.{ExecutionContext, Future, Promise}

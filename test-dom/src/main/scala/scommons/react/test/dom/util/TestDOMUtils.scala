@@ -5,7 +5,8 @@ import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import io.github.shogowada.statictags
 import org.scalajs.dom
 import org.scalajs.dom._
-import org.scalatest.{BeforeAndAfterEach, Matchers, Suite}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.{BeforeAndAfterEach, Suite}
 import scommons.react.test.dom.raw.{ReactTestUtils, Simulate}
 
 import scala.scalajs.js
