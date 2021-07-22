@@ -92,8 +92,10 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
     val comp = doRender(<(compClass())()())
 
     //when
-    val Failed(e) = outcomeOf {
+    val e = inside(outcomeOf {
       assertNativeComponent(comp, <.p(^.testArr := js.Array("test2"))())
+    }) {
+      case Failed(e) => e
     }
 
     //then
@@ -115,10 +117,12 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
     val comp = doRender(<(compClass())()())
 
     //when
-    val Failed(e) = outcomeOf {
+    val e = inside(outcomeOf {
       assertNativeComponent(comp, <.p(^.testObj := js.Dynamic.literal(
         test = 2
       ))())
+    }) {
+      case Failed(e) => e
     }
 
     //then
@@ -138,8 +142,10 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
     val comp = doRender(<(compClass())()())
 
     //when
-    val Failed(e) = outcomeOf {
+    val e = inside(outcomeOf {
       assertNativeComponent(comp, <.p(^.disabled := false)())
+    }) {
+      case Failed(e) => e
     }
 
     //then
@@ -154,8 +160,10 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
     val comp = doRender(<(TestComp())(^.wrapped := Comp1Props(1))("test1 child"))
 
     //when
-    val Failed(e) = outcomeOf {
+    val e = inside(outcomeOf {
       assertNativeComponent(comp, <.p(^.className := "test1")("test2 child"))
+    }) {
+      case Failed(e) => e
     }
 
     //then
@@ -167,8 +175,10 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
     val comp = doRender(<(TestComp())(^.wrapped := Comp1Props(1))("test1 child"))
 
     //when
-    val Failed(e) = outcomeOf {
+    val e = inside(outcomeOf {
       assertNativeComponent(comp, <.p(^.className := "test1")())
+    }) {
+      case Failed(e) => e
     }
 
     //then

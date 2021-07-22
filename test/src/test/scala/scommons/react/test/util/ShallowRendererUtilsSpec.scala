@@ -28,10 +28,12 @@ class ShallowRendererUtilsSpec extends RendererUtilsSpec[ShallowInstance]
 
     //when
     assertNativeComponent(comp, <.div(^.className := "test2")(), { case List(comp1, _) =>
-      val Failed(e) = outcomeOf {
+      val e = inside(outcomeOf {
         assertComponent(comp1, TestComp) { props: Comp1Props =>
           props shouldBe Comp1Props(1)
         }
+      }) {
+        case Failed(e) => e
       }
 
       //then
@@ -69,8 +71,10 @@ class ShallowRendererUtilsSpec extends RendererUtilsSpec[ShallowInstance]
     val comp = shallowRender(<(compClass())()())
 
     //when
-    val Failed(e) = outcomeOf {
+    val e = inside(outcomeOf {
       assertNativeComponent(comp, <.p(^.key := "12345")())
+    }) {
+      case Failed(e) => e
     }
 
     //then

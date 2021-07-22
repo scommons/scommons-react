@@ -26,10 +26,12 @@ trait TestDOMUtilsSpec extends TestSpec
     domRender(<.div(^.className := "test1 test2")())
 
     //when
-    val Failed(e) = outcomeOf {
+    val e = inside(outcomeOf {
       assertDOMElement(domContainer, <.div()(
         <.div(^("class") := "test")()
       ))
+    }) {
+      case Failed(e) => e
     }
 
     //then
@@ -41,10 +43,12 @@ trait TestDOMUtilsSpec extends TestSpec
     domRender(<.div(^.className := "test")())
 
     //when
-    val Failed(e) = outcomeOf {
+    val e = inside(outcomeOf {
       assertDOMElement(domContainer, <.div()(
         <.div(^.className := "test")()
       ))
+    }) {
+      case Failed(e) => e
     }
 
     //then
@@ -56,10 +60,12 @@ trait TestDOMUtilsSpec extends TestSpec
     domRender(<.div(^.height := 5)())
 
     //when
-    val Failed(e) = outcomeOf {
+    val e = inside(outcomeOf {
       assertDOMElement(domContainer, <.div()(
         <.div(^.height := 10)()
       ))
+    }) {
+      case Failed(e) => e
     }
 
     //then
@@ -71,12 +77,14 @@ trait TestDOMUtilsSpec extends TestSpec
     domRender(<.div()())
 
     //when
-    val Failed(e) = outcomeOf {
+    val e = inside(outcomeOf {
       assertDOMElement(domContainer, <.div()(
         <.div()(
           <.p.empty
         )
       ))
+    }) {
+      case Failed(e) => e
     }
 
     //then
@@ -88,10 +96,12 @@ trait TestDOMUtilsSpec extends TestSpec
     domRender(<.div()("test"))
 
     //when
-    val Failed(e) = outcomeOf {
+    val e = inside(outcomeOf {
       assertDOMElement(domContainer, <.div()(
         <.div()("test2")
       ))
+    }) {
+      case Failed(e) => e
     }
 
     //then
