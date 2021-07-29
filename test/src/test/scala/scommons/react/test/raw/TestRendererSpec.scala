@@ -6,7 +6,6 @@ import scommons.react.test.TestSpec
 import scommons.react.test.raw.TestRendererSpec._
 
 import scala.scalajs.js
-import scala.scalajs.js.annotation.JSExportAll
 
 class TestRendererSpec extends TestSpec {
 
@@ -28,16 +27,16 @@ class TestRendererSpec extends TestSpec {
         }
       )
     }
-    val inputMock = mock[HTMLInputElementMock]
+    val focusMock = mockFunction[Unit]
     val compMock: js.Function1[TestInstance, js.Any] = { el =>
       if (el.`type` == "input".asInstanceOf[js.Any]) {
-        inputMock.asInstanceOf[HTMLInputElement]
+        createHTMLInputElement(focusMock)
       }
       else null
     }
     
     //then
-    (inputMock.focus _).expects()
+    focusMock.expects()
 
     //when
     TestRenderer.create(<(comp())()(), new TestRendererOptions {
@@ -132,9 +131,9 @@ class TestRendererSpec extends TestSpec {
 
 object TestRendererSpec {
 
-  @JSExportAll
-  trait HTMLInputElementMock {
-
-    def focus(): Unit
+  def createHTMLInputElement(focusMock: () => Unit): HTMLInputElement = {
+    js.Dynamic.literal(
+      "focus" -> (focusMock: js.Function)
+    ).asInstanceOf[HTMLInputElement]
   }
 }

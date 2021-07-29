@@ -2,7 +2,7 @@ package scommons.react.showcase.app.counter
 
 import io.github.shogowada.scalajs.reactjs.React.Props
 import io.github.shogowada.scalajs.reactjs.redux.Redux.Dispatch
-import scommons.react.showcase.app.ShowcaseStateDef
+import scommons.react.showcase.app.ShowcaseState
 import scommons.react.test.TestSpec
 
 class CounterControllerSpec extends TestSpec {
@@ -23,8 +23,7 @@ class CounterControllerSpec extends TestSpec {
     val controller = new CounterController(actions)
     val dispatch = mock[Dispatch]
     val counterState = mock[CounterState]
-    val state = mock[ShowcaseStateDef]
-    (state.counterState _).expects().returning(counterState)
+    val state = ShowcaseState(None, counterState)
 
     //when
     val result = controller.mapStateToProps(dispatch, state, props)

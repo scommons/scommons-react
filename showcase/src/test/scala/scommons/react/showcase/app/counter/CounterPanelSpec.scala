@@ -1,5 +1,6 @@
 package scommons.react.showcase.app.counter
 
+import io.github.shogowada.scalajs.reactjs.redux.Redux.Dispatch
 import scommons.react.redux.task.FutureTask
 import scommons.react.showcase.app.counter.CounterActions._
 import scommons.react.test._
@@ -11,7 +12,11 @@ class CounterPanelSpec extends TestSpec with TestRendererUtils {
   it should "dispatch CounterChangeAction when onClick on plus button" in {
     //given
     val dispatch = mockFunction[Any, Any]
-    val actions = mock[CounterActions]
+    val changeCounterMock = mockFunction[Dispatch, Int, Int, CounterChangeAction]
+    val actions = new CounterActions {
+      override def changeCounter(dispatch: Dispatch, counter: Int, dx: Int): CounterChangeAction =
+        changeCounterMock(dispatch, counter, dx)
+    }
     val state = CounterState(123)
     val props = CounterPanelProps(dispatch, actions, state)
     val root = createTestRenderer(<(CounterPanel())(^.wrapped := props)()).root
@@ -23,7 +28,7 @@ class CounterPanelSpec extends TestSpec with TestRendererUtils {
     )
     
     //then
-    (actions.changeCounter _).expects(dispatch, state.value, 1).returning(action)
+    changeCounterMock.expects(dispatch, state.value, 1).returning(action)
     dispatch.expects(action)
     
     //when
@@ -33,7 +38,11 @@ class CounterPanelSpec extends TestSpec with TestRendererUtils {
   it should "dispatch CounterChangeAction when onClick on minus button" in {
     //given
     val dispatch = mockFunction[Any, Any]
-    val actions = mock[CounterActions]
+    val changeCounterMock = mockFunction[Dispatch, Int, Int, CounterChangeAction]
+    val actions = new CounterActions {
+      override def changeCounter(dispatch: Dispatch, counter: Int, dx: Int): CounterChangeAction =
+        changeCounterMock(dispatch, counter, dx)
+    }
     val state = CounterState(123)
     val props = CounterPanelProps(dispatch, actions, state)
     val root = createTestRenderer(<(CounterPanel())(^.wrapped := props)()).root
@@ -45,7 +54,7 @@ class CounterPanelSpec extends TestSpec with TestRendererUtils {
     )
     
     //then
-    (actions.changeCounter _).expects(dispatch, state.value, -1).returning(action)
+    changeCounterMock.expects(dispatch, state.value, -1).returning(action)
     dispatch.expects(action)
     
     //when

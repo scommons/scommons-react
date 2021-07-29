@@ -1,18 +1,20 @@
 package scommons.react.showcase.hooks
 
-import scommons.react.showcase.hooks.UseRefDemoSpec.MouseSyntheticEventMock
+import org.scalajs.dom.raw.HTMLInputElement
+import scommons.react.showcase.hooks.UseRefDemoSpec._
 import scommons.react.test._
 
 import scala.scalajs.js
-import scala.scalajs.js.annotation.JSExportAll
 
 class UseRefDemoSpec extends TestSpec with TestRendererUtils {
   
   it should "set focus to input element when onClick" in {
     //given
-    val inputMock = mock[MouseSyntheticEventMock]
+    val focusMock = mockFunction[Unit]
     val root = createTestRenderer(<(UseRefDemo())()(), { el =>
-      if (el.`type` == "input".asInstanceOf[js.Any]) inputMock.asInstanceOf[js.Any]
+      if (el.`type` == "input".asInstanceOf[js.Any]) {
+        createHTMLInputElement(focusMock)
+      }
       else null
     }).root
     val button = inside(findComponents(root, <.button.name)) {
@@ -20,7 +22,7 @@ class UseRefDemoSpec extends TestSpec with TestRendererUtils {
     }
 
     //then
-    (inputMock.focus _).expects()
+    focusMock.expects()
 
     //when
     button.props.onClick(null)
@@ -43,9 +45,9 @@ class UseRefDemoSpec extends TestSpec with TestRendererUtils {
 
 object UseRefDemoSpec {
   
-  @JSExportAll
-  trait MouseSyntheticEventMock {
-
-    def focus(): Unit
+  def createHTMLInputElement(focusMock: () => Unit): HTMLInputElement = {
+    js.Dynamic.literal(
+      "focus" -> (focusMock: js.Function)
+    ).asInstanceOf[HTMLInputElement]
   }
 }
