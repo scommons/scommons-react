@@ -4,16 +4,13 @@ import org.scalactic.source.Position
 import org.scalatest.{Assertion, Succeeded}
 import scommons.nodejs.test.AsyncTestSpec
 import scommons.react._
-import scommons.react.test.BaseTestSpec
-import scommons.react.test.raw.TestRenderer
-import scommons.react.test.util.{ShallowRendererUtils, TestRendererUtils}
+import scommons.react.test._
 
 import scala.concurrent.{Future, Promise}
+import scala.scalajs.js
 import scala.scalajs.js.JavaScriptException
 
-class TaskManagerSpec extends AsyncTestSpec with BaseTestSpec
-  with ShallowRendererUtils
-  with TestRendererUtils {
+class TaskManagerSpec extends AsyncTestSpec with BaseTestSpec with TestRendererUtils {
 
   TaskManager.uiComponent = new FunctionComponent[TaskManagerUiProps] {
     override protected def render(props: Props): ReactElement = {
@@ -27,15 +24,22 @@ class TaskManagerSpec extends AsyncTestSpec with BaseTestSpec
     TaskManager.uiComponent = null
     val props = TaskManagerProps(None)
 
+    // suppress intended error
+    // see: https://github.com/facebook/react/issues/11098#issuecomment-412682721
+    val savedConsoleError = js.Dynamic.global.console.error
+    js.Dynamic.global.console.error = { _: js.Any =>
+    }
+
     //when
     val JavaScriptException(error) = the[JavaScriptException] thrownBy {
-      shallowRender(<(TaskManager())(^.wrapped := props)())
+      testRender(<(TaskManager())(^.wrapped := props)())
     }
 
     //then
     s"$error" shouldBe "Error: TaskManager.uiComponent is not specified"
     
     //restore default
+    js.Dynamic.global.console.error = savedConsoleError
     TaskManager.uiComponent = saved
     Succeeded
   }
