@@ -166,24 +166,26 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
   }
 
   private def getComponentChildren(result: Instance): List[Instance] = {
-    val resultChildren = result.asInstanceOf[js.Dynamic].children
+    val resChildren = result.asInstanceOf[js.Dynamic].children
+      .asInstanceOf[js.UndefOr[scalajs.js.Array[Instance]]]
 
     // in case of ShallowInstance or ReactElement get children from props
     // in case of TestInstance return children as it is
     //
-    if (scalajs.js.isUndefined(resultChildren)) {
-      if (scalajs.js.isUndefined(result.props)) Nil
-      else {
-        val children = result.props.children
+    resChildren.toOption match {
+      case Some(children) if children.length > 0 => children.toList
+      case _ =>
+        if (scalajs.js.isUndefined(result.props)) Nil
+        else {
+          val children = result.props.children
 
-        if (scalajs.js.isUndefined(children)) Nil
-        else if (scalajs.js.Array.isArray(children)) {
-          children.asInstanceOf[scalajs.js.Array[Instance]].toList
+          if (scalajs.js.isUndefined(children)) Nil
+          else if (scalajs.js.Array.isArray(children)) {
+            children.asInstanceOf[scalajs.js.Array[Instance]].toList
+          }
+          else List(children.asInstanceOf[Instance])
         }
-        else List(children.asInstanceOf[Instance])
-      }
     }
-    else resultChildren.asInstanceOf[js.Array[Instance]].toList
   }
 }
 
