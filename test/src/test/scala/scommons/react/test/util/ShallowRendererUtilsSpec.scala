@@ -5,6 +5,7 @@ import scommons.react._
 import scommons.react.test.raw.ShallowInstance
 import scommons.react.test.util.RendererUtilsSpec._
 
+@deprecated("Will be removed soon, use TestRendererUtils", "0.5.1")
 class ShallowRendererUtilsSpec extends RendererUtilsSpec[ShallowInstance]
   with ShallowRendererUtils {
 

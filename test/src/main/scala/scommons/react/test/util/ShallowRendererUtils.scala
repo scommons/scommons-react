@@ -7,6 +7,7 @@ import scommons.react.UiComponent
 import scommons.react.test.raw.{ShallowInstance, ShallowRenderer}
 import scommons.react.test.util.RendererUtils.{shallowInstanceUtils => utils}
 
+@deprecated("Will be removed soon, use TestRendererUtils instead", "0.5.1")
 trait ShallowRendererUtils {
 
   def createRenderer(): ShallowRenderer = new ShallowRenderer

@@ -3,6 +3,7 @@ package scommons.react.test.raw
 import scommons.react._
 import scommons.react.test.TestSpec
 
+@deprecated("Will be removed soon, use TestRenderer", "0.5.1")
 class ShallowRendererSpec extends TestSpec {
 
   it should "test ShallowRenderer" in {

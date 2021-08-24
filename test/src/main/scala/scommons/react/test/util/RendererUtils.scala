@@ -193,6 +193,7 @@ object RendererUtils {
 
   import scommons.react.test.raw.{ShallowInstance, TestInstance}
   
+  @deprecated("Will be removed soon, use testInstanceUtils instead", "0.5.1")
   val shallowInstanceUtils: RendererUtils[ShallowInstance] = new RendererUtils[ShallowInstance] {
 
     override def assertNativeComponent(result: ShallowInstance,

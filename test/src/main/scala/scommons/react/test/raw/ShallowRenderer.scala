@@ -13,6 +13,7 @@ import scala.scalajs.js.annotation.JSImport
   */
 @JSImport("react-test-renderer/shallow", JSImport.Default)
 @js.native
+@deprecated("Will be removed soon, use TestRenderer instead", "0.5.1")
 class ShallowRenderer extends js.Object {
 
   /**
@@ -32,6 +33,7 @@ class ShallowRenderer extends js.Object {
 }
 
 @js.native
+@deprecated("Will be removed soon, use TestInstance instead", "0.5.1")
 trait ShallowInstance extends RenderedInstance {
 
   val key: js.Any = js.native
