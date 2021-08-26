@@ -3,6 +3,7 @@ package scommons.react.showcase.app.counter
 import io.github.shogowada.scalajs.reactjs.events.MouseSyntheticEvent
 import io.github.shogowada.scalajs.reactjs.redux.Redux.Dispatch
 import scommons.react._
+import scommons.react.dom._
 
 case class CounterPanelProps(dispatch: Dispatch,
                              actions: CounterActions,

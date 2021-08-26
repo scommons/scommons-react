@@ -3,6 +3,7 @@ package scommons.react.showcase.hooks
 import io.github.shogowada.scalajs.reactjs.events.MouseSyntheticEvent
 import org.scalajs.dom.raw.HTMLInputElement
 import scommons.react._
+import scommons.react.dom._
 import scommons.react.hooks._
 
 object UseRefDemo extends FunctionComponent[Unit] {

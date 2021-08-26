@@ -7,11 +7,10 @@ import scommons.sbtplugin.project.CommonLibs
 object Libs extends CommonLibs {
 
   val scommonsNodejsVersion = "0.5.0"
-  private val sjsReactJsVer = "0.15.0"
+  private val sjsReactJsVer = "0.16.0-SNAPSHOT"
 
-  lazy val sjsReactJs = Def.setting("org.scommons.shogowada" %%% "scalajs-reactjs" % sjsReactJsVer)
-  lazy val sjsReactJsRouterDom = Def.setting("org.scommons.shogowada" %%% "scalajs-reactjs-router-dom" % sjsReactJsVer)
-  lazy val sjsReactJsRouterRedux = Def.setting("org.scommons.shogowada" %%% "scalajs-reactjs-router-redux" % sjsReactJsVer)
+  lazy val sjsReactJsCore = Def.setting("org.scommons.shogowada" %%% "scalajs-reactjs-core" % sjsReactJsVer)
+  lazy val sjsReactJsDom = Def.setting("org.scommons.shogowada" %%% "scalajs-reactjs-dom" % sjsReactJsVer)
   lazy val sjsReactJsRedux = Def.setting("org.scommons.shogowada" %%% "scalajs-reactjs-redux" % sjsReactJsVer)
-  lazy val sjsReactJsReduxDevTools = Def.setting("org.scommons.shogowada" %%% "scalajs-reactjs-redux-devtools" % sjsReactJsVer)
+  //lazy val sjsReactJsReduxDevTools = Def.setting("org.scommons.shogowada" %%% "scalajs-reactjs-redux-devtools" % sjsReactJsVer)
 }

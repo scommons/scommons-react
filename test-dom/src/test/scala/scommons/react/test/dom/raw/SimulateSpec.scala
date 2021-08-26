@@ -1,6 +1,7 @@
 package scommons.react.test.dom.raw
 
 import io.github.shogowada.scalajs.reactjs.events.MouseSyntheticEvent
+import scommons.react.dom._
 import scommons.react.test.TestSpec
 import scommons.react.test.dom.util.TestDOMUtils
 

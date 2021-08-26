@@ -3,6 +3,7 @@ package scommons.react.showcase
 import io.github.shogowada.scalajs.reactjs.events.MouseSyntheticEvent
 import org.scalajs.dom.raw.HTMLInputElement
 import scommons.react._
+import scommons.react.dom._
 
 object ReactRefDemo extends FunctionComponent[Unit] {
   

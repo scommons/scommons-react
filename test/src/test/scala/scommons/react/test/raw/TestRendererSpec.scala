@@ -1,6 +1,5 @@
 package scommons.react.test.raw
 
-import org.scalajs.dom.raw.HTMLInputElement
 import scommons.react._
 import scommons.react.test.TestSpec
 import scommons.react.test.raw.TestRendererSpec._
@@ -12,9 +11,9 @@ class TestRendererSpec extends TestSpec {
   it should "mock reference" in {
     //given
     val comp = new ClassComponent[Unit] {
-      protected def create(): ReactClass = createClass[ReactRef[HTMLInputElement]](
+      protected def create(): ReactClass = createClass[ReactRef[js.Dynamic]](
         getInitialState = { _ =>
-          ReactRef.create[HTMLInputElement]
+          ReactRef.create[js.Dynamic]
         },
         componentDidMount = { self =>
           self.state.current.focus()
@@ -131,9 +130,9 @@ class TestRendererSpec extends TestSpec {
 
 object TestRendererSpec {
 
-  def createHTMLInputElement(focusMock: () => Unit): HTMLInputElement = {
+  def createHTMLInputElement(focusMock: () => Unit): js.Object = {
     js.Dynamic.literal(
       "focus" -> (focusMock: js.Function)
-    ).asInstanceOf[HTMLInputElement]
+    )
   }
 }

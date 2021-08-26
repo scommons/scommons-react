@@ -1,7 +1,6 @@
 package scommons.react.test.util
 
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
-import org.scalajs.dom.raw.HTMLInputElement
 import scommons.react._
 import scommons.react.hooks._
 import scommons.react.test.raw.TestInstance
@@ -19,7 +18,7 @@ class TestRendererUtilsSpec extends RendererUtilsSpec[TestInstance]
     //given
     val comp = new FunctionComponent[Unit] {
       protected def render(props: Props): ReactElement = {
-        val elementRef = useRef[HTMLInputElement](null)
+        val elementRef = useRef[js.Dynamic](null)
 
         useLayoutEffect({ () =>
           elementRef.current.focus()
@@ -90,9 +89,9 @@ class TestRendererUtilsSpec extends RendererUtilsSpec[TestInstance]
 
 object TestRendererUtilsSpec {
 
-  def createHTMLInputElement(focusMock: () => Unit): HTMLInputElement = {
+  def createHTMLInputElement(focusMock: () => Unit): js.Object = {
     js.Dynamic.literal(
       "focus" -> (focusMock: js.Function)
-    ).asInstanceOf[HTMLInputElement]
+    )
   }
 }

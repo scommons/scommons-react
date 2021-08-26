@@ -24,6 +24,7 @@ object ReactDom extends ScalaJsModule {
   )
 
   override val runtimeDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
+    Libs.sjsReactJsDom.value,
     Libs.scalajsDom.value
   ))
 

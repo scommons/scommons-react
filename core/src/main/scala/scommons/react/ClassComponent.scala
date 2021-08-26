@@ -16,48 +16,15 @@ trait ClassComponent[T] extends UiComponent[T] {
     componentWillUnmount: Self[T, S] => Unit = null,
     componentDidCatch: (Self[T, S], js.Object, js.Dynamic) => Unit = null
   ): ReactClass = {
-    
-    raw.CreateClass.create(
+    React.createClass(
+      render = render,
       displayName = displayName,
-      render = js.ThisFunction.fromFunction1((native: js.Dynamic) => {
-        render(Self(native))
-      }),
-      getInitialState = js.ThisFunction.fromFunction1((native: js.Dynamic) => {
-        if (getInitialState != null) {
-          React.stateToNative(getInitialState(Self(native)))
-        } else {
-          React.stateToNative(())
-        }
-      }),
-      componentDidMount = js.ThisFunction.fromFunction1((native: js.Dynamic) => {
-        if (componentDidMount != null) {
-          componentDidMount(Self(native))
-        }
-      }),
-      shouldComponentUpdate = js.ThisFunction.fromFunction3((native: js.Dynamic, nextProps: js.Dynamic, nextState: js.Dynamic) => {
-        if (shouldComponentUpdate != null) {
-          shouldComponentUpdate(Self(native), Props(nextProps), React.stateFromNative(nextState))
-        }
-        else true
-      }),
-      componentDidUpdate = js.ThisFunction.fromFunction3((native: js.Dynamic, prevProps: js.Dynamic, prevState: js.Dynamic) => {
-        if (componentDidUpdate != null) {
-          componentDidUpdate(Self(native), Props(prevProps), React.stateFromNative(prevState))
-        }
-      }),
-      componentWillUnmount = js.ThisFunction.fromFunction1((native: js.Dynamic) => {
-        if (componentWillUnmount != null) {
-          componentWillUnmount(Self(native))
-        }
-      }),
-      componentDidCatch = {
-        if (componentDidCatch != null) {
-          js.ThisFunction.fromFunction3((native: js.Dynamic, error: js.Object, info: js.Dynamic) => {
-            componentDidCatch(Self(native), error, info)
-          })
-        }
-        else null
-      }
+      componentDidMount = componentDidMount,
+      shouldComponentUpdate = shouldComponentUpdate,
+      componentDidUpdate = componentDidUpdate,
+      componentWillUnmount = componentWillUnmount,
+      componentDidCatch = componentDidCatch,
+      getInitialState = getInitialState
     )
   }
 }

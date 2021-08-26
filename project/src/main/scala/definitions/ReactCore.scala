@@ -5,8 +5,6 @@ import sbt.Keys._
 import sbt._
 import scoverage.ScoverageKeys.coverageExcludedPackages
 
-import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
-
 object ReactCore extends ScalaJsModule {
 
   override val id: String = "scommons-react-core"
@@ -22,7 +20,7 @@ object ReactCore extends ScalaJsModule {
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Nil
 
   override val runtimeDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
-    Libs.sjsReactJs.value
+    Libs.sjsReactJsCore.value
   ))
 
   override val testDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
