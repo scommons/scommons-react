@@ -29,14 +29,13 @@ class ErrorBoundaryDemoSpec extends TestSpec with TestRendererUtils {
     //then
     js.Dynamic.global.console.error = savedConsoleError
 
-    assertNativeComponent(result,
-      <.div()(
-        s"Error: java.lang.Exception: test exception",
+    assertNativeComponent(result, <.div()(), inside(_) { case List(error, info) =>
+      error shouldBe s"Error: java.lang.Exception: test exception"
+      info.toString should startWith (
         """Info: 
-          |    in ErrorBoundaryDemoSpec$$anon$1
-          |    in ErrorBoundaryDemo""".stripMargin
+          |    at ErrorBoundaryDemoSpec$$anon$1""".stripMargin
       )
-    )
+    })
   }
   
   it should "render children" in {
