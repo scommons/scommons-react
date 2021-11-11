@@ -1,7 +1,6 @@
 package scommons.react.showcase.app.counter
 
-import io.github.shogowada.scalajs.reactjs.redux.Action
-import io.github.shogowada.scalajs.reactjs.redux.Redux.Dispatch
+import scommons.react.redux._
 import scommons.react.redux.task.{FutureTask, TaskAction}
 import scommons.react.showcase.app.counter.CounterActions._
 

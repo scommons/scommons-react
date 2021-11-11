@@ -1,6 +1,6 @@
 package scommons.react.redux.task
 
-import io.github.shogowada.scalajs.reactjs.redux.Action
+import scommons.react.redux.Action
 
 trait TaskAction extends Action {
 
