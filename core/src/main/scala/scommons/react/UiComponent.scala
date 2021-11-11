@@ -1,6 +1,10 @@
 package scommons.react
 
+import io.github.shogowada.scalajs.reactjs
+
 trait UiComponent[T] {
+
+  type Props = reactjs.React.Props[T]
 
   def apply(): ReactClass = reactClass
   

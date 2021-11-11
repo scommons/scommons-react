@@ -6,8 +6,6 @@ import scala.scalajs.js
 
 trait FunctionComponent[T] extends UiComponent[T] {
 
-  type Props = reactjs.React.Props[T]
-
   protected def render(props: Props): ReactElement
 
   override protected def create(): ReactClass = {

@@ -3,14 +3,17 @@ package scommons.react.test.util
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import org.scalactic.source.Position
 import org.scalatest.{Assertion, Succeeded}
-import scommons.react.UiComponent
+import scommons.react.{ReactClass, UiComponent}
 import scommons.react.test.raw
 import scommons.react.test.raw.{TestInstance, TestRenderer}
 import scommons.react.test.util.RendererUtils.{testInstanceUtils => utils}
+import scommons.react.test.util.TestRendererUtils.UiComponentMock
 
 import scala.scalajs.js
 
 trait TestRendererUtils {
+  
+  def mockUiComponent[T](name: String): UiComponent[T] = UiComponentMock[T](name)
 
   def createTestRenderer(element: ReactElement,
                          createMock: js.Function1[TestInstance, js.Any] = null): TestRenderer = {
@@ -71,5 +74,13 @@ trait TestRendererUtils {
                            )(implicit pos: Position): Assertion = {
 
     utils.assertNativeComponent(result, expectedElement, assertChildren)
+  }
+}
+
+object TestRendererUtils {
+
+  private case class UiComponentMock[T](name: String) extends UiComponent[T] {
+
+    protected def create(): ReactClass = name.asInstanceOf[ReactClass]
   }
 }

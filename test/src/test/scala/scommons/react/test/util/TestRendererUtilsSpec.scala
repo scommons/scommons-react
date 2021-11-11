@@ -14,6 +14,20 @@ class TestRendererUtilsSpec extends RendererUtilsSpec[TestInstance]
 
   protected def doRender(element: ReactElement): TestInstance = testRender(element)
 
+  TestComponent.childComp = mockUiComponent("SomeTestChild")
+
+  it should "render mockUiComponent" in {
+    //when
+    val result = testRender(<(TestComponent())()())
+    
+    //then
+    TestComponent.childComp.toString shouldBe "UiComponentMock(SomeTestChild)"
+    
+    assertTestComponent(result, TestComponent.childComp) { props =>
+      props shouldBe ()
+    }
+  }
+
   it should "render mock reference" in {
     //given
     val comp = new FunctionComponent[Unit] {
@@ -88,6 +102,19 @@ class TestRendererUtilsSpec extends RendererUtilsSpec[TestInstance]
 }
 
 object TestRendererUtilsSpec {
+  
+  object TestComponent extends FunctionComponent[Unit] {
+    
+    private[util] var childComp: UiComponent[Unit] = new FunctionComponent[Unit] {
+      protected def render(props: Props): ReactElement = {
+        <.>()()
+      }
+    }
+    
+    protected def render(props: TestComponent.Props): ReactElement = {
+      <(childComp())()()
+    }
+  }
 
   def createHTMLInputElement(focusMock: () => Unit): js.Object = {
     js.Dynamic.literal(
