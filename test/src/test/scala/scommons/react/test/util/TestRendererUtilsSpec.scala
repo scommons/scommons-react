@@ -1,6 +1,7 @@
 package scommons.react.test.util
 
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
+import org.scalatest.exceptions.TestFailedException
 import scommons.react._
 import scommons.react.hooks._
 import scommons.react.test.raw.TestInstance
@@ -98,6 +99,40 @@ class TestRendererUtilsSpec extends RendererUtilsSpec[TestInstance]
         assertNativeComponent(child, <.p(^.className := "test1")("test2 child2"))
       })
     })
+  }
+
+  it should "fail if wrong number of components when assertComponents" in {
+    //given
+    val comp = testRender(<(comp2Class)(^.wrapped := Comp2Props(true))())
+
+    //when
+    val e = the[TestFailedException] thrownBy {
+      assertComponents(comp.children, List(
+        <(TestComp())(^.wrapped := Comp1Props(1))(
+          <.p(^.className := "test1")("test2 child1")
+        )
+      ))
+    }
+
+    //then
+    e.getMessage shouldBe "Result components count(2) doesn't match expected count(1)"
+  }
+
+  it should "assert children when assertComponents" in {
+    //given
+    val result = createTestRenderer(<(comp2Class)(^.wrapped := Comp2Props(true))()).root
+
+    //when & then
+    assertComponents(result.children, List(
+      <.div(^.className := "test2")(
+        <(TestComp())(^.wrapped := Comp1Props(1))(
+          <.p(^.className := "test1")("test2 child1")
+        ),
+        <(TestComp())(^.wrapped := Comp1Props(2))(
+          <.p(^.className := "test1")("test2 child2")
+        )
+      )
+    ))
   }
 }
 

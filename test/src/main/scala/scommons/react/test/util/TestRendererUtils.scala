@@ -2,7 +2,7 @@ package scommons.react.test.util
 
 import io.github.shogowada.scalajs.reactjs.elements.ReactElement
 import org.scalactic.source.Position
-import org.scalatest.{Assertion, Succeeded}
+import org.scalatest.{Assertion, Assertions, Succeeded}
 import scommons.react.{ReactClass, UiComponent}
 import scommons.react.test.raw
 import scommons.react.test.raw.{TestInstance, TestRenderer}
@@ -11,7 +11,7 @@ import scommons.react.test.util.TestRendererUtils.UiComponentMock
 
 import scala.scalajs.js
 
-trait TestRendererUtils {
+trait TestRendererUtils extends Assertions {
   
   def mockUiComponent[T](name: String): UiComponent[T] = UiComponentMock[T](name)
 
@@ -59,6 +59,24 @@ trait TestRendererUtils {
                             )(implicit pos: Position): Assertion = {
 
     utils.assertComponent(result, expectedComp)(assertProps, assertChildren)
+  }
+
+  def assertComponents(results: js.Array[TestInstance],
+                       expectedList: List[ReactElement]
+                      )(implicit pos: Position): Assertion = {
+
+    val resultCount = results.length
+    val expectedCount = expectedList.size
+    if (resultCount != expectedCount) {
+      fail(s"Result components count($resultCount) doesn't match expected count($expectedCount)")
+    }
+
+    expectedList.foldLeft(0) { (i, expected) =>
+      assertNativeComponent(results(i), expected)
+      i + 1
+    }
+    
+    Succeeded
   }
 
   def assertNativeComponent(result: TestInstance,

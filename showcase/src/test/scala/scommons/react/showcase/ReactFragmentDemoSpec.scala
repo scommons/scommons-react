@@ -11,15 +11,15 @@ class ReactFragmentDemoSpec extends TestSpec with TestRendererUtils {
     val comp = <(ReactFragmentDemo())(^.wrapped := props)()
 
     //when
-    val results = createTestRenderer(comp).root.children.toList
+    val result = createTestRenderer(comp).root
 
     //then
-    inside(results) { case List(child1, child2, child3, child4) =>
-      assertNativeComponent(child1, <.div()("Item #1"))
-      assertNativeComponent(child2, <.div()("test 1"))
-      assertNativeComponent(child3, <.div()("Item #2"))
-      assertNativeComponent(child4, <.div()("test 2"))
-    }
+    assertComponents(result.children, List(
+      <.div()("Item #1"),
+      <.div()("test 1"),
+      <.div()("Item #2"),
+      <.div()("test 2")
+    ))
   }
   
   it should "render as child component" in {
