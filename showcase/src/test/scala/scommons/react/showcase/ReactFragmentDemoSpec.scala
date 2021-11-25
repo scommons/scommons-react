@@ -31,12 +31,12 @@ class ReactFragmentDemoSpec extends TestSpec with TestRendererUtils {
     val result = testRender(comp)
 
     //then
-    assertTestComponent(result, ReactFragmentDemo)({ resProps =>
-      resProps shouldBe props
-    }, { case List(child1, child2) =>
-      assertNativeComponent(child1, <.div()("Item #1"))
-      assertNativeComponent(child2, <.div()("test"))
-    })
+    assertNativeComponent(result,
+      <(ReactFragmentDemo())(^.wrapped := props)(
+        <.div()("Item #1"),
+        <.div()("test")
+      )
+    )
   }
 }
 

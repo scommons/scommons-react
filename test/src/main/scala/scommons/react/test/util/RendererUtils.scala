@@ -111,23 +111,31 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
       }
     }
     
-    for (attr <- js.Object.keys(expectedInstance.props).filter(_ != "children")) {
-      val resultValue = result.props.selectDynamic(attr)
-      val expectedValue = expectedInstance.props.selectDynamic(attr).asInstanceOf[js.Any]
-      js.typeOf(expectedValue) match {
-        case "object" =>
-          if (js.Array.isArray(expectedValue)) {
-            assertArray(s"$expectedType.$attr",
-              resultValue, expectedValue.asInstanceOf[js.Array[_]])
-          }
-          else {
-            assertObject(s"$expectedType.$attr",
-              resultValue, expectedValue.asInstanceOf[js.Object with js.Dynamic])
-          }
-        case _ =>
-          assertAttrValue(s"$expectedType.$attr", resultValue, expectedValue)
-      }
+    val assertWrapped = expectedInstance.props.selectDynamic("assertWrapped")
+    if (!js.isUndefined(assertWrapped)) {
+      val resultWrapped = result.props.selectDynamic("wrapped")
+      assertWrapped.asInstanceOf[Any => Any].apply(resultWrapped)
     }
+    
+    js.Object.keys(expectedInstance.props)
+      .filter(p => p != "children" && p != "assertWrapped")
+      .foreach { attr =>
+        val resultValue = result.props.selectDynamic(attr)
+        val expectedValue = expectedInstance.props.selectDynamic(attr).asInstanceOf[js.Any]
+        js.typeOf(expectedValue) match {
+          case "object" =>
+            if (js.Array.isArray(expectedValue)) {
+              assertArray(s"$expectedType.$attr",
+                resultValue, expectedValue.asInstanceOf[js.Array[_]])
+            }
+            else {
+              assertObject(s"$expectedType.$attr",
+                resultValue, expectedValue.asInstanceOf[js.Object with js.Dynamic])
+            }
+          case _ =>
+            assertAttrValue(s"$expectedType.$attr", resultValue, expectedValue)
+        }
+      }
 
     val children = getComponentChildren(result)
 
