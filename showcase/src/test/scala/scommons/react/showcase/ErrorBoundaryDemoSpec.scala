@@ -33,7 +33,7 @@ class ErrorBoundaryDemoSpec extends TestSpec with TestRendererUtils {
       error shouldBe s"Error: java.lang.Exception: test exception"
       info.toString should startWith (
         """Info: 
-          |    at ErrorBoundaryDemoSpec$$anon$1""".stripMargin
+          |        -> """.stripMargin
       )
     })
   }
