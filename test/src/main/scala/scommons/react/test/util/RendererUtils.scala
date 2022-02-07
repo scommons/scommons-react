@@ -177,7 +177,7 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
     val resChildren = result.asInstanceOf[js.Dynamic].children
       .asInstanceOf[js.UndefOr[scalajs.js.Array[Instance]]]
 
-    // in case of ShallowInstance or ReactElement get children from props
+    // in case of ReactElement get children from props
     // in case of TestInstance return children as it is
     //
     resChildren.toOption match {
@@ -199,24 +199,7 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
 
 object RendererUtils {
 
-  import scommons.react.test.raw.{ShallowInstance, TestInstance}
-  
-  @deprecated("Will be removed soon, use testInstanceUtils instead", "0.5.1")
-  val shallowInstanceUtils: RendererUtils[ShallowInstance] = new RendererUtils[ShallowInstance] {
-
-    override def assertNativeComponent(result: ShallowInstance,
-                                       expectedElement: ReactElement,
-                                       assertChildren: List[ShallowInstance] => Assertion
-                                      )(implicit pos: Position): Assertion = {
-
-      val expectedInstance = expectedElement.asInstanceOf[ShallowInstance]
-
-      val expectedType = js.Object(expectedInstance.`type`).toString
-      assertAttrValue(s"$expectedType.key", result.key, expectedInstance.key)
-
-      super.assertNativeComponent(result, expectedElement, assertChildren)
-    }
-  }
+  import scommons.react.test.raw.TestInstance
 
   val testInstanceUtils: RendererUtils[TestInstance] = new RendererUtils[TestInstance] {}
 }
