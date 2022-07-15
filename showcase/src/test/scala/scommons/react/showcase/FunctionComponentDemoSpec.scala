@@ -70,7 +70,7 @@ class FunctionComponentDemoSpec extends TestSpec with TestRendererUtils {
     //then
     assertTestComponent(result, FunctionComponentDemo)({ resProps =>
       resProps shouldBe props
-    }, { case List(child) =>
+    }, inside(_) { case List(child) =>
       assertNativeComponent(child,
         <.div(^.className := "root")(
           props.values.map { v =>

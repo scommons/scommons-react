@@ -31,10 +31,7 @@ class ErrorBoundaryDemoSpec extends TestSpec with TestRendererUtils {
 
     assertNativeComponent(result, <.div()(), inside(_) { case List(error, info) =>
       error shouldBe s"Error: java.lang.Exception: test exception"
-      info.toString should startWith (
-        """Info: 
-          |        -> """.stripMargin
-      )
+      info.toString should startWith ("Info:")
     })
   }
   

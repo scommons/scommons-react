@@ -47,7 +47,7 @@ trait AsyncTestSpec extends AsyncFlatSpec
           promise.success(mayFailBlock)
         }
         else {
-          val durationSpan = Span(1, Millis) scaledBy durationMillis // Use scaledBy to get pretty units
+          val durationSpan = Span(1, Millis) scaledBy durationMillis.toDouble // Use scaledBy to get pretty units
           val failure = new TestFailedDueToTimeoutException(
             { (_: StackDepthException) =>
               val error =
@@ -75,7 +75,7 @@ trait AsyncTestSpec extends AsyncFlatSpec
       catch {
         case NonFatal(ex) => lastEx = ex
       }
-    }, interval.millisPart)
+    }, interval.millisPart.toDouble)
 
     promise.future
   }

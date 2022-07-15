@@ -15,7 +15,7 @@ trait SimulateSpec extends TestSpec with TestDOMUtils {
     var clicked = false
     var clientX = 0
     var clientY = 0
-    def onClick() = { (e: MouseSyntheticEvent) =>
+    val onClick = { (e: MouseSyntheticEvent) =>
       clicked = true
       clientX = e.clientX
       clientY = e.clientY

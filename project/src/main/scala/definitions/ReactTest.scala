@@ -18,7 +18,7 @@ object ReactTest extends ScalaJsModule {
       description := "Core Scala.js, React.js testing utilities",
       coverageExcludedPackages := "scommons.react.test.raw",
 
-      npmDependencies in Compile ++= Seq(
+      Compile / npmDependencies ++= Seq(
         "react-test-renderer" -> "^17.0.1"
       )
     )
