@@ -1,6 +1,6 @@
 const merge = require("webpack-merge")
 
 const generatedConfig = require('./scalajs.webpack.config')
-const commonBabelConfig = require("./sc-babel.webpack.config.js")
+const commonConfig = require("./common.webpack.config.js")
 
-module.exports = merge(generatedConfig, commonBabelConfig)
+module.exports = merge(generatedConfig, commonConfig)

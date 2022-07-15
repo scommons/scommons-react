@@ -64,7 +64,7 @@ class TestRendererUtilsSpec extends RendererUtilsSpec[TestInstance]
     val comp = testRender(<(TestComp())(^.wrapped := Comp1Props(1))("test1 child"))
 
     //then
-    assertNativeComponent(comp, <.p(^.className := "test1")(), { case List(child) =>
+    assertNativeComponent(comp, <.p(^.className := "test1")(), inside(_) { case List(child) =>
       child shouldBe "test1 child"
     })
   }
@@ -74,7 +74,7 @@ class TestRendererUtilsSpec extends RendererUtilsSpec[TestInstance]
     val comp = testRender(<(comp2Class)(^.wrapped := Comp2Props(true))())
 
     //when
-    assertNativeComponent(comp, <.div(^.className := "test2")(), { case List(comp1, _) =>
+    assertNativeComponent(comp, <.div(^.className := "test2")(), inside(_) { case List(comp1, _) =>
       assertTestComponent(comp1, TestComp) { props: Comp1Props =>
         props shouldBe Comp1Props(1)
       }
@@ -86,16 +86,16 @@ class TestRendererUtilsSpec extends RendererUtilsSpec[TestInstance]
     val comp = testRender(<(comp2Class)(^.wrapped := Comp2Props(true))())
 
     //when & then
-    assertNativeComponent(comp, <.div(^.className := "test2")(), { case List(comp1, comp2) =>
+    assertNativeComponent(comp, <.div(^.className := "test2")(), inside(_) { case List(comp1, comp2) =>
       assertTestComponent(comp1, TestComp)({ props =>
         props shouldBe Comp1Props(1)
-      }, { case List(child) =>
+      }, inside(_) { case List(child) =>
         assertNativeComponent(child, <.p(^.className := "test1")("test2 child1"))
       })
 
       assertTestComponent(comp2, TestComp)({ props =>
         props shouldBe Comp1Props(2)
-      }, { case List(child) =>
+      }, inside(_) { case List(child) =>
         assertNativeComponent(child, <.p(^.className := "test1")("test2 child2"))
       })
     })

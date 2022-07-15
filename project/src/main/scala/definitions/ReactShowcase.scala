@@ -17,7 +17,7 @@ object ReactShowcase extends ScalaJsModule {
 
   override def definition: Project = super.definition
     .settings(
-      skip in publish := true,
+      publish / skip := true,
       publish := ((): Unit),
       publishLocal := ((): Unit),
       publishM2 := ((): Unit),
@@ -29,17 +29,14 @@ object ReactShowcase extends ScalaJsModule {
       scalaJSUseMainModuleInitializer := true,
       webpackBundlingMode := BundlingMode.LibraryOnly(),
 
-      npmDevDependencies in Compile ++= Seq(
-        "babel-loader" -> "8.0.5",
-        "@babel/core" -> "7.4.0",
-        "@babel/preset-env" -> "7.4.2",
+      Compile / npmDevDependencies ++= Seq(
         "webpack-merge" -> "4.2.1"
       ),
 
       //dev
-      webpackConfigFile in fastOptJS := Some(baseDirectory.value / "client.webpack.config.js"),
+      fastOptJS / webpackConfigFile := Some(baseDirectory.value / "client.webpack.config.js"),
       //prod
-      webpackConfigFile in fullOptJS := Some(baseDirectory.value / "client.webpack.config.js")
+      fullOptJS / webpackConfigFile := Some(baseDirectory.value / "client.webpack.config.js")
     )
 
   override val internalDependencies: Seq[ClasspathDep[ProjectReference]] = Seq(

@@ -1,6 +1,6 @@
 package scommons.react.showcase
 
-import org.scalajs.dom.raw.HTMLInputElement
+import org.scalajs.dom.HTMLInputElement
 import scommons.react.showcase.ReactRefDemoSpec._
 import scommons.react.test._
 

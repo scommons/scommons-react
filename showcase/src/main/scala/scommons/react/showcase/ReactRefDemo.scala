@@ -1,7 +1,7 @@
 package scommons.react.showcase
 
 import io.github.shogowada.scalajs.reactjs.events.MouseSyntheticEvent
-import org.scalajs.dom.raw.HTMLInputElement
+import org.scalajs.dom.HTMLInputElement
 import scommons.react._
 import scommons.react.dom._
 

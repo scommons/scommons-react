@@ -33,7 +33,7 @@ class UseContextDemoSpec extends TestSpec with TestRendererUtils {
     //then
     assertTestComponent(result, child)({ resProps =>
       resProps shouldBe ((): Unit)
-    }, { case List(resChild) =>
+    }, inside(_) { case List(resChild) =>
       assertNativeComponent(resChild,
         <.div()(s"#1: $value1, #2: $value2, #3: defValue")
       )
