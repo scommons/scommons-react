@@ -16,8 +16,8 @@ abstract class RendererUtilsSpec[Instance <: RenderedInstance] extends TestSpec
 
   protected def doRender(element: ReactElement): Instance
 
-  def findComponentProps[T](renderedComp: Instance, searchComp: UiComponent[T])(implicit pos: Position): T
-  def findProps[T](renderedComp: Instance, searchComp: UiComponent[T]): List[T]
+  def findComponentProps[T](renderedComp: Instance, searchComp: UiComponent[T], plain: Boolean = false)(implicit pos: Position): T
+  def findProps[T](renderedComp: Instance, searchComp: UiComponent[T], plain: Boolean = false): List[T]
   def findComponents(component: Instance, componentType: Any): List[Instance]
   def assertNativeComponent(result: Instance, expectedElement: ReactElement)(implicit pos: Position): Assertion
   

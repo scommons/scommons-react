@@ -13,8 +13,12 @@ package object test {
 
     import VirtualDOMAttributes.Type._
 
-    case class AssertPropAttributeSpec(name: String) extends AttributeSpec {
+    case class AssertWrappedAttributeSpec(name: String) extends AttributeSpec {
       def apply(f: Any => Any): Attribute[Any => Any] = Attribute(name, f, AS_IS)
+    }
+
+    case class AssertPlainAttributeSpec(name: String) extends AttributeSpec {
+      def apply[T](f: T => Any): Attribute[T => Any] = Attribute(name, f, AS_IS)
     }
   }
 
@@ -22,6 +26,7 @@ package object test {
 
     import TestVirtualDOMAttributes._
 
-    lazy val assertWrapped = AssertPropAttributeSpec("assertWrapped")
+    lazy val assertWrapped = AssertWrappedAttributeSpec("assertWrapped")
+    lazy val assertPlain = AssertPlainAttributeSpec("assertPlain")
   }
 }

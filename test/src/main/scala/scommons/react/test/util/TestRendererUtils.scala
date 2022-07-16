@@ -40,13 +40,14 @@ trait TestRendererUtils extends Assertions {
   }
 
   def findComponentProps[T](renderedComp: TestInstance,
-                            searchComp: UiComponent[T])(implicit pos: Position): T = {
+                            searchComp: UiComponent[T],
+                            plain: Boolean = false)(implicit pos: Position): T = {
     
-    utils.findComponentProps(renderedComp, searchComp)
+    utils.findComponentProps(renderedComp, searchComp, plain)
   }
 
-  def findProps[T](renderedComp: TestInstance, searchComp: UiComponent[T]): List[T] = {
-    utils.findProps(renderedComp, searchComp)
+  def findProps[T](renderedComp: TestInstance, searchComp: UiComponent[T], plain: Boolean = false): List[T] = {
+    utils.findProps(renderedComp, searchComp, plain)
   }
 
   def findComponents(component: TestInstance, componentType: Any): List[TestInstance] = {

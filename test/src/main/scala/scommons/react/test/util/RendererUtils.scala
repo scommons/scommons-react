@@ -22,18 +22,20 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
   }
 
   def findComponentProps[T](renderedComp: Instance,
-                            searchComp: UiComponent[T]
+                            searchComp: UiComponent[T],
+                            plain: Boolean = false
                            )(implicit pos: Position): T = {
     
-    findProps[T](renderedComp, searchComp).headOption match {
+    findProps[T](renderedComp, searchComp, plain).headOption match {
       case Some(comp) => comp
       case None => fail(s"UiComponent $searchComp not found")
     }
   }
 
-  def findProps[T](renderedComp: Instance, searchComp: UiComponent[T]): List[T] = {
+  def findProps[T](renderedComp: Instance, searchComp: UiComponent[T], plain: Boolean = false): List[T] = {
     def getComponentProps(component: Instance): T = {
-      component.props.wrapped.asInstanceOf[T]
+      if (plain) component.props.asInstanceOf[T]
+      else component.props.wrapped.asInstanceOf[T]
     }
     
     findComponents(renderedComp, searchComp.apply()).map(getComponentProps)
@@ -117,8 +119,14 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
       assertWrapped.asInstanceOf[Any => Any].apply(resultWrapped)
     }
     
+    val assertPlain = expectedInstance.props.selectDynamic("assertPlain")
+    if (!js.isUndefined(assertPlain)) {
+      val resultPlain = result.props
+      assertPlain.asInstanceOf[Any => Any].apply(resultPlain)
+    }
+    
     js.Object.keys(expectedInstance.props)
-      .filter(p => p != "children" && p != "assertWrapped")
+      .filter(p => p != "children" && p != "assertWrapped" && p != "assertPlain")
       .foreach { attr =>
         val resultValue = result.props.selectDynamic(attr)
         val expectedValue = expectedInstance.props.selectDynamic(attr).asInstanceOf[js.Any]
