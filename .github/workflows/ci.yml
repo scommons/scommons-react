@@ -67,14 +67,14 @@ jobs:
 
     - name: Run tests
       run: |
-        sbt coverage test
+        sbt -mem 2048 coverage test
         sbt coverageAggregate coveralls
       if: ${{ env.TAG_NAME == '' }}
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
     - name: Publish SNAPSHOT
-      run: sbt clean publish
+      run: sbt -mem 2048 clean publish
       if: ${{ !github.event.pull_request && env.TAG_NAME == '' }}
       env:
         SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
@@ -87,7 +87,7 @@ jobs:
         echo $PGP_SECRET | base64 --decode > ./keys/secring.gpg
         VERSION="$(echo "$TAG_NAME" | cut -d'v' -f 2)"
         echo "Publish a release version=$VERSION for tag $TAG_NAME"
-        version=$VERSION sbt clean publishSigned sonatypeBundleRelease
+        version=$VERSION sbt -mem 2048 clean publishSigned sonatypeBundleRelease
       if: ${{ env.TAG_NAME != '' }}
       env:
         SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
