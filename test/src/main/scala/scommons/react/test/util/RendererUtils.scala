@@ -61,14 +61,16 @@ sealed trait RendererUtils[Instance <: RenderedInstance] extends Matchers {
     result.toList
   }
 
-  def assertComponent[T](result: Instance, expectedComp: UiComponent[T])
+  def assertComponent[T](result: Instance, expectedComp: UiComponent[T], plain: Boolean = false)
                         (assertProps: T => Assertion,
                          assertChildren: List[Instance] => Assertion
                         )(implicit pos: Position): Assertion = {
 
     result.`type` shouldBe expectedComp.apply()
 
-    assertProps(result.props.wrapped.asInstanceOf[T])
+    if (plain) assertProps(result.props.asInstanceOf[T])
+    else assertProps(result.props.wrapped.asInstanceOf[T])
+
     assertChildren(getComponentChildren(result))
   }
 

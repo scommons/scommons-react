@@ -54,12 +54,12 @@ trait TestRendererUtils extends Assertions {
     utils.findComponents(component, componentType)
   }
 
-  def assertTestComponent[T](result: TestInstance, expectedComp: UiComponent[T])
+  def assertTestComponent[T](result: TestInstance, expectedComp: UiComponent[T], plain: Boolean = false)
                             (assertProps: T => Assertion,
                              assertChildren: List[TestInstance] => Assertion = _ => Succeeded
                             )(implicit pos: Position): Assertion = {
 
-    utils.assertComponent(result, expectedComp)(assertProps, assertChildren)
+    utils.assertComponent(result, expectedComp, plain)(assertProps, assertChildren)
   }
 
   def assertComponents(results: js.Array[TestInstance],

@@ -37,6 +37,12 @@ class TestAttributesSpec extends TestSpec with TestRendererUtils {
       case List(TestPlainProps("test plain", 123)) =>
     }
     
+    val resultChild = findComponents(result, plainChildComp()).head
+    assertTestComponent(resultChild, plainChildComp, plain = true)(inside(_) {
+      case TestPlainProps("test plain", age) =>
+        age shouldBe 123
+    })
+
     assertNativeComponent(result,
       <.div()(
         <(plainChildComp())(^.assertPlain[TestPlainProps](inside(_) {
