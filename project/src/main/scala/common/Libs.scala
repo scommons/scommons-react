@@ -6,8 +6,8 @@ import scommons.sbtplugin.project.CommonLibs
 
 object Libs extends CommonLibs {
 
-  val scommonsNodejsVersion = "1.0.0-SNAPSHOT"
-  private val sjsReactJsVer = "1.0.0-SNAPSHOT"
+  val scommonsNodejsVersion = "0.9.0"
+  private val sjsReactJsVer = "1.0.0"
 
   lazy val sjsReactJsCore = Def.setting("org.scommons.shogowada" %%% "scalajs-reactjs-core" % sjsReactJsVer)
   lazy val sjsReactJsDom = Def.setting("org.scommons.shogowada" %%% "scalajs-reactjs-dom" % sjsReactJsVer)
