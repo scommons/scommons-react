@@ -2,7 +2,7 @@
 [![CI](https://github.com/scommons/scommons-react/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/scommons/scommons-react/actions/workflows/ci.yml?query=workflow%3Aci+branch%3Amaster)
 [![Coverage Status](https://coveralls.io/repos/github/scommons/scommons-react/badge.svg?branch=master)](https://coveralls.io/github/scommons/scommons-react?branch=master)
 [![scala-index](https://index.scala-lang.org/scommons/scommons-react/scommons-react-core/latest.svg)](https://index.scala-lang.org/scommons/scommons-react/scommons-react-core)
-[![Scala.js](https://www.scala-js.org/assets/badges/scalajs-1.5.0.svg)](https://www.scala-js.org)
+[![Scala.js](https://www.scala-js.org/assets/badges/scalajs-1.8.0.svg)](https://www.scala-js.org)
 
 ## Scala Commons React
 [Scala.js](https://www.scala-js.org) facades for common [React.js](https://reactjs.org) utilities and components.
