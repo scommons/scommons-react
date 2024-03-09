@@ -34,7 +34,7 @@ resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositor
 ### How to use it
 
 * Demo Application
-  * [live demo](https://scommons.org/scommons-react/showcase/) => [How to Build and Run](showcase/README.md)
+  * [live demo](https://scommons.github.io/scommons-react/showcase/) => [How to Build and Run](showcase/README.md)
   * [AppMain](showcase/src/main/scala/scommons/react/showcase/app/ShowcaseReactApp.scala)
   * [AppState](showcase/src/main/scala/scommons/react/showcase/app/ShowcaseState.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/ShowcaseStateReducerSpec.scala)
   * [CounterActions](showcase/src/main/scala/scommons/react/showcase/app/counter/CounterActions.scala) => [tests](showcase/src/test/scala/scommons/react/showcase/app/counter/CounterActionsSpec.scala)
@@ -71,4 +71,4 @@ sbt test
 
 ## Documentation
 
-You can find more documentation [here](https://scommons.org/scommons-react)
+You can find more documentation [here](https://scommons.github.io/scommons-react)
